@@ -1,0 +1,4 @@
+.custom-slick-dots > .slick-active > .slick-dot {
+  border-color: #FFFFFF;
+  border-width: 2px
+}

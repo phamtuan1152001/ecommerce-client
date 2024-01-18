@@ -1,0 +1,7 @@
+.banner-slider .slick-slide div div {
+  @apply relative w-[50%] before:content-[""] float-left pt-[33.33%]
+} 
+
+
+
+
