@@ -42,9 +42,9 @@ export const CategoryView = ({ listProducts, slug, onChangePage, totalProduct, l
         {/* Desktop Components */}
         <div className='max-[768px]:hidden'>
           <div className='flex flex-row justify-between items-center gap-4 max-[768px]:w-full max-[768px]:mt-3'>
-            <div className='max-[768px]:w-full'>
+            {/* <div className='max-[768px]:w-full'>
               <ButtonCommon title='Bộ lọc' icon={<IconFilter />} className='max-[768px]:flex-row-reverse' />
-            </div>
+            </div> */}
             <div className='max-[768px]:w-full'>
               <ButtonCommon title='Sắp xếp' icon={<IconArrange />} className='max-[768px]:flex-row-reverse' />
             </div>
@@ -55,14 +55,14 @@ export const CategoryView = ({ listProducts, slug, onChangePage, totalProduct, l
         {/* Mobile Component */}
         <div className='min-[1280px]:hidden max-[768px]:w-full'>
           <Sheet>
-            <div className='flex flex-row justify-between items-center gap-4 max-[768px]:mt-2'>
-              <div className='max-[768px]:w-full'>
+            <div className='flex flex-row justify-center items-center gap-4 max-[768px]:mt-2'>
+              {/* <div className='max-[768px]:w-full'>
                 <SheetTrigger asChild>
                   <ButtonCommon title='Bộ lọc' icon={<IconFilter />} className='max-[768px]:flex-row-reverse' />
                 </SheetTrigger>
                 <FilterListMobile/>
-              </div>
-              <div className='max-[768px]:w-full'>
+              </div> */}
+              <div className=''>{/* max-[768px]:w-full */}
                 <ButtonCommon title='Sắp xếp' icon={<IconArrange />} className='max-[768px]:flex-row-reverse' />
               </div>
             </div>

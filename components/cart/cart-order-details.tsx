@@ -93,7 +93,7 @@ export const CartOrderDetails = () => {
             </div>
           )
           : carts?.items?.map((item, index) => (
-            <div className='flex' key={index}>
+            <div className='flex flex-row justify-start' key={index}>
               <ProductImage
                 wrapperClassName='w-28 flex-shrink-0'
                 src={item.product.images[0].url}
@@ -101,7 +101,7 @@ export const CartOrderDetails = () => {
               />
 
               <div className='p-2 flex-1 flex'>
-                <div className='flex flex-col'>
+                <div className='flex flex-col w-full'>
                   <ProductTitle>{item.product.name}</ProductTitle>
 
                   <div className='mt-auto flex items-center justify-between'>

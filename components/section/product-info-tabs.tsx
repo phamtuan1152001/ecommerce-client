@@ -3,10 +3,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface ProductInfoTabsProps {
-  content: string
+  content: string,
+  description: string
 }
 
-export const ProductInfoTabs = ({content}: ProductInfoTabsProps) => {
+export const ProductInfoTabs = ({content, description}: ProductInfoTabsProps) => {
   return (
     <div>
       <Tabs defaultValue='info'>
@@ -28,7 +29,7 @@ export const ProductInfoTabs = ({content}: ProductInfoTabsProps) => {
         <TabsContent value='info' className='mt-4 space-y-2'>
           <div
             dangerouslySetInnerHTML={{
-              __html: content
+              __html: !!content ? content : description
             }}
           />
           {/* <div className='flex items-center text-sm font-medium leading-normal'>

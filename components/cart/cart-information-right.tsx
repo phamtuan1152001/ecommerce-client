@@ -45,7 +45,7 @@ export const CartInformationRight = () => {
       <Box className='divide-y divide-[#DFE3E8] max-[768px]:p-3 border-b-8 border-[#F5F5F5]'>
         <CartOrderDetails />
 
-        <CartDiscount />
+        {/* <CartDiscount /> */}
 
         <CartInformationContent />
 

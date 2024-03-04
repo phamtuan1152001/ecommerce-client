@@ -29,16 +29,16 @@ export const MENU = [
     href: '/',
     icon: JewelryIcon,
   },
-  {
-    name: 'THUỐC',
-    href: '/',
-    icon: MedicineIcon,
-  },
-  {
-    name: 'THỰC PHẨM CHỨC NĂNG',
-    href: '/',
-    icon: FunctionalFoodsIcon,
-  },
+  // {
+  //   name: 'THUỐC',
+  //   href: '/',
+  //   icon: MedicineIcon,
+  // },
+  // {
+  //   name: 'THỰC PHẨM CHỨC NĂNG',
+  //   href: '/',
+  //   icon: FunctionalFoodsIcon,
+  // },
   {
     name: 'NƯỚC HOA',
     href: '/',

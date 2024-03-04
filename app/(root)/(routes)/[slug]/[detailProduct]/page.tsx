@@ -21,12 +21,13 @@ export default async function Page({ params }: PageProps) {
   const { detailProduct } = params || {}
   
   const detail = await getDetailProduct(detailProduct)
-  const {id, name, regularPrice, salePrice, images, content, quantity, attributes, onSale} = detail?.data || {}
+  const {id, name, regularPrice, salePrice, images, content, quantity, attributes, onSale, description} = detail?.data || {}
   
   if (!detail) {
     notFound()
   }
-
+  // console.log("detailProduct", detail);
+  
   return (
     <div className='bg-[#F5F5F5] p-6 max-[768px]:p-0'>
       <div className="max-[768px]:hidden">
@@ -61,6 +62,7 @@ export default async function Page({ params }: PageProps) {
             attributes={attributes}
             productId={id}
             onSale={onSale}
+            description={description}
           />
           {/* End */}
         </div>

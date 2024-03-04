@@ -23,8 +23,8 @@ const NavbarMobile = () => {
   const [activeTab, setActiveTab] = React.useState(0)
   return (
     <Container className="bg-[#676767] shadow-[0px_5px_10px_0px_rgba(0, 0, 0, 0.10)] w-full min-[360px]:px-0 h-full flex flex-col justify-between">
-      <div className="flex flex-row justify-start">
-        <div className="flex flex-col justify-start h-full">
+      <div className="flex flex-row justify-start h-full">
+        <div className="flex flex-col justify-start">
           {MENU?.map((item: any, index: number) => {
             const Icon = item.icon;
             return (
@@ -64,8 +64,8 @@ const NavbarMobile = () => {
                 </div>
               )
             })}
-          </div>
-          <ScrollArea className="min-[430px]:h-[811px] min-[768px]:h-[955px]">
+          </div> {/* min-[430px]:h-[811px] min-[768px]:h-[955px] */}
+          <div className="h-full overscroll-contain">{/* ScrollArea */}
             <div className="px-3 bg-backgroundColor-listNav mt-2">
               <div className="flex flex-col justify-start">
                 {NAV_DETAIL?.map((item: any, index: number) => {
@@ -92,7 +92,7 @@ const NavbarMobile = () => {
                 })}
               </div>
             </div>
-            <div className="p-3">
+            {/* <div className="p-3">
               <h2 className="text-base font-bold uppercase text-textColor-titleFooterNav">Thương hiệu</h2>
               <div className="mt-4 flex flex-col justify-start gap-4">
                 {LIST_BRAND?.map((item: any, index: number) => {
@@ -139,8 +139,8 @@ const NavbarMobile = () => {
                   )
                 })}
               </div>
-            </div>
-          </ScrollArea>
+            </div> */}
+          </div>{/* ScrollArea */}
         </div>
       </div>
       <div className='min-[1280px]:hidden p-6 bg-backgroundColor-nav w-full'>

@@ -54,6 +54,7 @@ interface DetailProductBodyProps {
   salePrice: number,
   images: any,
   content: string,
+  description: string,
   quantity: number,
   attributes: {
     id: number,
@@ -78,7 +79,8 @@ export default function DetailProductBody({
   quantity,
   attributes,
   productId,
-  onSale
+  onSale,
+  description
 }: DetailProductBodyProps) {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -229,7 +231,7 @@ export default function DetailProductBody({
                   <ProductGallery listImages={images} />
                 )}
 
-                <div className='flex items-center gap-3 max-[768px]:hidden'>
+                {/* <div className='flex items-center gap-3 max-[768px]:hidden'>
                   <p className='text-sm font-bold text-[#003966] leading-normal'>
                     Share:
                   </p>
@@ -249,14 +251,14 @@ export default function DetailProductBody({
                     <BsHeart className='w-6 h-6 mr-2' />
                     333 lượt thích
                   </Button>
-                </div>
+                </div> */}
 
-                <Button
+                {/* <Button
                   variant='ghost'
                   className='bg-[#F5F5F5] h-12 text-base font-semibold text-[#202020] w-full max-[768px]:hidden'
                 >
                   Thông tin chi tiết
-                </Button>
+                </Button> */}
               </div>
 
               <div className='space-y-4 max-[768px]:space-y-2'>
@@ -341,7 +343,7 @@ export default function DetailProductBody({
           <div className='space-y-6 max-[768px]:space-y-4'>
             <ProductVerification />
 
-            <MoreChoiceProducts />
+            {/* <MoreChoiceProducts /> */}
           </div>
         </div>
       </div>
@@ -349,14 +351,14 @@ export default function DetailProductBody({
       <div className='bg-white p-6 max-[768px]:p-3 border-t-8 border-[#F5F5F5]'>
         <div className='grid grid-cols-4 gap-6 max-[768px]:grid-cols-1 max-[768px]:gap-0'>
           <div className='col-span-3'>
-            <ProductInfoTabs content={content} />
+            <ProductInfoTabs content={content} description={description} />
           </div>
 
-          <div className='space-y-4 max-[768px]:mt-6'>
+          {/* <div className='space-y-4 max-[768px]:mt-6'>
             <RelatedProducts />
 
             <PinnedProduct />
-          </div>
+          </div> */}
         </div>
       </div>
     </>

@@ -68,14 +68,16 @@ export const ProductFinalPrice = ({ className, ...props }: PriceProps) => {
   );
 };
 
-export const ProductQuantity = ({quantity, onChange}:ProductQuantityProps) => {
+export const ProductQuantity = ({ quantity, onChange }: ProductQuantityProps) => {
   return (
     <div className='flex items-center'>
       <Button
         size='icon'
         variant='outline'
-        className='w-[30px] h-[30px] border-[#D9D9D9]'
+        className='w-[30px] h-[30px] border-[#D9D9D9] cursor-pointer'
         onClick={() => onChange(DECREMTN_BTN)}
+        disabled={quantity === 1 ? true : false}
+        type='button'
       >
         <LuMinus className='w-5 h-5 text-[#202020]' />
       </Button>
@@ -85,8 +87,9 @@ export const ProductQuantity = ({quantity, onChange}:ProductQuantityProps) => {
       <Button
         size='icon'
         variant='outline'
-        className='w-[30px] h-[30px] border-[#D9D9D9]'
+        className='w-[30px] h-[30px] border-[#D9D9D9] cursor-pointer'
         onClick={() => onChange(INCREMENT_BTN)}
+        type='button'
       >
         <LuPlus className='w-5 h-5 text-[#202020]' />
       </Button>

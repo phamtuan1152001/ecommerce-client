@@ -102,10 +102,11 @@ const ProductsBody = ({ slug }: ProductsBody) => {
         </div>
 
         <Container className='max-[768px]:px-0'>
-          <div className='grid grid-cols-[280px_minmax(0,_1fr)] gap-6 max-[768px]:grid-cols-1'>
-            <div className='bg-white p-4 max-[768px]:hidden'>
+          <div className=''>
+            {/* grid grid-cols-[280px_minmax(0,_1fr)] gap-6 max-[768px]:grid-cols-1 */}
+            {/* <div className='bg-white p-4 max-[768px]:hidden'>
               <FilterList />
-            </div>
+            </div> */}
 
             <div className='bg-white'>
               <div className='py-6 px-4 max-[768px]:p-0'>

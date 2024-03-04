@@ -44,7 +44,8 @@ export interface ICart {
     productId: number;
     quantity: number;
     cartId: number;
-    product: IProduct
+    product: IProduct;
+    variationId: number | undefined
   }[],
   total: number,
   subTotal: number

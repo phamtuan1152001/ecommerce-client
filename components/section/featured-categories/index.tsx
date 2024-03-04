@@ -17,7 +17,7 @@ export const FeaturedCategories = ({ listCategories } : FeaturedCategoriesProps)
             <Heading
               title='DANH MỤC NỔI BẬT'
               description={`${listCategories?.items?.length}+ Danh mục nổi bật`}
-              className='max-[768px]:mb-4'
+              className='mb-3 max-[768px]:mb-4'
             />
           </div>
 

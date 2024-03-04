@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // @selector-open-dialog
 import { getIsOpenDialog } from '@/redux/openDiaglog/selector';
 import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
+import { DialogClose } from "@/components/ui/dialog";
 
 interface Props {
 	// setOpen: (a:boolean) => void
@@ -32,13 +33,18 @@ const AuthTabs = ({ setOpen }: Props) => {
 	return (
 
 		<div className=' basis-1/2'>
-			<Box className=" px-12 h-full rounded-r-[8px] max-[768px]:p-0">
+			<Box className="py-0 px-12 h-full rounded-r-[8px] max-[768px]:p-0">
 				<div className="flex flex-row justify-end items-center">
-					<Button className="bg-inherit p-1" onClick={() => handleOpenDialog()}>
+					{/* <Button className="bg-inherit p-1" onClick={() => handleOpenDialog()}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 							<path d="M6.75729 17.2426L11.9999 12M17.2426 6.75736L11.9999 12M11.9999 12L6.75729 6.75736M11.9999 12L17.2426 17.2426" stroke="#676767" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 						</svg>
-					</Button>
+					</Button> */}
+					<DialogClose className="pb-4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+							<path d="M6.75729 17.2426L11.9999 12M17.2426 6.75736L11.9999 12M11.9999 12L6.75729 6.75736M11.9999 12L17.2426 17.2426" stroke="#676767" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</DialogClose>
 				</div>
 				<div>
 					<Tabs defaultValue='signin'>

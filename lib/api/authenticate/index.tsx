@@ -1,5 +1,5 @@
 import { BASE_URL_API_DEV, AUTHENTICATE_API } from "@/constants";
-
+import axios from "axios"
 export const postUserRegister = async (req: any) => {  
   try {
     const response = await fetch(
@@ -17,8 +17,10 @@ export const postUserRegister = async (req: any) => {
     );
       
     if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
+      // console.log(response);
+      const result = await response.json();
+      return result; 
+      // throw new Error(`Error! status: ${response.status}`);
     }
 
     const result = await response.json();
@@ -45,8 +47,10 @@ export const postLogin = async (req: any) => {
     );
       
     if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
+      // console.log(response);
+      const result = await response.json();
+      return result; 
+      // throw new Error(`Error! status: ${response.status}`);
     }
 
     const result = await response.json();

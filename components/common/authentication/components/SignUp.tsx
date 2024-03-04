@@ -69,6 +69,7 @@ const SignUp = () => {
         phone: phone
       }
       const res = await postUserRegister(req)
+      // console.log("res", res);
       if (res?.statusCode === SUCCESS) {
         DiaglogPopup({
           icon: <IconSuccess />,
@@ -85,10 +86,21 @@ const SignUp = () => {
           onCancle: () => { }
         })
       } else {
+        const errors = res["errors"]
+        // console.log(errors);
+        for (const key in errors) {
+          const field: any = key
+          form.setError(field, {
+            type: "onChange",
+            message: res?.errors[`${key}`]
+          }, {
+            shouldFocus: true
+          })
+        }
         DiaglogPopup({
           icon: <IconFail />,
           title: "ĐĂNG KÝ THẤT BẠI",
-          description: "Đăng ký tài khoản thất bại",
+          description: res?.message,
           textButtonOk: "Thử lại",
           textButtonCancel: "",
           isBtnCancel: false,
@@ -101,7 +113,7 @@ const SignUp = () => {
         })
       }
     } catch (err) {
-      console.log("FETCH FAIL!", err);
+      // console.log("FETCH FAIL!", err);
       DiaglogPopup({
         icon: <IconFail/>,
         title: "LỖI HỆ THỐNG",

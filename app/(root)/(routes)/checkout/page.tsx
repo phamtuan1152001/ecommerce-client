@@ -45,11 +45,12 @@ import {
 } from "@/lib/api/common";
 
 // @constants
-import { SUCCESS } from "@/constants";
+import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants";
 
 // @utility
 import { parseInt } from "lodash";
 import { getUserToken } from "@/utility/common";
+import { toastNotiFail } from "@/utility/toast";
 
 // @selector-cart
 import { getCartSelector } from '@/redux/cart/selector';
@@ -86,12 +87,15 @@ const CheckOut = () => {
   const userCheckoutInfoRaw: string | null = localStorage.getItem("USER_INFO_CHECKOUT");
   const userCheckoutInfo: UserType = userCheckoutInfoRaw
     ? JSON.parse(userCheckoutInfoRaw) : {};
+  const isAuthenticated = !!getUserToken()
 
   const carts = useSelector(getCartSelector);
+  // console.log("carts", carts);
 
   const [listProvinces, setListProvinces] = React.useState([])
   const [listDistricts, setListDistricts] = React.useState([])
   const [listWards, setListWards] = React.useState([])
+  const [methodPayment, setMethodPayment] = React.useState<string>("")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -112,19 +116,23 @@ const CheckOut = () => {
   })
 
   React.useEffect(() => {
-    if (!!userCheckoutInfoRaw) {
-      fetchGetListProvinces()
-      fetchGetListDistrictsAsProvincesId(parseInt(userCheckoutInfo.provinceId))
-      fetchGetListWardsAsDistrictId(parseInt(userCheckoutInfo.districtId))
+    if (isAuthenticated) {
+      if (!!userCheckoutInfoRaw) {
+        fetchGetListProvinces()
+        fetchGetListDistrictsAsProvincesId(parseInt(userCheckoutInfo.provinceId))
+        fetchGetListWardsAsDistrictId(parseInt(userCheckoutInfo.districtId))
+      } else {
+        fetchGetListProvinces()
+      }
     } else {
-      fetchGetListProvinces()
+      window.location.href = "/"
     }
   }, [])
 
   const fetchGetListProvinces = async () => {
     try {
       const res = await getListProvinces()
-      if (res.statusCode === SUCCESS) {
+      if (res?.statusCode === SUCCESS) {
         setListProvinces(res?.data?.items)
       } else {
         setListProvinces([])
@@ -167,7 +175,7 @@ const CheckOut = () => {
   }
 
   // Delete all item in cart after create order successfully
-  const handleDeleteAllItemInCart = async () => {
+  const handleDeleteAllItemInCart = async (type: number, code: string) => {
     const promises = carts.items.map(async (item) => {
       try {
         const req = {
@@ -186,7 +194,11 @@ const CheckOut = () => {
           accessToken: getUserToken()
         }));
         dispatch(resetCart());
-        window.location.href = "/"
+        if (type === 1) {
+          window.location.href = "/"
+        } else {
+          router.push(`/checkout/order-detail?orderId=${code}`)
+        }
       })
       .catch((error) => {
         console.log('Error in one of the promises:', error);
@@ -213,16 +225,18 @@ const CheckOut = () => {
       return {
         productId: item.productId,
         quantity: item.quantity,
-        price: item.product.onSale ? item.product.salePrice : item.product.regularPrice,
-        productName: item.product.name
+        price: item.product.onSale ? parseInt(item.product.salePrice) : parseInt(item.product.regularPrice),
+        productName: item.product.name,
+        variationId: item.variationId
       }
     })
     const req = {
       accessToken: getUserToken(),
       status: "order",
-      note: description,
-      livestreamDate: "",
-      shopId: 0,
+      note: /* description */ "Note payment",
+      paymentMethod: methodPayment,
+      // livestreamDate: "",
+      // shopId: 0,
       orderAddress: {
         fullName: fullName,
         phone: phone,
@@ -230,51 +244,97 @@ const CheckOut = () => {
         address: address,
         provinceId: parseInt(provinceId),
         districtId: parseInt(districtId),
-        wardId: parseInt(wardId)
+        wardId: parseInt(wardId),
+        fullAddress: address
       },
       items: cartOrders
     }
-    try {
-      const res = await postCreateOrder(req)
-      if (res.statusCode === SUCCESS) {
-        if (saveInfo) {
-          const userInfoCheckout = {
-            email,
-            fullName,
-            phone,
-            provinceId,
-            districtId,
-            wardId,
-            address,
-            saveInfo
+    if (!!methodPayment) {
+      if (cartOrders?.length > 0) {
+        try {
+          const res = await postCreateOrder(req)
+          if (res.statusCode === SUCCESS) {
+            if (saveInfo) {
+              const userInfoCheckout = {
+                email,
+                fullName,
+                phone,
+                provinceId,
+                districtId,
+                wardId,
+                address,
+                saveInfo
+              }
+              localStorage.setItem("USER_INFO_CHECKOUT", JSON.stringify(userInfoCheckout))
+            } else {
+              if (!!userCheckoutInfoRaw) {
+                localStorage.removeItem("USER_INFO_CHECKOUT")
+              }
+            }
+            DiaglogPopup({
+              icon: <IconSuccess/>,
+              title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
+              description: "Đơn hàng của bạn đã được tạo thành công",
+              textButtonOk: methodPayment === PAYMENT_ATM_BANKING
+                ? "Chuyển khoản ngân hàng"
+                : "Trở về trang chủ",
+              textButtonCancel: "Xem lại đơn",
+              isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
+              closeOnClickOverlay: false,
+              className: "max-[768px]:w-[380px]",
+              onSubmit: () => {
+                SlideInModal.hide()
+                handleDeleteAllItemInCart(
+                  methodPayment === PAYMENT_ATM_BANKING
+                    ? 2
+                    : 1
+                  , res?.data?.id
+                ) // type = 1 back to home page
+                // router.push("/")
+              },
+              onCancle: () => { 
+                SlideInModal.hide()
+                handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
+              }
+            })
+          } else {
+            DiaglogPopup({
+              icon: <IconFail/>,
+              title: "TẠO ĐƠN HÀNG THẤT BẠI",
+              description: "Đơn hàng của bạn đã được tạo thất bại",
+              textButtonOk: "Đóng",
+              textButtonCancel: "",
+              isBtnCancel: false,
+              closeOnClickOverlay: false,
+              className: "max-[768px]:w-[380px]",
+              onSubmit: () => {
+                SlideInModal.hide()
+              },
+              onCancle: () => { }
+            })
           }
-          localStorage.setItem("USER_INFO_CHECKOUT", JSON.stringify(userInfoCheckout))
-        } else {
-          if (!!userCheckoutInfoRaw) {
-            localStorage.removeItem("USER_INFO_CHECKOUT")
-          }
+        } catch (err) {
+          console.log("FETCH FAIL!", err);
+          DiaglogPopup({
+            icon: <IconFail/>,
+            title: "LỖI HỆ THỐNG",
+            description: "Vui lòng thử lại sau",
+            textButtonOk: "Đóng",
+            textButtonCancel: "",
+            isBtnCancel: false,
+            closeOnClickOverlay: false,
+            className: "max-[768px]:w-[380px]",
+            onSubmit: () => {
+              SlideInModal.hide()
+            },
+            onCancle: () => { }
+          })
         }
-        DiaglogPopup({
-          icon: <IconSuccess/>,
-          title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
-          description: "Đơn hàng của bạn đã được tạo thành công",
-          textButtonOk: "Trở về trang chủ",
-          textButtonCancel: "",
-          isBtnCancel: false,
-          closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
-          onSubmit: () => {
-            SlideInModal.hide()
-            handleDeleteAllItemInCart()
-            // router.push("/")
-          },
-          onCancle: () => { }
-        })
       } else {
         DiaglogPopup({
           icon: <IconFail/>,
           title: "TẠO ĐƠN HÀNG THẤT BẠI",
-          description: "Đơn hàng của bạn đã được tạo thất bại",
+          description: "Danh sách sản phẩm không được để trống",
           textButtonOk: "Đóng",
           textButtonCancel: "",
           isBtnCancel: false,
@@ -286,25 +346,14 @@ const CheckOut = () => {
           onCancle: () => { }
         })
       }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-      DiaglogPopup({
-        icon: <IconFail/>,
-        title: "LỖI HỆ THỐNG",
-        description: "Vui lòng thử lại sau",
-        textButtonOk: "Đóng",
-        textButtonCancel: "",
-        isBtnCancel: false,
-        closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
-        onSubmit: () => {
-          SlideInModal.hide()
-        },
-        onCancle: () => { }
-      })
+    } else {
+      toastNotiFail("Vui lòng chọn phương thức thanh toán")
     }
   }
   
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
@@ -364,7 +413,7 @@ const CheckOut = () => {
                             )}
                           />
                         </div>
-                        {!getUserToken && (
+                        {/* {!getUserToken && (
                           <div className='flex-1 flex justify-end gap-x-2'>
                             <span>Bạn đã có tài khoản?</span>
                             <Link href='/' className='text-[#AA7809]'>
@@ -372,14 +421,14 @@ const CheckOut = () => {
                               Đăng nhập
                             </Link>
                           </div>
-                        )}
+                        )} */}
                       </div>
-                      <div className=' flex items-center gap-x-1'>
+                      {/* <div className=' flex items-center gap-x-1'>
                         <Checkbox className=' border-[#BFBFBF] w-[18px] h-[18px]' />
                         <p className=' text-[#202020]'>
                           Đăng ký nhận các thông tin khuyến mãi đầu tiên
                         </p>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className='flex flex-col gap-y-4'>
@@ -542,7 +591,7 @@ const CheckOut = () => {
                       </div>
                     </div>
                   </div>
-                  <div className=' flex flex-col gap-y-4'>
+                  {/* <div className=' flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
                       <h3 className=' text-[20px] font-bold'>
@@ -566,7 +615,7 @@ const CheckOut = () => {
                         nội thành Hà Nội, TP Hồ Chí Minh. Các địa chỉ khác: 30.000đ
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                   <div className='flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
@@ -574,10 +623,10 @@ const CheckOut = () => {
                         Phương Thức Thanh Toán
                       </h3>
                     </div>
-                    <RadioGroup defaultValue='comfortable'>
+                    <RadioGroup>
                       <div className='flex flex-col gap-y-4'>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='compact' id='r2' />
+                          <RadioGroupItem value='compact' id='r2' onClick={() => setMethodPayment(PAYMENT_COD)}/>
                           <Label
                             htmlFor='r2'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -602,7 +651,7 @@ const CheckOut = () => {
                           </Label>
                         </div>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='comfortabl' id='r3' />
+                          <RadioGroupItem value='comfortabl' id='r3' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)}/>
                           <Label
                             htmlFor='r3'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -610,15 +659,15 @@ const CheckOut = () => {
                             <div className=' aspect-square relative w-full max-w-[50px] '>
                               <Image
                                 alt='image'
-                                src='/assets/images/checkout/momo.png'
+                                src='/assets/images/checkout/chuyen-khoan-ngan-hang.png'
                                 fill
                                 className='object-cover object-center rounded-[8px]'
                               />
                             </div>
                             <div>
-                              <p className=' font-bold'>Thanh toán bằng momo</p>
+                              <p className=' font-bold'>Thanh toán bằng phương thức chuyển khoản</p>
                               <p className=' text-sm font-medium text-[#745B3E]'>
-                                Qua ví điện tử Momo
+                                Qua ứng dụng ngân hàng
                               </p>
                             </div>
                           </Label>
@@ -627,7 +676,7 @@ const CheckOut = () => {
                     </RadioGroup>
 
                   </div>
-                  <div className='flex flex-col gap-y-4'>
+                  {/* <div className='flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
                       <h3 className=' text-[20px] font-bold'>Thông Tin Tặng Quà</h3>
@@ -736,7 +785,7 @@ const CheckOut = () => {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className='col-span-2 max-[768px]:order-1'>

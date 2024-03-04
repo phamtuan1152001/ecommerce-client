@@ -90,6 +90,7 @@ export const CartButton = () => {
       productId,
       accessToken: getUserToken()
     }
+    setListSelected([])
     dispatch(fetchDeleteItemCartRequest(req))
   }
 
@@ -97,6 +98,7 @@ export const CartButton = () => {
     if (listSelected.length > 0) {
       if (carts.items.length === listSelected.length) {
         handleClose()
+        setListSelected([])
         router.push("/checkout")
       } else {
         const listCarts = carts.items
@@ -122,6 +124,7 @@ export const CartButton = () => {
               accessToken: getUserToken()
             }));
             handleClose()
+            setListSelected([])
             router.push("/checkout")
           })
           .catch((error) => {
@@ -162,16 +165,16 @@ export const CartButton = () => {
           <CartIcon className='w-6 h-6 text-white' />
 
           <span className='inline-flex items-center justify-center bg-[#F4B324] text-[#181818] text-sm font-semibold h-5 min-w-[20px] rounded-[10px] absolute right-0 -translate-y-1/2'>
-            {carts?.items?.length}
+            {carts?.items?.length ?? 0}
           </span>
         </Button>
       </SheetTrigger>
 
-      <SheetOverlay />
+      {/* <SheetOverlay /> */}
       <SheetContent className='sm:max-w-xl p-0 flex flex-col gap-0 w-full'>
-        <SheetClose>
+        {/* <SheetClose>
           <X className='h-6 w-6 max-[768px]:h-5 max-[768px]:w-5' />
-        </SheetClose>
+        </SheetClose> */}
         <SheetHeader className='p-6 border-b border-b-[#DFE3E8] max-[768px]:px-3'>
           <SheetTitle className='text-2xl font-bold text-[#333] max-[768px]:text-left max-[768px]:text-lg'>
             Giỏ hàng ({carts?.items?.length})
@@ -197,7 +200,7 @@ export const CartButton = () => {
                 <div className="flex flex-row justify-start items-center gap-3 max-[768px]:gap-1">
                   <Checkbox
                     id="all"
-                    checked={listSelected.length === carts.items.length ? true : false}
+                    checked={listSelected?.length === carts?.items?.length && listSelected?.length > 0 ? true : false}
                     onCheckedChange={(isCheckedAll) => {
                       if (isCheckedAll) {
                         setListSelected(carts?.items)
@@ -303,7 +306,10 @@ export const CartButton = () => {
 
           <div className="col-span-2">
             <div className="flex flex-row justify-between items-center w-full gap-3">
-              <Button className='text-base font-semibold h-12 w-full'>
+              <Button
+                className='text-base font-semibold h-12 w-full'
+                onClick={() => handleClose()}
+              >
                 Tiếp tục mua sắm
               </Button>
               <Button

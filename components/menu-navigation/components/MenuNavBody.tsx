@@ -10,8 +10,8 @@ import { NAV_DETAIL, LIST_BRAND } from '../constants/header-nav.data'
 
 const MenuNavBody = () => {
   return (
-    <div className='grid grid-cols-3 w-full 2xl:w-[1900px] mt-1'>
-      <div className='col-span-2 bg-backgroundColor-listNav'>
+    <div className='grid grid-cols-3 w-full mt-1'>
+      <div className='col-span-2 bg-backgroundColor-listNav w-[1000px]'>
         <div className='flex flex-row justify-between items-center px-12 py-8'>
           {NAV_DETAIL?.map((item: any, index: number) => {
             return (
@@ -53,7 +53,7 @@ const MenuNavBody = () => {
           </Link>
         </div>
       </div>
-      <div className='col-span-3 px-16 py-6'>
+      {/* <div className='col-span-3 px-16 py-6'>
         <h2 className='font-bold text-base uppercase text-textColor-titleFooterNav mb-4'>Thương hiệu</h2>
         <div className='flex flex-row justify-between items-center'>
           {LIST_BRAND?.map((item: any, index: number) => {
@@ -89,7 +89,7 @@ const MenuNavBody = () => {
             )
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

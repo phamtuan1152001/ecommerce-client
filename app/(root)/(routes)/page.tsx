@@ -26,7 +26,7 @@ export default async function Home() {
 
       <FeaturedCategories listCategories={listCategories?.data} />
 
-      <Brands />
+      {/* <Brands /> */}
 
       <ProductsByCategory />
 

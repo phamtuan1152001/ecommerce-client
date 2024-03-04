@@ -33,10 +33,10 @@ export const ProductVariantSelector = ({
   const [countProduct, setCountProduct] = useState(valueCountProduct)
 
   useEffect(() => {
-    onChangeSize(SIZES[currentSize])
-    onChangeColor(COLORS[currentColor])
+    // onChangeSize(SIZES[currentSize])
+    // onChangeColor(COLORS[currentColor])
     onChangeCountProduct(countProduct)
-  }, [currentSize, currentColor, countProduct])
+  }, [countProduct]) // /* currentSize */, /* currentColor */,
 
   const handleSelectedSize = (value: number) => {
     setCurrentSize(value)
@@ -56,7 +56,7 @@ export const ProductVariantSelector = ({
   
   return (
     <div className='space-y-4'>
-      <div className='space-y-2'>
+      {/* <div className='space-y-2'>
         <div className='flex items-center justify-between'>
           <h5 className='text-sm font-bold text-[#003966]'>Chọn size:</h5>
 
@@ -78,9 +78,9 @@ export const ProductVariantSelector = ({
             </Button>
           ))}
         </div>
-      </div>
+      </div> */}
 
-      <div className='space-y-2'>
+      {/* <div className='space-y-2'>
         <h5 className='text-sm font-bold text-[#003966]'>Chọn màu:</h5>
 
         <div className='flex items-center space-x-4'>
@@ -99,7 +99,7 @@ export const ProductVariantSelector = ({
             />
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className='space-y-2'>
         <h5 className='text-sm font-bold text-[#003966]'>Số lượng:</h5>

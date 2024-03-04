@@ -112,7 +112,7 @@ const SignIn = ({ setOpen }: Props) => {
         DiaglogPopup({
           icon: <IconFail />,
           title: "ĐĂNG NHẬP THẤT BẠI",
-          description: "Đăng nhập tài khoản thất bại",
+          description: res?.message,
           textButtonOk: "Thử lại",
           textButtonCancel: "",
           isBtnCancel: false,

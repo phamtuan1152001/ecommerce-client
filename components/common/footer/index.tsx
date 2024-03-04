@@ -7,6 +7,7 @@ import { Container } from '@/components/ui/container';
 import { PAYMENT_METHODS } from '@/constants/footer';
 
 export const Footer = () => {
+  // grid grid-cols-5 max-[768px]:grid-cols-1 max-[768px]:gap-6 max-[768px]:py-6 max-[768px]:px-3
   return (
     <footer className='bg-[#181818]'>
       <div className='p-16 grid grid-cols-3 gap-14 max-[768px]:grid-cols-1 max-[768px]:gap-6 max-[768px]:py-6 max-[768px]:px-3'>
@@ -57,7 +58,7 @@ export const Footer = () => {
           )}
         </div>
 
-        <div className='flex flex-row justify-around items-center max-[768px]:justify-between'>
+        <div className='flex flex-row justify-between items-start max-[768px]:justify-between gap-6'>
           <div>
             {!!FOOTER_MENU['about'] && (
               <div className='space-y-4'>
@@ -84,6 +85,31 @@ export const Footer = () => {
           </div>
 
           <div>
+            {!!FOOTER_MENU['policy'] && (
+              <div className='space-y-4'>
+                <h5 className='body-text-normal font-bold text-[#FBFBFB]'>
+                  {FOOTER_MENU['policy']['title']}
+                </h5>
+
+                {FOOTER_MENU['policy']['children'].length > 0 && (
+                  <ul className='space-y-4'>
+                    {FOOTER_MENU['policy']['children'].map((item) => (
+                      <li key={item.label}>
+                        <Link
+                          href={`/chinh-sach/${item.href}`}
+                          className='body-text-normal text-[#CCCFDB] inline-block'
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div>
             {!!FOOTER_MENU['customer_care'] && (
               <div className='space-y-4'>
                 <h5 className='body-text-normal font-bold text-[#FBFBFB]'>
@@ -92,7 +118,7 @@ export const Footer = () => {
 
                 {FOOTER_MENU['customer_care']['children'].length > 0 && (
                   <ul className='space-y-4'>
-                    {FOOTER_MENU['about']['children'].map((item) => (
+                    {FOOTER_MENU['customer_care']['children'].map((item) => (
                       <li key={item.label}>
                         <Link
                           href={item.href}
@@ -181,7 +207,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className='px-16 pb-8 flex items-center justify-between max-[768px]:flex-col max-[768px]:items-start max-[768px]:gap-6 max-[768px]:pl-3 max-[768px]:pb-8 max-[768px]:pr-16'>
+      <div className='px-16 pb-8 flex flex-col items-end gap-3 max-[768px]:flex-col max-[768px]:items-start max-[768px]:gap-3 max-[768px]:pl-3 max-[768px]:pb-8 max-[768px]:pr-16'>
         <p className='body-text-normal font-bold text-[#FBFBFB]'>
           Phương thức thanh toán
         </p>
@@ -202,8 +228,18 @@ export const Footer = () => {
       <div className='py-3.5 bg-[#333131]'>
         <Container>
           <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
-            Copyright © 2023 Công Ty THHH Shop Vũ Hoàng. Mã số doanh nghiệp
-            129128911 do Sở Kế hoạch Đầu tư Đồng Nai cấp lần 1 ngày 18/8/2018
+            {/* Copyright © 2023 Công Ty THHH Shop Vũ Hoàng. Mã số doanh nghiệp
+            129128911 do Sở Kế hoạch Đầu tư Đồng Nai cấp lần 1 ngày 18/8/2018 */}
+            CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ TRANG NAM DŨNG
+          </p>
+          <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
+            Số ĐKKD: 3603794118 Ngày cấp: 09-03-2021 Nơi cấp: Sở Kế Hoạch và Đầu Tư Tỉnh Đồng Nai.
+          </p>
+          <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
+            Địa chỉ: Số 334/13/7, đường Võ Thị Sáu, KP 1 - Phường Thống Nhất - Thành phố Biên Hoà - Đồng Nai.
+          </p>
+          <p className='text-sm leading-normal text-center text-[#c51143]'>
+            Powered by PSA Solutions
           </p>
         </Container>
       </div>
