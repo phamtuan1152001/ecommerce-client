@@ -1,6 +1,5 @@
 'use client';
 
-// import "../../../public/css/index.css"
 import Image from 'next/image';
 import { Settings } from 'react-slick';
 
@@ -40,7 +39,13 @@ export const Banners = () => {
           <SlickSlider settings={settings}>
             {BANNERS.map((item, index) => (
               <div key={index} className='relative aspect-[1152/356]'>
-                <Image src={item.imgUrl} alt='image' fill />
+                <Image
+                  src={item.imgUrl}
+                  alt='image'
+                  fill
+                  priority
+                  sizes="(max-width: 768px)"
+                />
               </div>
             ))}
           </SlickSlider>

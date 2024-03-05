@@ -6,7 +6,6 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import { Header } from '@/components/common/header';
 import { Footer } from '@/components/common/footer';
-import { RegisterOffer } from '@/components/section/register-offer';
 import SlideInModal from '@/components/slide-in-modal';
 import ProviderComponents from './components/provider';
 import './globals.css';
@@ -35,7 +34,6 @@ export default function RootLayout({
           {children}
           <SlideInModal />
           <Toaster position='top-right' />
-          <RegisterOffer/>
           <Footer />
         </ProviderComponents>
       </body>

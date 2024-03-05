@@ -3,18 +3,34 @@ import { Testimonial } from '@/components/section/testimonial';
 import { SellProduts } from '@/components/section/sell-products';
 import { FeaturedCategories } from '@/components/section/featured-categories';
 import { ProductsByCategory } from '@/components/section/products-by-category';
-import { RegisterOffer } from '@/components/section/register-offer';
 import { ViewedProducts } from '@/components/section/viewed-products';
-import { Brands } from '@/components/section/brands';
 
 // @api
-import { getAllBrands, getAllCategories } from '@/lib/api';
-import { getBestSellerProducts } from '@/lib/api/product';
+import { getCategories } from '@/lib/api';
+import { getProducts } from '@/lib/api/product';
+
+// @types
+import { ProductType, CategoryType } from '@/types';
 
 export default async function Home() {
-  const listCategories = await getAllCategories()
-  const listBrands = await getAllBrands()
-  const listBestSellerProducts = await getBestSellerProducts()
+  const listCategories: {
+    retCode: number,
+    retData: CategoryType[],
+    retText: string
+  } = await getCategories();
+
+  const listBestSellerProducts: {
+    retCode: number,
+    retData: {
+      currentPage: number,
+      products: ProductType[],
+      totalItems: number,
+      totalPages: number
+    },
+    retText: string
+  } = await getProducts()
+
+  // console.log("listCategories", listCategories);
 
   return (
     <div>
@@ -22,17 +38,15 @@ export default async function Home() {
 
       <Testimonial />
 
-      <SellProduts listBestSellerProducts={listBestSellerProducts} />
+      <SellProduts
+        listBestSellerProducts={listBestSellerProducts.retData.products}
+      />
 
-      <FeaturedCategories listCategories={listCategories?.data} />
+      <FeaturedCategories listCategories={listCategories.retData} />
 
-      {/* <Brands /> */}
-
-      <ProductsByCategory />
+      <ProductsByCategory listCategories={listCategories.retData} />
 
       {/* <ViewedProducts /> */}
-
-      {/* <RegisterOffer /> */}
     </div>
   );
 }

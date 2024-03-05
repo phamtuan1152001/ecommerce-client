@@ -7,7 +7,6 @@ import { Container } from '@/components/ui/container';
 import { PAYMENT_METHODS } from '@/constants/footer';
 
 export const Footer = () => {
-  // grid grid-cols-5 max-[768px]:grid-cols-1 max-[768px]:gap-6 max-[768px]:py-6 max-[768px]:px-3
   return (
     <footer className='bg-[#181818]'>
       <div className='p-16 grid grid-cols-3 gap-14 max-[768px]:grid-cols-1 max-[768px]:gap-6 max-[768px]:py-6 max-[768px]:px-3'>
@@ -16,12 +15,15 @@ export const Footer = () => {
             <div className='space-y-6'>
               {FOOTER_MENU['info']['logo'] && (
                 <Link href='/'>
-                  <Image
-                    src={FOOTER_MENU['info']['logo']['imgUrl']}
-                    alt={FOOTER_MENU['info']['logo']['alt']}
-                    width={103}
-                    height={74}
-                  />
+                  <div className='w-[103px] h-[74px] relative'>
+                    <Image
+                      src={FOOTER_MENU['info']['logo']['imgUrl']}
+                      alt={FOOTER_MENU['info']['logo']['alt']}
+                      fill
+                      sizes="(max-width: 768px)"
+                      priority
+                    />
+                  </div>
                 </Link>
               )}
 
@@ -152,13 +154,14 @@ export const Footer = () => {
                             href={href}
                             target='_blank'
                             rel='noopener noreferrer'
-                            className='inline-block'
+                            className='inline-block w-[150px] h-[48px] relative'
                           >
                             <Image
                               src={imgUrl}
                               alt={alt}
-                              width={150}
-                              height={48}
+                              fill
+                              sizes="(max-width: 768px)"
+                              priority
                             />
                           </a>
                         </li>
@@ -214,13 +217,15 @@ export const Footer = () => {
 
         <div className='flex items-center gap-3 max-[768px]:flex-wrap'>
           {PAYMENT_METHODS.map((item) => (
-            <Image
-              key={item.name}
-              src={item.imgUrl}
-              alt={item.name}
-              width={!!item.large ? 86 : 47}
-              height={27}
-            />
+            <div>
+              <Image
+                key={item.name}
+                src={item.imgUrl}
+                alt={item.name}
+                width={!!item.large ? 86 : 47}
+                height={27}
+              />
+            </div>
           ))}
         </div>
       </div>

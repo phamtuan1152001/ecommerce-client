@@ -1,4 +1,5 @@
 import { BASE_URL_API_DEV, PUBLIC_API } from "@/constants";
+import apiMethod from "@/utility/ApiMethod";
 
 export const getAllCategories = async (
   page: number = 0,
@@ -51,4 +52,9 @@ export const getAllBrands = async (
   } catch (err) {
     console.log("FETCHING FAIL!", err);
   }
+}
+
+export const getCategories = async () => {
+  const { data } = await apiMethod.get("/categories/listAllClient")
+  return data
 }

@@ -1,41 +1,44 @@
 'use client';
 
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+
+// @components
 import { ProductCard } from '@/components/product/product-card';
 import { Button } from '@/components/ui/button';
 import { SlickSlider } from '@/components/ui/slick-slider';
-import { cn } from '@/lib/utils';
+
+// @icon
 import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+
+// @type
+import { ProductType } from '@/types';
+
+// @constant
+import { NO_DATA_IMAGE } from '@/constants';
 
 interface ProductsByCategoryItemProps {
-  item: {
+  item?: {
     name: string;
     imageUrl: string;
+    products: ProductType[];
     slug: string;
-    products: {
-      name: string;
-      imageUrl: string;
-      discount_price: string;
-      price: string;
-    }[];
   };
-  index: number;
+  index: number
 }
 
 export default function ProductsByCategoryItem({
   item,
-  index,
+  index
 }: ProductsByCategoryItemProps) {
   const router = useRouter()
-  
-  const { products, imageUrl, name, slug } = item;
-  
+
   const settings = {
     dots: false,
     arrows: true,
     slidesToShow: 4,
-    infinite: products.length > 4,
+    infinite: (item as any).products.length > 4,
     responsive: [
       {
         breakpoint: 768,
@@ -58,20 +61,33 @@ export default function ProductsByCategoryItem({
         >
           <div className='max-w-[20%] w-full max-[768px]:max-w-[100%]'>
             <div className='relative flex items-center justify-center aspect-[218/341] rounded-2xl overflow-hidden max-[768px]:aspect-[351/168]'>
-              <Image src={imageUrl} alt={name} fill className='object-cover' sizes="(max-width: 768px)"/>
+              <Image
+                src={item?.imageUrl || NO_DATA_IMAGE}
+                alt={item?.name || "no-data-image"}
+                fill
+                className='object-cover'
+                sizes="(max-width: 768px)"
+              />
 
               <h3 className='text-2xl leading-normal px-6 py-2 font-bold text-[#3A3A3A] uppercase bg-white/80 rounded-[90px] relative max-w-[90%] inline-block text-center'>
-                {name}
+                {item?.name}
               </h3>
             </div>
           </div>
 
           <div className='max-w-[80%] w-full max-[768px]:max-w-[100%]'>
             <SlickSlider settings={settings}>
-              {products?.length > 0
+              {(item as any).products?.length > 0
                 ? (
-                  products.map((product: any, index: number) => (
-                    <ProductCard key={index} product={product} slugName={slug} />
+                  (item as any)?.products?.map((
+                    product: ProductType,
+                    index: number
+                  ) => (
+                    <ProductCard
+                      key={index}
+                      product={product}
+                      slugName={item?.slug}
+                    />
                   ))
                 )
                 : (
@@ -92,17 +108,17 @@ export default function ProductsByCategoryItem({
           </div>
         </div>
 
-        {products?.length > 0 && (
+        {(item as any)?.products?.length > 0 && (
           <div className='text-center mt-6 max-[768px]:mt-4'>
             <Button
               variant='outline'
               className='text-[#333] border-current rounded-3xl font-bold'
-              onClick={() => router.push(slug)}
+              onClick={() => router.push(item?.slug || "#")}
             >
               Xem thêm
               <ArrowRight className='ml-1' />
             </Button>
-        </div>
+          </div>
         )}
       </div>
     </div>

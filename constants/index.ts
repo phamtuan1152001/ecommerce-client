@@ -1,4 +1,6 @@
-export const BASE_URL_API_DEV = "https://dev-api.vudaishop.vn"
+import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
+
+export const BASE_URL_API_DEV = "http://localhost:3002"
 export const PUBLIC_API = '/public/api'
 export const PUBLIC_ORDER_DETAIL = "/public/orders"
 export const AUTHENTICATE_API = '/v1/auth'
@@ -18,7 +20,7 @@ export const RETCODE_SUCCESS = 0;
 export const RETCODE_FAIL = 1;
 
 export const PAGE_NUMBER = 1;
-export const PAGE_LIMIT = 100;
+export const PAGE_LIMIT = 6;
 export const MAX_LENGTH = 7;
 export const LANGUAGE_VI = "vi";
 export const LANGUAGE_EN = "en"
@@ -30,3 +32,5 @@ export const NUM_NAME_SLICE = 2
 
 export const PAYMENT_COD = "COD"
 export const PAYMENT_ATM_BANKING = "atm-banking"
+
+export const NO_DATA_IMAGE = NO_IMG

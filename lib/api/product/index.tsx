@@ -1,4 +1,5 @@
 import { BASE_URL_API_DEV, PUBLIC_API } from "@/constants";
+import apiMethod from "@/utility/ApiMethod";
 
 export const getBestSellerProducts = async () => {
   try {
@@ -9,7 +10,7 @@ export const getBestSellerProducts = async () => {
         cache: 'no-cache'
       }
     );
-      
+
     if (!response.ok) {
       console.log(response);
       throw new Error(`Error! status: ${response.status}`);
@@ -37,7 +38,7 @@ export const getAllProducts = async (
         cache: 'no-cache'
       }
     );
-      
+
     if (!response.ok) {
       console.log(response);
       throw new Error(`Error! status: ${response.status}`);
@@ -50,7 +51,7 @@ export const getAllProducts = async (
   }
 }
 
-export const getDetailProduct = async (slug: string = "") => {  
+export const getDetailProduct = async (slug: string = "") => {
   try {
     const response = await fetch(
       BASE_URL_API_DEV + PUBLIC_API +
@@ -59,7 +60,7 @@ export const getDetailProduct = async (slug: string = "") => {
         cache: 'no-cache'
       }
     );
-      
+
     if (!response.ok) {
       console.log(response);
       throw new Error(`Error! status: ${response.status}`);
@@ -87,7 +88,7 @@ export const getProductByCate = async (
         cache: 'no-cache'
       }
     );
-      
+
     if (!response.ok) {
       console.log(response);
       throw new Error(`Error! status: ${response.status}`);
@@ -114,7 +115,7 @@ export const getProductsBySearching = async (
         cache: 'no-cache'
       }
     );
-      
+
     if (!response.ok) {
       console.log(response);
       throw new Error(`Error! status: ${response.status}`);
@@ -125,4 +126,19 @@ export const getProductsBySearching = async (
   } catch (err) {
     console.log("FETCHING FAIL!", err);
   }
+}
+
+export const getProducts = async (
+  page: number = 1,
+  size: number = 6,
+  categories = "",
+  productText = ""
+) => {
+  const { data } = await apiMethod.post("/products/listProducts", {
+    page,
+    size,
+    categories,
+    productText
+  })
+  return data
 }

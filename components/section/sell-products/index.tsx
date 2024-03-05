@@ -10,17 +10,22 @@ import { SlickSlider } from '@/components/ui/slick-slider';
 import { CustomArrowProps, Settings } from 'react-slick';
 
 // import './SellProduts.css';
-import { VIEWED_PRODUCTS } from '../viewed-products/data';
+// import { VIEWED_PRODUCTS } from '../viewed-products/data';
+
+// @type
+import { ProductType } from "@/types";
 
 interface ArrowProps extends CustomArrowProps {
   type: 'prev' | 'next';
 }
 
 interface SellProductsProps {
-  listBestSellerProducts: any
+  listBestSellerProducts: ProductType[]
 }
 
 export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
+  // console.log("listBestSellerProducts", listBestSellerProducts);
+
   const [currentSlide, setCurrentSlide] = React.useState<number>(0)
   const settings: Settings = {
     dots: true,
@@ -52,23 +57,25 @@ export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
         <div className='py-10 max-[768px]:px-3 max-[768px]:py-6'>
           <div className=' bg-[#26282B] rounded-3xl py-8 px-16 max-[768px]:px-0 max-[768px]:py-6'>
             <div className='flex justify-center items-center gap-2'>
-              <Image
-                src='/assets/images/sell-product/Sell-products.png'
-                alt='image'
-                width={21}
-                height={38}
-                // style={{
-                //   width: "auto",
-                //   height: "auto"
-                // }}
-              />
+              <div className="w-[21px] h-[38px] relative">
+                <Image
+                  src='/assets/images/sell-product/Sell-products.png'
+                  alt='image'
+                  fill
+                  sizes="(max-width: 768px) 100vw"
+                  className="object-contain"
+                />
+              </div>
               <h2 className=' font-bold text-[#FFFFFF] text-[26px] leading-9 uppercase max-[768px]:text-2xl'>
                 Sản Phẩm Bán Chạy
               </h2>
             </div>
-            <div className='sell-products pt-6 max-[768px]:pt-4'>{/* pt-6 max-[768px]:pt-4 */}
+            <div className='sell-products pt-6 max-[768px]:pt-4'>
               <SlickSlider settings={settings}>
-                {listBestSellerProducts?.data?.items?.map((product: any, index: any) => (
+                {listBestSellerProducts?.map((
+                  product: ProductType,
+                  index: number
+                ) => (
                   <ProductCard key={index} product={product} />
                 ))}
               </SlickSlider>

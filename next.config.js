@@ -72,6 +72,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'vuhoangshop.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

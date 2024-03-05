@@ -41,76 +41,76 @@ import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
 
 export const TopBar = () => {
   const dispatch = useDispatch()
-  
+
   const isOpen = useSelector(getIsOpenDialog);
-  
+
   const [userInfo, setUserInfo] = useState()
   const [loading, setLoading] = useState(false)
-  
-  useEffect(() => {
-    if (!!getUserToken()) {
-      fetchVerifyToken()
-    }
-  }, [])
 
-  const fetchGenerateNewToken = async () => {
-    console.log("generate-new-token"); 
-    try {
-      const req = {
-        refreshToken: getRefreshToken()
-      }
-      const res = await generateToken(req)
-      if ((res as any)?.statusCode === SUCCESS) {
-        const userTokenRaw: string | null = localStorage.getItem("USER_INFO");
-        localStorage.removeItem("USER_INFO")
-        let userToken: object | string = {};
-        if (userTokenRaw) {
-          userToken = JSON.parse(userTokenRaw);
-        }
-        const new_user_info = {
-          ...(typeof userToken === "object" ? userToken : {}),
-          accessToken: (res as any).data?.accessToken,
-        };
-        localStorage.setItem("USER_INFO", JSON.stringify(new_user_info))
-        dispatch(fetchCartRequest({
-          accessToken: (res as any).data?.accessToken
-        }));
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    }
-  }
+  // useEffect(() => {
+  //   if (!!getUserToken()) {
+  //     fetchVerifyToken()
+  //   }
+  // }, [])
 
-  const fetchVerifyToken = async () => {
-    try {
-      setLoading(true)
-      const res = await verifyToken({
-        accessToken: getUserToken()
-      })
-      if (res?.statusCode === SUCCESS) {
-        const user = {
-          ...res?.data,
-          accessToken: getUserToken()
-        }
-        setUserInfo(user)
-      } else {
-        // localStorage.removeItem("USER_INFO")
-        dispatch(resetCart());
-        if (!!getIsSavePassword()) {
-          fetchGenerateNewToken()
-        }
-      }      
-    } catch (err) {
-      // localStorage.removeItem("USER_INFO")
-      dispatch(resetCart());
-      if (!!getIsSavePassword()) {
-        fetchGenerateNewToken()
-      }
-      console.log("FETCH FAIL!", err);
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const fetchGenerateNewToken = async () => {
+  //   console.log("generate-new-token"); 
+  //   try {
+  //     const req = {
+  //       refreshToken: getRefreshToken()
+  //     }
+  //     const res = await generateToken(req)
+  //     if ((res as any)?.statusCode === SUCCESS) {
+  //       const userTokenRaw: string | null = localStorage.getItem("USER_INFO");
+  //       localStorage.removeItem("USER_INFO")
+  //       let userToken: object | string = {};
+  //       if (userTokenRaw) {
+  //         userToken = JSON.parse(userTokenRaw);
+  //       }
+  //       const new_user_info = {
+  //         ...(typeof userToken === "object" ? userToken : {}),
+  //         accessToken: (res as any).data?.accessToken,
+  //       };
+  //       localStorage.setItem("USER_INFO", JSON.stringify(new_user_info))
+  //       dispatch(fetchCartRequest({
+  //         accessToken: (res as any).data?.accessToken
+  //       }));
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   }
+  // }
+
+  // const fetchVerifyToken = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const res = await verifyToken({
+  //       accessToken: getUserToken()
+  //     })
+  //     if (res?.statusCode === SUCCESS) {
+  //       const user = {
+  //         ...res?.data,
+  //         accessToken: getUserToken()
+  //       }
+  //       setUserInfo(user)
+  //     } else {
+  //       // localStorage.removeItem("USER_INFO")
+  //       dispatch(resetCart());
+  //       if (!!getIsSavePassword()) {
+  //         fetchGenerateNewToken()
+  //       }
+  //     }      
+  //   } catch (err) {
+  //     // localStorage.removeItem("USER_INFO")
+  //     dispatch(resetCart());
+  //     if (!!getIsSavePassword()) {
+  //       fetchGenerateNewToken()
+  //     }
+  //     console.log("FETCH FAIL!", err);
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   const handleLogOut = () => {
     dispatch(resetCart());
