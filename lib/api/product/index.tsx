@@ -51,27 +51,27 @@ export const getAllProducts = async (
   }
 }
 
-export const getDetailProduct = async (slug: string = "") => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + PUBLIC_API +
-      `/products/${slug}`,
-      {
-        cache: 'no-cache'
-      }
-    );
+// export const getDetailProduct = async (slug: string = "") => {
+//   try {
+//     const response = await fetch(
+//       BASE_URL_API_DEV + PUBLIC_API +
+//       `/products/${slug}`,
+//       {
+//         cache: 'no-cache'
+//       }
+//     );
 
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       console.log(response);
+//       throw new Error(`Error! status: ${response.status}`);
+//     }
 
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
-}
+//     const result = await response.json();
+//     return result;
+//   } catch (err) {
+//     console.log("FETCHING FAIL!", err);
+//   }
+// }
 
 export const getProductByCate = async (
   page: number = 0,
@@ -140,5 +140,13 @@ export const getProducts = async (
     categories,
     productText
   })
+  return data
+}
+
+export const getDetailProduct = async (
+  slug: string,
+  detailProduct: string
+) => {
+  const { data } = await apiMethod.get(`/products/detail/${slug}/${detailProduct}`)
   return data
 }

@@ -10,6 +10,9 @@ import { getDetailProduct } from '@/lib/api/product';
 // @utility
 import { nameCate } from '@/utility/common';
 
+// @type
+import { ProductType } from '@/types';
+
 interface PageProps {
   params: {
     slug: string,
@@ -17,52 +20,53 @@ interface PageProps {
   };
 }
 
-export default async function Page({ params }: PageProps) {  
-  const { detailProduct } = params || {}
-  
-  const detail = await getDetailProduct(detailProduct)
-  const {id, name, regularPrice, salePrice, images, content, quantity, attributes, onSale, description} = detail?.data || {}
-  
+export default async function Page({ params }: PageProps) {
+  const { slug, detailProduct } = params || {}
+
+  const detail: {
+    retCode: number,
+    retData: ProductType,
+    retText: string
+  } = await getDetailProduct(slug, detailProduct)
+
   if (!detail) {
     notFound()
   }
   // console.log("detailProduct", detail);
-  
+
   return (
     <div className='bg-[#F5F5F5] p-6 max-[768px]:p-0'>
       <div className="max-[768px]:hidden">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
-              {
-                title: "Trang chủ",
-                to: "/"
-              },
-              {
-                title: nameCate(params.slug),
-                to: `/${params.slug}`
-              },
-              {
-                title: `${name}`,
-                to: `/${params.detailProduct}`
-              }
-            ]} />
+            {
+              title: "Trang chủ",
+              to: "/"
+            },
+            {
+              title: nameCate(params.slug),
+              to: `/${params.slug}`
+            },
+            {
+              title: `${detail.retData.name}`,
+              to: `/${params.detailProduct}`
+            }
+          ]} />
         </Container>
       </div>
-      
+
       <Container className='max-[768px]:p-0'>
         <div className='min-[1280px]:space-y-5'>
           {/* Detail Product Body */}
           <DetailProductBody
-            name={name}
-            regularPrice={regularPrice}
-            salePrice={salePrice}
-            images={images}
-            content={content}
-            quantity={quantity}
-            attributes={attributes}
-            productId={id}
-            onSale={onSale}
-            description={description}
+            name={detail.retData.name}
+            regularPrice={detail.retData.regularPrice}
+            salePrice={detail.retData.salePrice}
+            images={detail.retData.images}
+            description={detail.retData.description}
+            quantity={detail.retData.quantity}
+            productId={detail.retData._id}
+            onSale={detail.retData.onSale}
           />
           {/* End */}
         </div>

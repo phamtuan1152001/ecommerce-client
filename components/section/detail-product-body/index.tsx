@@ -52,21 +52,13 @@ interface DetailProductBodyProps {
   name: string,
   regularPrice: number,
   salePrice: number,
-  images: any,
-  content: string,
+  images: {
+    uid: string,
+    url: string,
+  }[],
   description: string,
   quantity: number,
-  attributes: {
-    id: number,
-    options: {
-      name: string,
-      value: string,
-    }[],
-    attribute: {
-      name: string
-    }
-  }[],
-  productId: number,
+  productId: string,
   onSale: boolean
 }
 
@@ -75,9 +67,7 @@ export default function DetailProductBody({
   regularPrice,
   salePrice,
   images,
-  content,
   quantity,
-  attributes,
   productId,
   onSale,
   description
@@ -87,128 +77,128 @@ export default function DetailProductBody({
 
   const carts = useSelector(getCartSelector);
   // console.log("carts", carts);
-  
+
   const [countItem, setCountItem] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const handleAddToCart = () => {    
-    if (!!getUserToken()) {
-      const isExist = !!carts?.items?.find((item) => item?.productId === productId)
-      if (isExist) {
-        const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
-        const reqExist = {
-          quantity: countItem + productExistQuantity,
-          productId,
-          accessToken: getUserToken()
-        }
-        dispatch(fetchUpdateQuantityCartRequest(reqExist))
-      } else {
-        const req = {
-          quantity: countItem,
-          productId,
-          accessToken: getUserToken()
-        }
-        dispatch(fetchCreateCartRequest(req))
-      }
-    } else {
-      DiaglogPopup({
-        icon: <IconFail />,
-        title: "THÊM ĐƠN HÀNG THẤT BẠI",
-        description: "Vui lòng đăng nhập để tiếp tục",
-        textButtonOk: "Đăng nhập",
-        textButtonCancel: "",
-        isBtnCancel: false,
-        closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
-        onSubmit: () => {
-          SlideInModal.hide()
-          setTimeout(() => {
-            dispatch(openDiaglog())
-          }, 500)
-        },
-        onCancle: () => { }
-      })
-    }
-  }
+  // const handleAddToCart = () => {    
+  //   if (!!getUserToken()) {
+  //     const isExist = !!carts?.items?.find((item) => item?.productId === productId)
+  //     if (isExist) {
+  //       const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
+  //       const reqExist = {
+  //         quantity: countItem + productExistQuantity,
+  //         productId,
+  //         accessToken: getUserToken()
+  //       }
+  //       dispatch(fetchUpdateQuantityCartRequest(reqExist))
+  //     } else {
+  //       const req = {
+  //         quantity: countItem,
+  //         productId,
+  //         accessToken: getUserToken()
+  //       }
+  //       dispatch(fetchCreateCartRequest(req))
+  //     }
+  //   } else {
+  //     DiaglogPopup({
+  //       icon: <IconFail />,
+  //       title: "THÊM ĐƠN HÀNG THẤT BẠI",
+  //       description: "Vui lòng đăng nhập để tiếp tục",
+  //       textButtonOk: "Đăng nhập",
+  //       textButtonCancel: "",
+  //       isBtnCancel: false,
+  //       closeOnClickOverlay: false,
+  //       className: "max-[768px]:w-[380px]",
+  //       onSubmit: () => {
+  //         SlideInModal.hide()
+  //         setTimeout(() => {
+  //           dispatch(openDiaglog())
+  //         }, 500)
+  //       },
+  //       onCancle: () => { }
+  //     })
+  //   }
+  // }
 
-  const fetchUpdateCart = async () => {
-    try {
-      setLoading(true)
-      const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
-      const reqExist = {
-        quantity: countItem + productExistQuantity,
-        productId,
-        accessToken: getUserToken()
-      }
-      const res = await updateQuantityInCart(reqExist)
-      if (res?.statusCode === SUCCESS) {
-        dispatch(fetchCartSuccess({
-          cart: (res as any).data
-        }))
-        setTimeout(() => {
-          router.push('/checkout')
-        }, 500)
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const fetchUpdateCart = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
+  //     const reqExist = {
+  //       quantity: countItem + productExistQuantity,
+  //       productId,
+  //       accessToken: getUserToken()
+  //     }
+  //     const res = await updateQuantityInCart(reqExist)
+  //     if (res?.statusCode === SUCCESS) {
+  //       dispatch(fetchCartSuccess({
+  //         cart: (res as any).data
+  //       }))
+  //       setTimeout(() => {
+  //         router.push('/checkout')
+  //       }, 500)
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
-  const fetchCreateCart = async () => {
-    try {
-      setLoading(true)
-      const req = {
-        quantity: countItem,
-        productId,
-        accessToken: getUserToken()
-      }
-      const res = await createAddItemToCart(req)
-      if (res?.statusCode === SUCCESS) {
-        dispatch(fetchCartSuccess({
-          cart: (res as any).data
-        }))
-        setTimeout(() => {
-          router.push('/checkout')
-        }, 500)
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    } finally {
-      setLoading(false)
-    }
-  }
+  // const fetchCreateCart = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const req = {
+  //       quantity: countItem,
+  //       productId,
+  //       accessToken: getUserToken()
+  //     }
+  //     const res = await createAddItemToCart(req)
+  //     if (res?.statusCode === SUCCESS) {
+  //       dispatch(fetchCartSuccess({
+  //         cart: (res as any).data
+  //       }))
+  //       setTimeout(() => {
+  //         router.push('/checkout')
+  //       }, 500)
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
-  const handleBuyNow = () => {
-    if (!!getUserToken()) {
-      const isExist = !!carts?.items?.find((item) => item?.productId === productId)
-      if (isExist) {
-        fetchUpdateCart()
-      } else {
-        fetchCreateCart()
-      }
-    } else {
-      DiaglogPopup({
-        icon: <IconFail />,
-        title: "THÊM ĐƠN HÀNG THẤT BẠI",
-        description: "Vui lòng đăng nhập để tiếp tục",
-        textButtonOk: "Đăng nhập",
-        textButtonCancel: "",
-        isBtnCancel: false,
-        closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
-        onSubmit: () => {
-          SlideInModal.hide()
-          setTimeout(() => {
-            dispatch(openDiaglog())
-          }, 500)
-        },
-        onCancle: () => { }
-      })
-    }
-  }
-  
+  // const handleBuyNow = () => {
+  //   if (!!getUserToken()) {
+  //     const isExist = !!carts?.items?.find((item) => item?.productId === productId)
+  //     if (isExist) {
+  //       fetchUpdateCart()
+  //     } else {
+  //       fetchCreateCart()
+  //     }
+  //   } else {
+  //     DiaglogPopup({
+  //       icon: <IconFail />,
+  //       title: "THÊM ĐƠN HÀNG THẤT BẠI",
+  //       description: "Vui lòng đăng nhập để tiếp tục",
+  //       textButtonOk: "Đăng nhập",
+  //       textButtonCancel: "",
+  //       isBtnCancel: false,
+  //       closeOnClickOverlay: false,
+  //       className: "max-[768px]:w-[380px]",
+  //       onSubmit: () => {
+  //         SlideInModal.hide()
+  //         setTimeout(() => {
+  //           dispatch(openDiaglog())
+  //         }, 500)
+  //       },
+  //       onCancle: () => { }
+  //     })
+  //   }
+  // }
+
   return (
     <>
       {/* Header Back Icon for mobile */}
@@ -217,7 +207,7 @@ export default function DetailProductBody({
           <IconBackArrow />
         </button>
         <button className='flex flex-col justify-center items-center bg-backgroundColor-buttonCommon w-10 h-10 rounded-full'>
-          <IconShare/>
+          <IconShare />
         </button>
       </div>
       {/* End */}
@@ -252,36 +242,16 @@ export default function DetailProductBody({
                     333 lượt thích
                   </Button>
                 </div> */}
-
-                {/* <Button
-                  variant='ghost'
-                  className='bg-[#F5F5F5] h-12 text-base font-semibold text-[#202020] w-full max-[768px]:hidden'
-                >
-                  Thông tin chi tiết
-                </Button> */}
               </div>
 
               <div className='space-y-4 max-[768px]:space-y-2'>
                 <ProductTitle className='text-xl text-[#181818]'>
                   {name}
                 </ProductTitle>
-                
-                <div className='grid grid-cols-1 gap-2'>
-                  {attributes?.map((item, index) => {
-                    return (
-                      <div key={`${item?.id}-${index}`} className='flex items-center text-sm text-[#637381] space-x-1'>
-                        <span>{item?.attribute?.name}:</span>
-                        <span className='text-[#181818] font-bold'>
-                          {item?.options[0]?.value}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
 
                 <div>
                   {!!onSale ? (
-                    <>  
+                    <>
                       <ProductFinalPrice className='text-[28px] leading-9'>
                         {formatToCurrencyVND(salePrice)}
                       </ProductFinalPrice>
@@ -305,8 +275,8 @@ export default function DetailProductBody({
                 <ProductVariantSelector
                   quantity={quantity}
                   valueCountProduct={countItem}
-                  onChangeSize={(size: any) => {/* console.log("size", size) */}}
-                  onChangeColor={(color: any) => {/* console.log("color", color) */}}
+                  onChangeSize={(size: any) => {/* console.log("size", size) */ }}
+                  onChangeColor={(color: any) => {/* console.log("color", color) */ }}
                   onChangeCountProduct={(count: number) => setCountItem(count)}
                 />
 
@@ -324,14 +294,14 @@ export default function DetailProductBody({
                   <Button
                     variant='outline'
                     className='text-[#00508F] font-semibold text-base border-current h-12 w-full'
-                    onClick={() => handleAddToCart()}
+                  // onClick={() => handleAddToCart()}
                   >
                     Thêm vào giỏ hàng
                   </Button>
 
                   <Button
                     className='font-semibold text-base h-12 w-full text-white'
-                    onClick={() => handleBuyNow()}
+                  // onClick={() => handleBuyNow()}
                   >
                     Mua ngay
                   </Button>
@@ -342,8 +312,6 @@ export default function DetailProductBody({
 
           <div className='space-y-6 max-[768px]:space-y-4'>
             <ProductVerification />
-
-            {/* <MoreChoiceProducts /> */}
           </div>
         </div>
       </div>
@@ -351,14 +319,8 @@ export default function DetailProductBody({
       <div className='bg-white p-6 max-[768px]:p-3 border-t-8 border-[#F5F5F5]'>
         <div className='grid grid-cols-4 gap-6 max-[768px]:grid-cols-1 max-[768px]:gap-0'>
           <div className='col-span-3'>
-            <ProductInfoTabs content={content} description={description} />
+            <ProductInfoTabs description={description} />
           </div>
-
-          {/* <div className='space-y-4 max-[768px]:mt-6'>
-            <RelatedProducts />
-
-            <PinnedProduct />
-          </div> */}
         </div>
       </div>
     </>
