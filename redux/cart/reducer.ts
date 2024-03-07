@@ -6,17 +6,20 @@ const initialState: CartState = {
   loading: false,
   error: null,
   cart: {
-    id: 0,
-    createAt: "",
-    updateAt: "",
-    userId: 0,
-    total: 0,
-    subTotal: 0,
+    _id: "",
+    __v: 0,
+    createdAt: "",
+    updatedAt: "",
+    userId: "",
+    totalPrice: 0,
+    subTotalPrice: 0,
     items: []
   }
 }
 
 export default (state = initialState, action: CartActions) => {  
+  // console.log("action", action);
+  
   switch (action.type) {
     case FETCH_CART_REQUEST:
       return {

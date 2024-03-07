@@ -9,46 +9,45 @@ import {
 } from "./constants";
 
 export interface IProduct {
-  code: string,
-  content: string,
-  dateOnSaleFrom: string,
-  dateOnSaleTo: string,
-  description: string,
-  id: number,
-  images: {
-    id: number, 
-    name: string,
-    url: string
-  }[],
-  manageStock: boolean,
-  name: string,
-  onSale: string,
-  quantity: number,
-  regularPrice: string,
-  salePrice: string,
-  shortDescription: string,
-  sku: string,
-  slug: string,
+    _id: string,
+  __v: number,
+  updatedAt: string,
   status: string,
-  stockStatus: string,
-  unit: string
+  slug: string,
+  salePrice: number,
+  regularPrice: number,
+  quantity: number,
+  onSale: boolean,
+  name: string,
+  images: {
+    uid: string,
+    url: string,
+  }[],
+  description: string,
+  defaultImageId: string,
+  dateOnSaleTo: string,
+  dateOnSaleFrom: string,
+  createdAt: string,
+  code: string,
+  categories: string
 }
 
 export interface ICart {
-  id: number;
-  createAt: string,
-  updateAt: string,
-  userId: number;
+  _id: string;
+  __v: number;
+  createdAt: string,
+  updatedAt: string,
+  userId: string;
   items: {
-    id: number;
-    productId: number;
+    _id: string;
+    total: number;
+    subTotal: number;
     quantity: number;
-    cartId: number;
-    product: IProduct;
-    variationId: number | undefined
+    productId: string;
+    product: IProduct
   }[],
-  total: number,
-  subTotal: number
+  totalPrice: number,
+  subTotalPrice: number
 }
 
 export interface CartState {
@@ -58,17 +57,27 @@ export interface CartState {
 }
 
 export interface FetchDeleteItemCartPayload {
-  productId: number
+  userId: string,
+  productId: string,
+  total: number,
+  subTotal: number
 }
 
 export interface FetchUpdateQuantiyCartPayload {
-  productId: number,
-  quantity: number
+  userId: string,
+  productId: string,
+  quantity: number,
+  total: number,
+  subTotal: number,
+  type: string
 }
 
 export interface FetchCreateCartPayload {
-  productId: number,
-  quantity: number
+  userId: string,
+  productId: string,
+  quantity: number,
+  total: number,
+  subTotal: number
 }
 
 export interface FetchCartSuccessPayload {

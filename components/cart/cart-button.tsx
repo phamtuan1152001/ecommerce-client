@@ -1,9 +1,8 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartSelector, getLoadingSelector, getErrorSelector } from "@/redux/cart/selector";
-import { X } from 'lucide-react';
 
 // @components
 import {
@@ -26,23 +25,21 @@ import {
   ProductOldPrice
 } from '@/components/product/product';
 import { TrashIcon } from '@/components/icons/TrashIcon';
-import Link from 'next/link';
 import { TailSpin } from "react-loader-spinner"
-import { Checkbox } from "@/components/ui/checkbox"
-import { DiaglogPopup } from "../pop-up/dialog-popup";
+
 
 // @action-cart
 import { fetchUpdateQuantityCartRequest, fetchDeleteItemCartRequest, fetchCartRequest } from "@/redux/cart/actions";
 
 // @utility
-import { formatToCurrencyVND, calculatePercentPrice, getUserToken } from "@/utility/common";
+import { formatToCurrencyVND, calculatePercentPrice } from "@/utility/common";
 
 // @constants
-import { INCREMENT_BTN } from "@/constants";
+import { INCREMENT_BTN, NO_DATA_IMAGE } from "@/constants";
 import { IProduct } from "@/redux/cart/types";
-import SlideInModal from "../slide-in-modal";
-import { deleteItemInCart } from "@/redux/cart/service";
 
+
+// @types
 interface ICartItem {
   id: number,
   cartId: number,
@@ -58,96 +55,45 @@ export const CartButton = () => {
   const loading = useSelector(getLoadingSelector);
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [listSelected, setListSelected] = useState<ICartItem[]>([])
-  // console.log("listSelected", listSelected);
+  // console.log("carts", carts);
 
   const handleUpdateItemInCart = (
     type: string,
-    quantity: number,
-    productId: number
+    userId: string,
+    product: IProduct
   ) => {
+    const req = {
+      userId: userId,
+      productId: product._id,
+      quantity: 1,
+      total: product.regularPrice,
+      subTotal: product.salePrice,
+      type
+    }
     if (type === INCREMENT_BTN) {
-      const req = {
-        quantity: quantity += 1,
-        productId: productId,
-        accessToken: getUserToken()
-      }
       // console.log("req-inc", req);
       dispatch(fetchUpdateQuantityCartRequest(req))
     } else {
-      const req = {
-        quantity: quantity -= 1,
-        productId: productId,
-        accessToken: getUserToken()
-      }
       // console.log("req-dec", req);
       dispatch(fetchUpdateQuantityCartRequest(req))
     }
   }
 
-  const removeItemFromCart = (productId: number) => {
+  const removeItemFromCart = (product: {
+    _id: string,
+    total: number,
+    subTotal: number,
+    quantity: number,
+    productId: string,
+    product: IProduct,
+  }) => {
     const req = {
-      productId,
-      accessToken: getUserToken()
+      userId: carts.userId,
+      productId: product.productId,
+      total: product.total,
+      subTotal: product.subTotal
     }
-    setListSelected([])
     dispatch(fetchDeleteItemCartRequest(req))
-  }
-
-  const handleCartSelected = async () => {
-    if (listSelected.length > 0) {
-      if (carts.items.length === listSelected.length) {
-        handleClose()
-        setListSelected([])
-        router.push("/checkout")
-      } else {
-        const listCarts = carts.items
-        const resultArray = listCarts.filter(itemA => !listSelected.includes(itemA));
-        const promises = resultArray.map(async (item) => {
-          try {
-            const req = {
-              productId: item.productId,
-              accessToken: getUserToken()
-            }
-            await deleteItemInCart(req)
-            return 'Success' 
-          } catch (err) {
-            console.log("Err", err)
-            return 'Error';
-          }
-        })
-        Promise.all(promises)
-          .then((results) => {
-            // console.log('All promises completed:', results);
-            // Handle completion
-            dispatch(fetchCartRequest({
-              accessToken: getUserToken()
-            }));
-            handleClose()
-            setListSelected([])
-            router.push("/checkout")
-          })
-          .catch((error) => {
-            console.log('Error in one of the promises:', error);
-            // Handle error
-          });
-      }
-    } else {
-      DiaglogPopup({
-        icon: null,
-        title: "THANH TOÁN THẤT BẠI",
-        description: "Vui lòng tick vào ô vuông ít nhất 1 sản phẩm",
-        textButtonOk: "Đóng",
-        textButtonCancel: "",
-        isBtnCancel: false,
-        closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
-        onSubmit: () => {
-          SlideInModal.hide()
-        },
-        onCancle: () => { }
-      })
-    }
   }
 
   const handleClose = () => {
@@ -197,50 +143,14 @@ export const CartButton = () => {
             )
             : (
               <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
-                <div className="flex flex-row justify-start items-center gap-3 max-[768px]:gap-1">
-                  <Checkbox
-                    id="all"
-                    checked={listSelected?.length === carts?.items?.length && listSelected?.length > 0 ? true : false}
-                    onCheckedChange={(isCheckedAll) => {
-                      if (isCheckedAll) {
-                        setListSelected(carts?.items)
-                      } else {
-                        setListSelected([])
-                      }
-                    }}
-                  />
-                  <div className="flex flex-col justify-center items-center">
-                    <label
-                      htmlFor="all"
-                      className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Tất cả sản phẩm
-                    </label>
-                  </div>
-                </div>
                 <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
                   {carts?.items?.map((item, index) => (
                     <div className='flex gap-3 max-[768px]:gap-1' key={index}>
-                      <div className="flex flex-col justify-start">
-                        <Checkbox
-                          id={`${item.id}`}
-                          checked={!!listSelected.find(ele => (ele as any).id === item.id)}
-                          onCheckedChange={() => {
-                            if (listSelected.find(ele => (ele as any).id === item.id)?.id === item.id) {
-                              const filter = listSelected.filter(v => v.id !== item.id)
-                              setListSelected(filter)
-                            } else {
-                              setListSelected((prev) =>
-                                [...prev, item])
-                            }
-                          }}
-                        />
-                      </div>
-
                       <ProductImage
                         wrapperClassName='w-28 flex-shrink-0'
-                        src={item.product.images[0].url}
-                        alt={item.product.images[0].name}
+                        src={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.url || NO_DATA_IMAGE}
+                        alt={item.product.name}
+                        sizes="(max-width: 768px) 100vw"
                       />
 
                       <div className='p-2 flex flex-col flex-1'>
@@ -251,21 +161,21 @@ export const CartButton = () => {
                             {!!item.product.onSale ? (
                               <>
                                 <ProductFinalPrice className='text-base leading-9'>
-                                  {formatToCurrencyVND(parseInt(item.product.salePrice))}
+                                  {formatToCurrencyVND(item.total)}
                                 </ProductFinalPrice>
 
                                 <div className='flex flex-row justify-start items-center gap-2'>
                                   <ProductOldPrice className='text-base font-bold'>
-                                    {formatToCurrencyVND(parseInt(item.product.regularPrice))}
+                                    {formatToCurrencyVND(item.subTotal)}
                                   </ProductOldPrice>
                                   <div className='p-1 rounded-full flex flex-col justify-center items-center bg-backgroundColor-salePrice'>
-                                    <h4 className='text-xs text-white font-bold'>{calculatePercentPrice(parseInt(item.product.regularPrice), parseInt(item.product.salePrice))}</h4>
+                                    <h4 className='text-xs text-white font-bold'>{calculatePercentPrice(item.product.regularPrice, item.product.salePrice)}</h4>
                                   </div>
                                 </div>
                               </>
                             ) : (
                               <ProductFinalPrice className='text-lg leading-9'>
-                                {formatToCurrencyVND(parseInt(item.product.regularPrice))}
+                                {formatToCurrencyVND(item.total)}
                               </ProductFinalPrice>
                             )}
                           </div>
@@ -275,8 +185,8 @@ export const CartButton = () => {
                               quantity={item.quantity}
                               onChange={(type: string) => handleUpdateItemInCart(
                                 type,
-                                item.quantity,
-                                item.productId
+                                carts.userId,
+                                item.product
                               )}
                             />
 
@@ -284,7 +194,7 @@ export const CartButton = () => {
                               size='icon'
                               variant='ghost'
                               className='w-9 h-9 rounded-full bg-[#F5F5F5]'
-                              onClick={() => removeItemFromCart(item.productId)}
+                              onClick={() => removeItemFromCart(item)}
                             >
                               <TrashIcon className='w-5 h-5 text-[#333]' />
                             </Button>
@@ -301,7 +211,9 @@ export const CartButton = () => {
         <SheetFooter className='mt-auto p-6 bg-[#F5F5F5] grid grid-cols-3 max-[768px]:p-3 max-[768px]:grid-cols-1'>
           <div className='flex-1 text-[#181818] max-[768px]:w-full max-[768px]:grid max-[768px]:grid-cols-2'>
             <p className='text-base font-semibold'>Tạm tính</p>
-            <p className='text-lg font-bold'>{formatToCurrencyVND(carts?.total)}</p>
+            <p className='text-lg font-bold'>
+              {formatToCurrencyVND(carts?.totalPrice)}
+            </p>
           </div>
 
           <div className="col-span-2">
@@ -314,7 +226,7 @@ export const CartButton = () => {
               </Button>
               <Button
                 className='text-base font-semibold bg-[#00508F] h-12 w-full'
-                onClick={() => handleCartSelected()}
+              // onClick={() => handleCartSelected()}
               >
                 Thanh toán
               </Button>

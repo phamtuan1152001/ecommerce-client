@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BASE_URL_API_DEV } from "../constants/index"
 
 const apiMethod = axios.create({
-  baseURL: BASE_URL_API_DEV
+  baseURL: BASE_URL_API_DEV,
 })
 
 apiMethod.interceptors.response.use(

@@ -1,134 +1,68 @@
-import { BASE_URL_API_DEV, V1_API } from "@/constants";
+import apiMethod from "@/utility/ApiMethod";
+import {
+  ADD_ITEM_TO_CART,
+  GET_LIST_PRODUCTS_IN_CART,
+  ADD_ONE_ITEM_IN_CART,
+  DELETE_ONE_ITEM_IN_CART,
+  REMOVE_PRODUCT_IN_CART
+} from "@/constants";
 
-export const getCustomerCart = async (req: any) => {  
-  const { accessToken } = req || {}  
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_API +
-      `/customer/cart`,
-      {
-        method: "GET",
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const addProductToCart = async (payload: {
+  userId: string,
+  productId: string,
+  quantity: number,
+  total: number,
+  subTotal: number
+}) => {
+  const { data } = await apiMethod.post(ADD_ITEM_TO_CART, {
+    ...payload
+  })
+  return data
 }
 
-export const createAddItemToCart = async (req: any) => {  
-  const { productId, quantity, accessToken } = req || {}  
-  const request = {
-    productId,
-    quantity
-  }
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_API +
-      `/customer/cart/add-item`,
-      {
-        method: "POST",
-        body: JSON.stringify(request),
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const getListProductsInCart = async (payload: {
+  userId: string
+}) => {
+  const { data } = await apiMethod.post(GET_LIST_PRODUCTS_IN_CART, {
+    userId: payload.userId
+  })
+  return data
 }
 
-export const updateQuantityInCart = async (req: any) => {  
-  const { productId, quantity, accessToken } = req || {}  
-  const request = {
-    productId,
-    quantity
-  }
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_API +
-      `/customer/cart/update-item`,
-      {
-        method: "POST",
-        body: JSON.stringify(request),
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const addOneProductInCart = async (payload: {
+  userId: string,
+  productId: string,
+  quantity: number,
+  total: number,
+  subTotal: number
+}) => {
+  const { data } = await apiMethod.post(ADD_ONE_ITEM_IN_CART, {
+    ...payload
+  })
+  return data
 }
 
-export const deleteItemInCart = async (req: any) => {  
-  const { productId, accessToken } = req || {}  
-  const request = {
-    productId,
-  }
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_API +
-      `/customer/cart/remove-item`,
-      {
-        method: "POST",
-        body: JSON.stringify(request),
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
+export const deleteOneProductInCart = async (payload: {
+  userId: string,
+  productId: string,
+  quantity: number,
+  total: number,
+  subTotal: number
+}) => {
+  const { data } = await apiMethod.post(DELETE_ONE_ITEM_IN_CART, {
+    ...payload
+  })
+  return data
+}
 
-    const result = await response.json();
-    
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const removeProductInCart = async (payload: {
+  userId: string,
+  productId: string,
+  total: number,
+  subTotal: number
+}) => {
+  const { data } = await apiMethod.patch(REMOVE_PRODUCT_IN_CART, {
+    ...payload
+  })
+  return data
 }

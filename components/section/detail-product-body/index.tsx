@@ -8,21 +8,10 @@ import {
   ProductTitle,
 } from '@/components/product/product';
 import { ProductGallery } from '@/components/product/product-gallery';
-import { ProductVariantSelector } from '@/components/product/product-variant-selector';
-import { MoreChoiceProducts } from '@/components/section/more-choice-products';
-import PinnedProduct from '@/components/section/pinned-product';
 import { ProductInfoTabs } from '@/components/section/product-info-tabs';
 import { ProductVerification } from '@/components/section/product-verification';
-import { RelatedProducts } from '@/components/section/related-products';
 import { Button } from '@/components/ui/button';
-import { BsFacebook, BsInstagram, BsHeart } from 'react-icons/bs';
 import { DiaglogPopup } from '@/components/pop-up/dialog-popup';
-
-// @service
-import {
-  createAddItemToCart,
-  updateQuantityInCart
-} from '@/redux/cart/service';
 
 // @action-cart
 import {
@@ -39,7 +28,7 @@ import { getCartSelector } from '@/redux/cart/selector';
 import { openDiaglog } from '@/redux/openDiaglog/action';
 
 // @utility
-import { formatToCurrencyVND, calculatePercentPrice, getUserToken } from '@/utility/common';
+import { formatToCurrencyVND, calculatePercentPrice, getUserToken, getUserInfo } from '@/utility/common';
 
 // @svg
 import { IconBackArrow, IconFail, IconShare, IconSuccess } from '@/public/assets/svg';
@@ -47,6 +36,9 @@ import SlideInModal from '@/components/slide-in-modal';
 
 // @constants
 import { SUCCESS } from '@/constants';
+
+// @types
+import { UserInfoType } from '@/types';
 
 interface DetailProductBodyProps {
   name: string,
@@ -76,32 +68,22 @@ export default function DetailProductBody({
   const router = useRouter()
 
   const carts = useSelector(getCartSelector);
+  const userInfo: UserInfoType | string = getUserInfo()
   // console.log("carts", carts);
 
-  const [countItem, setCountItem] = useState<number>(1)
-  const [loading, setLoading] = useState<boolean>(false)
+  // const [countItem, setCountItem] = useState<number>(1)
+  // const [loading, setLoading] = useState<boolean>(false)
 
   const handleAddToCart = () => {
     if (!!getUserToken()) {
-      // const isExist = !!carts?.items?.find((item) => item?.productId === productId)
-      // if (isExist) {
-      //   const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
-      //   const reqExist = {
-      //     quantity: countItem + productExistQuantity,
-      //     productId,
-      //     accessToken: getUserToken()
-      //   }
-      //   dispatch(fetchUpdateQuantityCartRequest(reqExist))
-      // } else {
-      //   const req = {
-      //     quantity: countItem,
-      //     productId,
-      //     accessToken: getUserToken()
-      //   }
-      //   dispatch(fetchCreateCartRequest(req))
-      // }
-      console.log("add to cart");
-
+      const req = {
+        userId: userInfo.id,
+        productId: productId,
+        quantity: 1,
+        total: regularPrice,
+        subTotal: salePrice
+      }
+      dispatch(fetchCreateCartRequest(req))
     } else {
       DiaglogPopup({
         icon: <IconFail />,
@@ -122,55 +104,6 @@ export default function DetailProductBody({
       })
     }
   }
-
-  // const fetchUpdateCart = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
-  //     const reqExist = {
-  //       quantity: countItem + productExistQuantity,
-  //       productId,
-  //       accessToken: getUserToken()
-  //     }
-  //     const res = await updateQuantityInCart(reqExist)
-  //     if (res?.statusCode === SUCCESS) {
-  //       dispatch(fetchCartSuccess({
-  //         cart: (res as any).data
-  //       }))
-  //       setTimeout(() => {
-  //         router.push('/checkout')
-  //       }, 500)
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
-  // const fetchCreateCart = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const req = {
-  //       quantity: countItem,
-  //       productId,
-  //       accessToken: getUserToken()
-  //     }
-  //     const res = await createAddItemToCart(req)
-  //     if (res?.statusCode === SUCCESS) {
-  //       dispatch(fetchCartSuccess({
-  //         cart: (res as any).data
-  //       }))
-  //       setTimeout(() => {
-  //         router.push('/checkout')
-  //       }, 500)
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
 
   // const handleBuyNow = () => {
   //   if (!!getUserToken()) {

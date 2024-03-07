@@ -1,5 +1,4 @@
 import {
-  all,
   call,
   put,
   takeLatest,
@@ -20,20 +19,15 @@ import {
   FETCH_CART_REQUEST,
   FETCH_CART_UPDATE_REQUEST
 } from "./constants";
-import { SUCCESS } from "@/constants";
-
-// @types
-import {
-  FetchCreateCartPayload,
-  ICart
-} from "./types";
+import { INCREMENT_BTN } from "@/constants";
 
 // @service
 import {
-  getCustomerCart,
-  createAddItemToCart,
-  updateQuantityInCart,
-  deleteItemInCart
+  addProductToCart,
+  getListProductsInCart,
+  addOneProductInCart,
+  deleteOneProductInCart,
+  removeProductInCart
 } from "./service";
 
 // @toast-fuction
@@ -41,10 +35,10 @@ import { toastNotiSuccess, toastNotiFail } from "@/utility/toast";
 
 function* fetchListCustomerCart({payload}: any) {
   try {
-    const response: ReturnType<typeof getCustomerCart> = yield call(getCustomerCart, payload);    
+    const response: ReturnType<typeof getListProductsInCart> = yield call(getListProductsInCart, payload);    
     yield put(
       fetchCartSuccess({
-        cart: (response as any).data
+        cart: (response as any).retData
       }),
     );
   } catch (e) {
@@ -58,16 +52,18 @@ function* fetchListCustomerCart({payload}: any) {
 
 function* fetchCreateCart({payload}: any) {
   try {
-    const response: ReturnType<typeof createAddItemToCart> = yield call(createAddItemToCart, payload);    
-    if ((response as any).statusCode === SUCCESS) {
+    const response: ReturnType<typeof addProductToCart> = yield call(addProductToCart, payload);
+    // console.log("response", response);
+    
+    if ((response as any).retCode === 0) {
       toastNotiSuccess("Đã thêm vào giỏ hàng")
     } else {
       toastNotiFail("Thêm giỏ hàng thất bại")
     }
     yield put(
-      fetchCartSuccess({
-        cart: (response as any).data
-      }),
+      fetchCartRequest({
+        userId: (response as any).retData.userId
+      })
     );
   } catch (e) {
     yield put(
@@ -79,18 +75,34 @@ function* fetchCreateCart({payload}: any) {
 }
 
 function* fetchUpdateQuantityCart({ payload }: any) {
+  // console.log("payload", payload)
+  const {type, ...rest} = payload || {}
   try {
-    const response: ReturnType<typeof updateQuantityInCart> = yield call(updateQuantityInCart, payload);    
-    if ((response as any).statusCode === SUCCESS) {
+    if (type === INCREMENT_BTN) {
+      const response: ReturnType<typeof addOneProductInCart> = yield call(addOneProductInCart, rest);    
+    if ((response as any).retCode === 0) {
       toastNotiSuccess("Cập nhật giỏ hàng thành công")
     } else {
       toastNotiFail("Cập nhật giỏ hàng thất bại")
     }
     yield put(
-      fetchCartSuccess({
-        cart: (response as any).data
-      }),
+      fetchCartRequest({
+        userId: (response as any).retData.userId
+      })
     );
+    } else {
+      const response: ReturnType<typeof deleteOneProductInCart> = yield call(deleteOneProductInCart, rest);    
+    if ((response as any).retCode === 0) {
+      toastNotiSuccess("Cập nhật giỏ hàng thành công")
+    } else {
+      toastNotiFail("Cập nhật giỏ hàng thất bại")
+    }
+    yield put(
+      fetchCartRequest({
+        userId: (response as any).retData.userId
+      })
+    );
+    }
   } catch (e) {
     yield put(
       fetchCartFailure({
@@ -101,11 +113,12 @@ function* fetchUpdateQuantityCart({ payload }: any) {
 }
 
 function* fetchDeleteItemInCart({ payload }: any) {
+  // console.log("payload", payload);
   try {
-    const response: ReturnType<typeof deleteItemInCart> = yield call(deleteItemInCart, payload);    
+    const response: ReturnType<typeof removeProductInCart> = yield call(removeProductInCart, payload);    
     yield put(
       fetchCartRequest({
-        accessToken: payload.accessToken
+        userId: (response as any).retData.userId
       }),
     );
   } catch (e) {
