@@ -3,7 +3,8 @@ import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 export const BASE_URL_API_DEV = "http://localhost:3002"
 export const PUBLIC_API = '/public/api'
 export const PUBLIC_ORDER_DETAIL = "/public/orders"
-export const AUTHENTICATE_API = '/v1/auth'
+export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
+export const AUTHENTICATE_API_SIGNUP = '/auth/signup'
 export const V1_API = "/v1/api"
 export const V1_LOCATION = "/v1/location"
 export const V1_CUSTOMER = "/v1/customer"

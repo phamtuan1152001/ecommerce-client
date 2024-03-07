@@ -20,7 +20,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 // @constants
-import { postUserRegister } from "@/lib/api/authenticate";
+import { registerUser } from "@/lib/api/authenticate";
 import { POST_SUCCESS, SUCCESS } from "@/constants";
 
 // @svg
@@ -63,14 +63,22 @@ const SignUp = () => {
     try {
       const req = {
         fullName: fullname,
-        username: usename,
         email: email,
+        phone: phone,
+        username: usename,
         password: password,
-        phone: phone
+        statusActive: 1,
+        roles: ["user"]
       }
-      const res = await postUserRegister(req)
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: {
+          userId: string
+        }
+      } = await registerUser(req)
       // console.log("res", res);
-      if (res?.statusCode === SUCCESS) {
+      if (res?.retCode === 0) {
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ĐĂNG KÝ THÀNH CÔNG",
@@ -86,21 +94,10 @@ const SignUp = () => {
           onCancle: () => { }
         })
       } else {
-        const errors = res["errors"]
-        // console.log(errors);
-        for (const key in errors) {
-          const field: any = key
-          form.setError(field, {
-            type: "onChange",
-            message: res?.errors[`${key}`]
-          }, {
-            shouldFocus: true
-          })
-        }
         DiaglogPopup({
           icon: <IconFail />,
           title: "ĐĂNG KÝ THẤT BẠI",
-          description: res?.message,
+          description: "Vui lòng thử lại sau",
           textButtonOk: "Thử lại",
           textButtonCancel: "",
           isBtnCancel: false,
@@ -113,11 +110,11 @@ const SignUp = () => {
         })
       }
     } catch (err) {
-      // console.log("FETCH FAIL!", err);
+      console.log("FETCH FAIL!", err);
       DiaglogPopup({
-        icon: <IconFail/>,
+        icon: <IconFail />,
         title: "LỖI HỆ THỐNG",
-        description: "Vui lòng thử lại sau",
+        description: (err as any).retText,
         textButtonOk: "Đóng",
         textButtonCancel: "",
         isBtnCancel: false,

@@ -27,10 +27,7 @@ import {
 import { resetCart, fetchCartRequest } from '@/redux/cart/actions';
 
 // @utility
-import { slitName, logOut, getUserToken, getRefreshToken, getIsSavePassword } from '@/utility/common';
-
-// @api
-import { verifyToken, generateToken } from '@/lib/api/authenticate';
+import { slitName, logOut, getUserToken, getRefreshToken, getIsSavePassword, getUserInfo } from '@/utility/common';
 
 // @constants
 import { SUCCESS } from '@/constants';
@@ -42,78 +39,11 @@ import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
 export const TopBar = () => {
   const dispatch = useDispatch()
 
+  const userInfo = getUserInfo()
   const isOpen = useSelector(getIsOpenDialog);
 
-  const [userInfo, setUserInfo] = useState()
-  const [loading, setLoading] = useState(false)
-
-  // useEffect(() => {
-  //   if (!!getUserToken()) {
-  //     fetchVerifyToken()
-  //   }
-  // }, [])
-
-  // const fetchGenerateNewToken = async () => {
-  //   console.log("generate-new-token"); 
-  //   try {
-  //     const req = {
-  //       refreshToken: getRefreshToken()
-  //     }
-  //     const res = await generateToken(req)
-  //     if ((res as any)?.statusCode === SUCCESS) {
-  //       const userTokenRaw: string | null = localStorage.getItem("USER_INFO");
-  //       localStorage.removeItem("USER_INFO")
-  //       let userToken: object | string = {};
-  //       if (userTokenRaw) {
-  //         userToken = JSON.parse(userTokenRaw);
-  //       }
-  //       const new_user_info = {
-  //         ...(typeof userToken === "object" ? userToken : {}),
-  //         accessToken: (res as any).data?.accessToken,
-  //       };
-  //       localStorage.setItem("USER_INFO", JSON.stringify(new_user_info))
-  //       dispatch(fetchCartRequest({
-  //         accessToken: (res as any).data?.accessToken
-  //       }));
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   }
-  // }
-
-  // const fetchVerifyToken = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const res = await verifyToken({
-  //       accessToken: getUserToken()
-  //     })
-  //     if (res?.statusCode === SUCCESS) {
-  //       const user = {
-  //         ...res?.data,
-  //         accessToken: getUserToken()
-  //       }
-  //       setUserInfo(user)
-  //     } else {
-  //       // localStorage.removeItem("USER_INFO")
-  //       dispatch(resetCart());
-  //       if (!!getIsSavePassword()) {
-  //         fetchGenerateNewToken()
-  //       }
-  //     }      
-  //   } catch (err) {
-  //     // localStorage.removeItem("USER_INFO")
-  //     dispatch(resetCart());
-  //     if (!!getIsSavePassword()) {
-  //       fetchGenerateNewToken()
-  //     }
-  //     console.log("FETCH FAIL!", err);
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
   const handleLogOut = () => {
-    dispatch(resetCart());
+    // dispatch(resetCart());
     setTimeout(() => {
       logOut()
     }, 500)
@@ -157,46 +87,42 @@ export const TopBar = () => {
             <GlobalSearch />
 
             <div className='flex items-center'>
-              {loading
+              {!!userInfo
                 ? (
-                  <h2 className='text-base text-white font-bold'>Đang tải...</h2>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <div className='flex flex-row justify-start items-center cursor-pointer'>
+                        <h2 className='text-base text-white'>
+                          Xin chào {" "}
+                          <span className='font-bold'>
+                            {slitName((userInfo as any)?.fullName)}
+                          </span>
+                        </h2>
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className='bg-transparent p-0 border-0'>
+                      <Button
+                        className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
+                        onClick={() => handleLogOut()}
+                      >
+                        <span className='font-bold text-sm'>Đăng xuất</span>
+                      </Button>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 )
-                : !!userInfo
-                  ? (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <div className='flex flex-row justify-start items-center cursor-pointer'>
-                          <h2 className='text-base text-white'>
-                            Xin chào {" "}
-                            <span className='font-bold'>
-                              {slitName((userInfo as any)?.fullName)}
-                            </span>
-                          </h2>
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className='bg-transparent p-0 border-0'>
-                        <Button
-                          className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
-                          onClick={() => handleLogOut()}
-                        >
-                          <span className='font-bold text-sm'>Đăng xuất</span>
-                        </Button>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )
-                  : (
-                    <Dialog open={isOpen} onOpenChange={() => handleOpenDialog()}>
-                      <DialogTrigger asChild>
-                        <Button
-                          size='icon'
-                          className='bg-transparent hover:bg-transparent'
-                        >
-                          <BiUserCircle size={24} className='text-white' />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogAuth />
-                    </Dialog>
-                  )}
+                : (
+                  <Dialog open={isOpen} onOpenChange={() => handleOpenDialog()}>
+                    <DialogTrigger asChild>
+                      <Button
+                        size='icon'
+                        className='bg-transparent hover:bg-transparent'
+                      >
+                        <BiUserCircle size={24} className='text-white' />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogAuth />
+                  </Dialog>
+                )}
               <CartButton />
             </div>
           </div>

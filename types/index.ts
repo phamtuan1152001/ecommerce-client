@@ -43,3 +43,13 @@ export interface CategoryType {
   updatedAt: string,
   __v: number
 }
+
+export interface UserInfoType {
+  username: string,
+  statusActive: number,
+  phone: string,
+  id: string,
+  fullName: string,
+  accessToken: string,
+  roles: string[]
+}

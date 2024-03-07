@@ -81,45 +81,47 @@ export default function DetailProductBody({
   const [countItem, setCountItem] = useState<number>(1)
   const [loading, setLoading] = useState<boolean>(false)
 
-  // const handleAddToCart = () => {    
-  //   if (!!getUserToken()) {
-  //     const isExist = !!carts?.items?.find((item) => item?.productId === productId)
-  //     if (isExist) {
-  //       const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
-  //       const reqExist = {
-  //         quantity: countItem + productExistQuantity,
-  //         productId,
-  //         accessToken: getUserToken()
-  //       }
-  //       dispatch(fetchUpdateQuantityCartRequest(reqExist))
-  //     } else {
-  //       const req = {
-  //         quantity: countItem,
-  //         productId,
-  //         accessToken: getUserToken()
-  //       }
-  //       dispatch(fetchCreateCartRequest(req))
-  //     }
-  //   } else {
-  //     DiaglogPopup({
-  //       icon: <IconFail />,
-  //       title: "THÊM ĐƠN HÀNG THẤT BẠI",
-  //       description: "Vui lòng đăng nhập để tiếp tục",
-  //       textButtonOk: "Đăng nhập",
-  //       textButtonCancel: "",
-  //       isBtnCancel: false,
-  //       closeOnClickOverlay: false,
-  //       className: "max-[768px]:w-[380px]",
-  //       onSubmit: () => {
-  //         SlideInModal.hide()
-  //         setTimeout(() => {
-  //           dispatch(openDiaglog())
-  //         }, 500)
-  //       },
-  //       onCancle: () => { }
-  //     })
-  //   }
-  // }
+  const handleAddToCart = () => {
+    if (!!getUserToken()) {
+      // const isExist = !!carts?.items?.find((item) => item?.productId === productId)
+      // if (isExist) {
+      //   const productExistQuantity = carts?.items?.find(item => item?.productId === productId)?.quantity || 0
+      //   const reqExist = {
+      //     quantity: countItem + productExistQuantity,
+      //     productId,
+      //     accessToken: getUserToken()
+      //   }
+      //   dispatch(fetchUpdateQuantityCartRequest(reqExist))
+      // } else {
+      //   const req = {
+      //     quantity: countItem,
+      //     productId,
+      //     accessToken: getUserToken()
+      //   }
+      //   dispatch(fetchCreateCartRequest(req))
+      // }
+      console.log("add to cart");
+
+    } else {
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "THÊM ĐƠN HÀNG THẤT BẠI",
+        description: "Vui lòng đăng nhập để tiếp tục",
+        textButtonOk: "Đăng nhập",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[768px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+          setTimeout(() => {
+            dispatch(openDiaglog())
+          }, 500)
+        },
+        onCancle: () => { }
+      })
+    }
+  }
 
   // const fetchUpdateCart = async () => {
   //   try {
@@ -272,13 +274,13 @@ export default function DetailProductBody({
                   )}
                 </div>
 
-                <ProductVariantSelector
+                {/* <ProductVariantSelector
                   quantity={quantity}
                   valueCountProduct={countItem}
-                  onChangeSize={(size: any) => {/* console.log("size", size) */ }}
-                  onChangeColor={(color: any) => {/* console.log("color", color) */ }}
+                  onChangeSize={(size: any) => { }}
+                  onChangeColor={(color: any) => {}}
                   onChangeCountProduct={(count: number) => setCountItem(count)}
-                />
+                /> */}
 
                 <div className='flex items-center gap-2'>
                   <p className='text-base text-[#003966] font-bold'>
@@ -294,7 +296,7 @@ export default function DetailProductBody({
                   <Button
                     variant='outline'
                     className='text-[#00508F] font-semibold text-base border-current h-12 w-full'
-                  // onClick={() => handleAddToCart()}
+                    onClick={() => handleAddToCart()}
                   >
                     Thêm vào giỏ hàng
                   </Button>

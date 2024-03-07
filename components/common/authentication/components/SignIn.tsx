@@ -29,7 +29,8 @@ import { fetchCartRequest } from "@/redux/cart/actions";
 import { closeDialog } from "@/redux/openDiaglog/action";
 
 // @api
-import { postLogin } from "@/lib/api/authenticate";
+import { loginUser } from "@/lib/api/authenticate";
+import apiMethod from "@/utility/ApiMethod";
 
 // @constants
 import { SUCCESS } from "@/constants";
@@ -38,23 +39,25 @@ import { SUCCESS } from "@/constants";
 import { IconFail, IconSuccess } from "@/public/assets/svg";
 import SlideInModal from "@/components/slide-in-modal";
 
+// @type
+import { UserInfoType } from "@/types";
+
 const formSchema = z.object({
   username: z
     .string()
     .min(1, { message: 'Trường này là bắt buộc.' }),
-    // .email({ message: 'Không đúng định dạng email.' }),
+  // .email({ message: 'Không đúng định dạng email.' }),
   password: z
-  .string()
-  .min(1, { message: 'Trường này là bắt buộc.' }),
+    .string()
+    .min(1, { message: 'Trường này là bắt buộc.' }),
   savepassword: z
-  .boolean().default(false).optional(),
+    .boolean().default(false).optional(),
   // phone: z
   //   .string()
   //   .min(1, { message: 'Trường này là bắt buộc.' }),
 });
 
 interface Props {
-  // setOpen: (a:boolean) => void
   setOpen: any
 }
 
@@ -66,9 +69,8 @@ const SignIn = ({ setOpen }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
-      password:'',
+      password: '',
       savepassword: false
-      // phone:'',
     },
   });
 
@@ -80,17 +82,22 @@ const SignIn = ({ setOpen }: Props) => {
         username: username,
         password: password
       }
-      const res = await postLogin(req)
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: UserInfoType
+      } = await loginUser(req)
       // console.log("res", res)
-      if (res?.statusCode === SUCCESS) {
+      if (res?.retCode === 0) {
         const user_info = {
           savepassword,
-          ...res?.data
+          ...res?.retData
         }
         localStorage.setItem("USER_INFO", JSON.stringify(user_info))
-        dispatch(fetchCartRequest({
-          accessToken: res?.data?.accessToken
-        }));
+        apiMethod.defaults.headers.common["Authorization"] = res.retData.accessToken;
+        // dispatch(fetchCartRequest({
+        //   accessToken: res?.data?.accessToken
+        // }));
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ĐĂNG NHẬP THÀNH CÔNG",
@@ -112,7 +119,7 @@ const SignIn = ({ setOpen }: Props) => {
         DiaglogPopup({
           icon: <IconFail />,
           title: "ĐĂNG NHẬP THẤT BẠI",
-          description: res?.message,
+          description: res.retText,
           textButtonOk: "Thử lại",
           textButtonCancel: "",
           isBtnCancel: false,
@@ -127,9 +134,9 @@ const SignIn = ({ setOpen }: Props) => {
     } catch (err) {
       console.log("FETCH FAIL!", err);
       DiaglogPopup({
-        icon: <IconFail/>,
+        icon: <IconFail />,
         title: "LỖI HỆ THỐNG",
-        description: "Vui lòng thử lại sau",
+        description: (err as any).retText,
         textButtonOk: "Đóng",
         textButtonCancel: "",
         isBtnCancel: false,
@@ -147,29 +154,29 @@ const SignIn = ({ setOpen }: Props) => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className=" flex flex-col gap-y-6">
-              <div className=" w-full">
-                <FormField
-                  control={form.control}
-                  name='username'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                        Tên tài khoản
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                          placeholder='Nhập tài khoản'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage  />
-                    </FormItem>
-                  )}
-                />         
-              </div>
-              {/* <div className=" w-full">
+          <div className=" flex flex-col gap-y-6">
+            <div className=" w-full">
+              <FormField
+                control={form.control}
+                name='username'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
+                      Tên tài khoản
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
+                        placeholder='Nhập tài khoản'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            {/* <div className=" w-full">
                 <FormField
                   control={form.control}
                   name='phone'
@@ -190,51 +197,51 @@ const SignIn = ({ setOpen }: Props) => {
                   )}
                 />         
               </div> */}
-              <div className=" w-full">
-                <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                        Mật khẩu
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                          type="password"
-                          placeholder='Nhập mật khẩu'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />         
-              </div>
-            </div>
-            <div className=" mt-2 flex items-center gap-x-1.5 ">
+            <div className=" w-full">
               <FormField
                 control={form.control}
-                name="savepassword"
+                name='password'
                 render={({ field }) => (
-                  <FormItem className=" flex items-center">
+                  <FormItem>
+                    <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
+                      Mật khẩu
+                    </FormLabel>
                     <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]" 
+                      <Input
+                        className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
+                        type="password"
+                        placeholder='Nhập mật khẩu'
+                        {...field}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-              <p>Nhớ mật khẩu</p>
             </div>
-            <div className=" mt-8 flex flex-col">
-              <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Đăng nhập</Button>
-              <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button>              
-            </div>
+          </div>
+          <div className=" mt-2 flex items-center gap-x-1.5 ">
+            <FormField
+              control={form.control}
+              name="savepassword"
+              render={({ field }) => (
+                <FormItem className=" flex items-center">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <p>Nhớ mật khẩu</p>
+          </div>
+          <div className=" mt-8 flex flex-col">
+            <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Đăng nhập</Button>
+            <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button>
+          </div>
         </form>
       </Form>
     </div>
