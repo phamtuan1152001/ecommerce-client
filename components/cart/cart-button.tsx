@@ -226,7 +226,7 @@ export const CartButton = () => {
               </Button>
               <Button
                 className='text-base font-semibold bg-[#00508F] h-12 w-full'
-              // onClick={() => handleCartSelected()}
+                onClick={() => router.push("/checkout")}
               >
                 Thanh toán
               </Button>

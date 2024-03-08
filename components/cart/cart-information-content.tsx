@@ -14,27 +14,24 @@ export const CartInformationContent = () => {
     <Box className='px-0 space-y-4'>
       <div className='flex items-center justify-between text-base text-black'>
         <span>Tạm tính</span>
-        <span>{formatToCurrencyVND(carts.subTotal)}</span>
+        <span>{formatToCurrencyVND(carts.totalPrice)}</span>
       </div>
 
-      <div className='flex items-center justify-between text-base text-black'>
+      {/* <div className='flex items-center justify-between text-base text-black'>
         <span>Giảm giá</span>
         <span>0 đ</span>
-      </div>
+      </div> */}
 
-      <div className='flex items-center justify-between text-base text-black'>
+      {/* <div className='flex items-center justify-between text-base text-black'>
         <span>Phí vận chuyển</span>
         <span className='text-[#003966]'>Vui lòng nhập địa chỉ</span>
-      </div>
-
-      <div className='flex items-center justify-between text-base text-black'>
-        <span>Phụ phí</span>
-        <span>30.000 đ</span>
-      </div>
+      </div> */}
 
       <div className='flex items-center justify-between text-base text-black'>
         <span>Tổng đơn đặt hàng</span>
-        <span className='text-lg font-bold'>{formatToCurrencyVND(carts.total)}</span>
+        <span className='text-lg font-bold'>
+          {formatToCurrencyVND(carts.totalPrice)}
+        </span>
       </div>
     </Box>
   );

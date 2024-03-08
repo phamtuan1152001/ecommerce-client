@@ -105,34 +105,39 @@ export default function DetailProductBody({
     }
   }
 
-  // const handleBuyNow = () => {
-  //   if (!!getUserToken()) {
-  //     const isExist = !!carts?.items?.find((item) => item?.productId === productId)
-  //     if (isExist) {
-  //       fetchUpdateCart()
-  //     } else {
-  //       fetchCreateCart()
-  //     }
-  //   } else {
-  //     DiaglogPopup({
-  //       icon: <IconFail />,
-  //       title: "THÊM ĐƠN HÀNG THẤT BẠI",
-  //       description: "Vui lòng đăng nhập để tiếp tục",
-  //       textButtonOk: "Đăng nhập",
-  //       textButtonCancel: "",
-  //       isBtnCancel: false,
-  //       closeOnClickOverlay: false,
-  //       className: "max-[768px]:w-[380px]",
-  //       onSubmit: () => {
-  //         SlideInModal.hide()
-  //         setTimeout(() => {
-  //           dispatch(openDiaglog())
-  //         }, 500)
-  //       },
-  //       onCancle: () => { }
-  //     })
-  //   }
-  // }
+  const handleBuyNow = () => {
+    if (!!getUserToken()) {
+      const req = {
+        userId: userInfo.id,
+        productId: productId,
+        quantity: 1,
+        total: regularPrice,
+        subTotal: salePrice
+      }
+      dispatch(fetchCreateCartRequest(req))
+      setTimeout(() => {
+        router.push('/checkout')
+      }, 500)
+    } else {
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "THÊM ĐƠN HÀNG THẤT BẠI",
+        description: "Vui lòng đăng nhập để tiếp tục",
+        textButtonOk: "Đăng nhập",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[768px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+          setTimeout(() => {
+            dispatch(openDiaglog())
+          }, 500)
+        },
+        onCancle: () => { }
+      })
+    }
+  }
 
   return (
     <>
@@ -236,7 +241,7 @@ export default function DetailProductBody({
 
                   <Button
                     className='font-semibold text-base h-12 w-full text-white'
-                  // onClick={() => handleBuyNow()}
+                    onClick={() => handleBuyNow()}
                   >
                     Mua ngay
                   </Button>

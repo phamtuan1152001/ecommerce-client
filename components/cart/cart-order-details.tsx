@@ -27,7 +27,10 @@ import { getCartSelector, getLoadingSelector } from '@/redux/cart/selector';
 import { formatToCurrencyVND, getUserToken } from '@/utility/common';
 
 // @constants
-import { INCREMENT_BTN, DECREMTN_BTN } from '@/constants';
+import { INCREMENT_BTN, DECREMTN_BTN, NO_DATA_IMAGE } from '@/constants';
+
+// @tpyes
+import { IProduct } from '@/redux/cart/types';
 
 export const CartOrderDetails = () => {
   const dispatch = useDispatch()
@@ -35,36 +38,43 @@ export const CartOrderDetails = () => {
   const carts = useSelector(getCartSelector);
   const loading = useSelector(getLoadingSelector);
 
-  // console.log("loading", loading);
+  console.log("carts", carts);
 
   const handleUpdateItemInCart = (
     type: string,
-    quantity: number,
-    productId: number
+    userId: string,
+    product: IProduct
   ) => {
+    const req = {
+      userId: userId,
+      productId: product._id,
+      quantity: 1,
+      total: product.regularPrice,
+      subTotal: product.salePrice,
+      type
+    }
     if (type === INCREMENT_BTN) {
-      const req = {
-        quantity: quantity += 1,
-        productId: productId,
-        accessToken: getUserToken()
-      }
       // console.log("req-inc", req);
       dispatch(fetchUpdateQuantityCartRequest(req))
     } else {
-      const req = {
-        quantity: quantity -= 1,
-        productId: productId,
-        accessToken: getUserToken()
-      }
       // console.log("req-dec", req);
       dispatch(fetchUpdateQuantityCartRequest(req))
     }
   }
 
-  const removeItemFromCart = (productId: number) => {
+  const removeItemFromCart = (product: {
+    _id: string,
+    total: number,
+    subTotal: number,
+    quantity: number,
+    productId: string,
+    product: IProduct,
+  }) => {
     const req = {
-      productId,
-      accessToken: getUserToken()
+      userId: carts.userId,
+      productId: product.productId,
+      total: product.total,
+      subTotal: product.subTotal
     }
     dispatch(fetchDeleteItemCartRequest(req))
   }
@@ -78,7 +88,7 @@ export const CartOrderDetails = () => {
         </h5>
       </div>
 
-      <div className='space-y-4 max-[768px]:mb-6'>
+      <div className='space-y-4 max-[768px]:mb-6 pb-3'>
         {loading
           ? (
             <div className="flex flex-col justify-center items-center h-full py-3">
@@ -96,8 +106,8 @@ export const CartOrderDetails = () => {
             <div className='flex flex-row justify-start' key={index}>
               <ProductImage
                 wrapperClassName='w-28 flex-shrink-0'
-                src={item.product.images[0].url}
-                alt={item.product.images[0].name}
+                src={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.url || NO_DATA_IMAGE}
+                alt={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.uid || ""}
               />
 
               <div className='p-2 flex-1 flex'>
@@ -109,15 +119,15 @@ export const CartOrderDetails = () => {
                       quantity={item.quantity}
                       onChange={(type: string) => handleUpdateItemInCart(
                         type,
-                        item.quantity,
-                        item.productId
+                        carts.userId,
+                        item.product
                       )}
                     />
 
                     <ProductFinalPrice className='text-base'>
                       {!!item.product.onSale
-                        ? formatToCurrencyVND(parseInt(item.product.salePrice))
-                        : formatToCurrencyVND(parseInt(item.product.regularPrice))}
+                        ? formatToCurrencyVND(item.product.salePrice)
+                        : formatToCurrencyVND(item.product.regularPrice)}
                     </ProductFinalPrice>
                   </div>
                 </div>
@@ -127,7 +137,7 @@ export const CartOrderDetails = () => {
                   variant='ghost'
                   className='shrink-0 w-6 h-6'
                   onClick={() => {
-                    removeItemFromCart(item.product.id)
+                    removeItemFromCart(item)
                   }}
                 >
                   <X className='w-4 h-4' />

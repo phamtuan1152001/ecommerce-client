@@ -57,7 +57,7 @@ import { getCartSelector } from '@/redux/cart/selector';
 
 // @api
 import { postCreateOrder } from "@/lib/api/order";
-import { deleteItemInCart } from "@/redux/cart/service";
+import { removeProductInCart } from "@/redux/cart/service";
 
 // @svg
 import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
@@ -92,9 +92,9 @@ const CheckOut = () => {
   const carts = useSelector(getCartSelector);
   // console.log("carts", carts);
 
-  const [listProvinces, setListProvinces] = React.useState([])
-  const [listDistricts, setListDistricts] = React.useState([])
-  const [listWards, setListWards] = React.useState([])
+  // const [listProvinces, setListProvinces] = React.useState([])
+  // const [listDistricts, setListDistricts] = React.useState([])
+  // const [listWards, setListWards] = React.useState([])
   const [methodPayment, setMethodPayment] = React.useState<string>("")
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -115,98 +115,98 @@ const CheckOut = () => {
     },
   })
 
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      if (!!userCheckoutInfoRaw) {
-        fetchGetListProvinces()
-        fetchGetListDistrictsAsProvincesId(parseInt(userCheckoutInfo.provinceId))
-        fetchGetListWardsAsDistrictId(parseInt(userCheckoutInfo.districtId))
-      } else {
-        fetchGetListProvinces()
-      }
-    } else {
-      window.location.href = "/"
-    }
-  }, [])
+  // React.useEffect(() => {
+  //   if (isAuthenticated) {
+  //     if (!!userCheckoutInfoRaw) {
+  //       fetchGetListProvinces()
+  //       fetchGetListDistrictsAsProvincesId(parseInt(userCheckoutInfo.provinceId))
+  //       fetchGetListWardsAsDistrictId(parseInt(userCheckoutInfo.districtId))
+  //     } else {
+  //       fetchGetListProvinces()
+  //     }
+  //   } else {
+  //     window.location.href = "/"
+  //   }
+  // }, [])
 
-  const fetchGetListProvinces = async () => {
-    try {
-      const res = await getListProvinces()
-      if (res?.statusCode === SUCCESS) {
-        setListProvinces(res?.data?.items)
-      } else {
-        setListProvinces([])
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    }
-  }
+  // const fetchGetListProvinces = async () => {
+  //   try {
+  //     const res = await getListProvinces()
+  //     if (res?.statusCode === SUCCESS) {
+  //       setListProvinces(res?.data?.items)
+  //     } else {
+  //       setListProvinces([])
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   }
+  // }
 
-  const fetchGetListDistrictsAsProvincesId = async (id: number) => {    
-    try {
-      const req = {
-        provincesId: id
-      }
-      const res = await getListDistrictsAsProvincesId(req)
-      if (res?.statusCode === SUCCESS) {
-        setListDistricts(res?.data?.items)
-      } else {
-        return
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    }
-  }
+  // const fetchGetListDistrictsAsProvincesId = async (id: number) => {    
+  //   try {
+  //     const req = {
+  //       provincesId: id
+  //     }
+  //     const res = await getListDistrictsAsProvincesId(req)
+  //     if (res?.statusCode === SUCCESS) {
+  //       setListDistricts(res?.data?.items)
+  //     } else {
+  //       return
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   }
+  // }
 
-  const fetchGetListWardsAsDistrictId = async (id: number) => {
-    try {
-      const req = {
-        districtId: id
-      }
-      const res = await getListWardsAsDistrictId(req)
-      if (res?.statusCode === SUCCESS) {
-        setListWards(res?.data)
-      } else {
-        return
-      }
-    } catch (err) {
-      console.log("FETCH FAIL!", err);
-    }
-  }
+  // const fetchGetListWardsAsDistrictId = async (id: number) => {
+  //   try {
+  //     const req = {
+  //       districtId: id
+  //     }
+  //     const res = await getListWardsAsDistrictId(req)
+  //     if (res?.statusCode === SUCCESS) {
+  //       setListWards(res?.data)
+  //     } else {
+  //       return
+  //     }
+  //   } catch (err) {
+  //     console.log("FETCH FAIL!", err);
+  //   }
+  // }
 
   // Delete all item in cart after create order successfully
   const handleDeleteAllItemInCart = async (type: number, code: string) => {
-    const promises = carts.items.map(async (item) => {
-      try {
-        const req = {
-          productId: item.productId,
-          accessToken: getUserToken()
-        }
-        await deleteItemInCart(req)
-        return 
-      } catch (err) {
-        console.log("Err", err)
-      }
-    })
-    Promise.all(promises)
-      .then((results) => {
-        dispatch(fetchCartRequest({
-          accessToken: getUserToken()
-        }));
-        dispatch(resetCart());
-        if (type === 1) {
-          window.location.href = "/"
-        } else {
-          router.push(`/checkout/order-detail?orderId=${code}`)
-        }
-      })
-      .catch((error) => {
-        console.log('Error in one of the promises:', error);
-        // Handle error
-      });
+    // const promises = carts.items.map(async (item) => {
+    //   try {
+    //     const req = {
+    //       productId: item.productId,
+    //       accessToken: getUserToken()
+    //     }
+    //     await removeProductInCart(req)
+    //     return 
+    //   } catch (err) {
+    //     console.log("Err", err)
+    //   }
+    // })
+    // Promise.all(promises)
+    //   .then((results) => {
+    //     dispatch(fetchCartRequest({
+    //       accessToken: getUserToken()
+    //     }));
+    //     dispatch(resetCart());
+    //     if (type === 1) {
+    //       window.location.href = "/"
+    //     } else {
+    //       router.push(`/checkout/order-detail?orderId=${code}`)
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error in one of the promises:', error);
+    //     // Handle error
+    //   });
   }
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {    
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
       description,
@@ -221,136 +221,136 @@ const CheckOut = () => {
       wardId,
       saveInfo
     } = values || {}
-    const cartOrders = carts.items.map(item => {
-      return {
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.product.onSale ? parseInt(item.product.salePrice) : parseInt(item.product.regularPrice),
-        productName: item.product.name,
-        variationId: item.variationId
-      }
-    })
-    const req = {
-      accessToken: getUserToken(),
-      status: "order",
-      note: /* description */ "Note payment",
-      paymentMethod: methodPayment,
-      // livestreamDate: "",
-      // shopId: 0,
-      orderAddress: {
-        fullName: fullName,
-        phone: phone,
-        email: email,
-        address: address,
-        provinceId: parseInt(provinceId),
-        districtId: parseInt(districtId),
-        wardId: parseInt(wardId),
-        fullAddress: address
-      },
-      items: cartOrders
-    }
-    if (!!methodPayment) {
-      if (cartOrders?.length > 0) {
-        try {
-          const res = await postCreateOrder(req)
-          if (res.statusCode === SUCCESS) {
-            if (saveInfo) {
-              const userInfoCheckout = {
-                email,
-                fullName,
-                phone,
-                provinceId,
-                districtId,
-                wardId,
-                address,
-                saveInfo
-              }
-              localStorage.setItem("USER_INFO_CHECKOUT", JSON.stringify(userInfoCheckout))
-            } else {
-              if (!!userCheckoutInfoRaw) {
-                localStorage.removeItem("USER_INFO_CHECKOUT")
-              }
-            }
-            DiaglogPopup({
-              icon: <IconSuccess/>,
-              title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
-              description: "Đơn hàng của bạn đã được tạo thành công",
-              textButtonOk: methodPayment === PAYMENT_ATM_BANKING
-                ? "Chuyển khoản ngân hàng"
-                : "Trở về trang chủ",
-              textButtonCancel: "Xem lại đơn",
-              isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
-              closeOnClickOverlay: false,
-              className: "max-[768px]:w-[380px]",
-              onSubmit: () => {
-                SlideInModal.hide()
-                handleDeleteAllItemInCart(
-                  methodPayment === PAYMENT_ATM_BANKING
-                    ? 2
-                    : 1
-                  , res?.data?.id
-                ) // type = 1 back to home page
-                // router.push("/")
-              },
-              onCancle: () => { 
-                SlideInModal.hide()
-                handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
-              }
-            })
-          } else {
-            DiaglogPopup({
-              icon: <IconFail/>,
-              title: "TẠO ĐƠN HÀNG THẤT BẠI",
-              description: "Đơn hàng của bạn đã được tạo thất bại",
-              textButtonOk: "Đóng",
-              textButtonCancel: "",
-              isBtnCancel: false,
-              closeOnClickOverlay: false,
-              className: "max-[768px]:w-[380px]",
-              onSubmit: () => {
-                SlideInModal.hide()
-              },
-              onCancle: () => { }
-            })
-          }
-        } catch (err) {
-          console.log("FETCH FAIL!", err);
-          DiaglogPopup({
-            icon: <IconFail/>,
-            title: "LỖI HỆ THỐNG",
-            description: "Vui lòng thử lại sau",
-            textButtonOk: "Đóng",
-            textButtonCancel: "",
-            isBtnCancel: false,
-            closeOnClickOverlay: false,
-            className: "max-[768px]:w-[380px]",
-            onSubmit: () => {
-              SlideInModal.hide()
-            },
-            onCancle: () => { }
-          })
-        }
-      } else {
-        DiaglogPopup({
-          icon: <IconFail/>,
-          title: "TẠO ĐƠN HÀNG THẤT BẠI",
-          description: "Danh sách sản phẩm không được để trống",
-          textButtonOk: "Đóng",
-          textButtonCancel: "",
-          isBtnCancel: false,
-          closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
-          onSubmit: () => {
-            SlideInModal.hide()
-          },
-          onCancle: () => { }
-        })
-      }
-    } else {
-      toastNotiFail("Vui lòng chọn phương thức thanh toán")
-    }
+    // const cartOrders = carts.items.map(item => {
+    //   return {
+    //     productId: item.productId,
+    //     quantity: item.quantity,
+    //     price: item.product.onSale ? parseInt(item.product.salePrice) : parseInt(item.product.regularPrice),
+    //     productName: item.product.name,
+    //     variationId: item.variationId
+    //   }
+    // })
+    // const req = {
+    //   accessToken: getUserToken(),
+    //   status: "order",
+    //   note: /* description */ "Note payment",
+    //   paymentMethod: methodPayment,
+    //   // livestreamDate: "",
+    //   // shopId: 0,
+    //   orderAddress: {
+    //     fullName: fullName,
+    //     phone: phone,
+    //     email: email,
+    //     address: address,
+    //     provinceId: parseInt(provinceId),
+    //     districtId: parseInt(districtId),
+    //     wardId: parseInt(wardId),
+    //     fullAddress: address
+    //   },
+    //   items: cartOrders
+    // }
+    // if (!!methodPayment) {
+    //   if (cartOrders?.length > 0) {
+    //     try {
+    //       const res = await postCreateOrder(req)
+    //       if (res.statusCode === SUCCESS) {
+    //         if (saveInfo) {
+    //           const userInfoCheckout = {
+    //             email,
+    //             fullName,
+    //             phone,
+    //             provinceId,
+    //             districtId,
+    //             wardId,
+    //             address,
+    //             saveInfo
+    //           }
+    //           localStorage.setItem("USER_INFO_CHECKOUT", JSON.stringify(userInfoCheckout))
+    //         } else {
+    //           if (!!userCheckoutInfoRaw) {
+    //             localStorage.removeItem("USER_INFO_CHECKOUT")
+    //           }
+    //         }
+    //         DiaglogPopup({
+    //           icon: <IconSuccess/>,
+    //           title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
+    //           description: "Đơn hàng của bạn đã được tạo thành công",
+    //           textButtonOk: methodPayment === PAYMENT_ATM_BANKING
+    //             ? "Chuyển khoản ngân hàng"
+    //             : "Trở về trang chủ",
+    //           textButtonCancel: "Xem lại đơn",
+    //           isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
+    //           closeOnClickOverlay: false,
+    //           className: "max-[768px]:w-[380px]",
+    //           onSubmit: () => {
+    //             SlideInModal.hide()
+    //             handleDeleteAllItemInCart(
+    //               methodPayment === PAYMENT_ATM_BANKING
+    //                 ? 2
+    //                 : 1
+    //               , res?.data?.id
+    //             ) // type = 1 back to home page
+    //             // router.push("/")
+    //           },
+    //           onCancle: () => { 
+    //             SlideInModal.hide()
+    //             handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
+    //           }
+    //         })
+    //       } else {
+    //         DiaglogPopup({
+    //           icon: <IconFail/>,
+    //           title: "TẠO ĐƠN HÀNG THẤT BẠI",
+    //           description: "Đơn hàng của bạn đã được tạo thất bại",
+    //           textButtonOk: "Đóng",
+    //           textButtonCancel: "",
+    //           isBtnCancel: false,
+    //           closeOnClickOverlay: false,
+    //           className: "max-[768px]:w-[380px]",
+    //           onSubmit: () => {
+    //             SlideInModal.hide()
+    //           },
+    //           onCancle: () => { }
+    //         })
+    //       }
+    //     } catch (err) {
+    //       console.log("FETCH FAIL!", err);
+    //       DiaglogPopup({
+    //         icon: <IconFail/>,
+    //         title: "LỖI HỆ THỐNG",
+    //         description: "Vui lòng thử lại sau",
+    //         textButtonOk: "Đóng",
+    //         textButtonCancel: "",
+    //         isBtnCancel: false,
+    //         closeOnClickOverlay: false,
+    //         className: "max-[768px]:w-[380px]",
+    //         onSubmit: () => {
+    //           SlideInModal.hide()
+    //         },
+    //         onCancle: () => { }
+    //       })
+    //     }
+    //   } else {
+    //     DiaglogPopup({
+    //       icon: <IconFail/>,
+    //       title: "TẠO ĐƠN HÀNG THẤT BẠI",
+    //       description: "Danh sách sản phẩm không được để trống",
+    //       textButtonOk: "Đóng",
+    //       textButtonCancel: "",
+    //       isBtnCancel: false,
+    //       closeOnClickOverlay: false,
+    //       className: "max-[768px]:w-[380px]",
+    //       onSubmit: () => {
+    //         SlideInModal.hide()
+    //       },
+    //       onCancle: () => { }
+    //     })
+    //   }
+    // } else {
+    //   toastNotiFail("Vui lòng chọn phương thức thanh toán")
+    // }
   }
-  
+
   if (!isAuthenticated) {
     return null
   }
@@ -360,25 +360,25 @@ const CheckOut = () => {
       <div className=" pb-5 max-[768px]:hidden">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
-              {
-                title: "Giỏ hàng",
-                to: "/"
-              },
-              {
-                title: "Thanh toán",
-                to: `/checkout`
-              }
-            ]}/>
+            {
+              title: "Giỏ hàng",
+              to: "/"
+            },
+            {
+              title: "Thanh toán",
+              to: `/checkout`
+            }
+          ]} />
         </Container>
       </div>
 
       <Container className="max-[768px]:px-0">
         {/* Header Back Icon for mobile */}
-          <div className='flex flex-row justify-between items-center min-[1280px]:hidden bg-white px-3 pt-2'>
-            <button className='flex flex-col justify-center items-center bg-backgroundColor-buttonCommon w-10 h-10 rounded-full' onClick={() => router.back()}>
-              <IconBackArrow />
-            </button>
-          </div>
+        <div className='flex flex-row justify-between items-center min-[1280px]:hidden bg-white px-3 pt-2'>
+          <button className='flex flex-col justify-center items-center bg-backgroundColor-buttonCommon w-10 h-10 rounded-full' onClick={() => router.back()}>
+            <IconBackArrow />
+          </button>
+        </div>
         {/* End */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -413,22 +413,7 @@ const CheckOut = () => {
                             )}
                           />
                         </div>
-                        {/* {!getUserToken && (
-                          <div className='flex-1 flex justify-end gap-x-2'>
-                            <span>Bạn đã có tài khoản?</span>
-                            <Link href='/' className='text-[#AA7809]'>
-                              {' '}
-                              Đăng nhập
-                            </Link>
-                          </div>
-                        )} */}
                       </div>
-                      {/* <div className=' flex items-center gap-x-1'>
-                        <Checkbox className=' border-[#BFBFBF] w-[18px] h-[18px]' />
-                        <p className=' text-[#202020]'>
-                          Đăng ký nhận các thông tin khuyến mãi đầu tiên
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                   <div className='flex flex-col gap-y-4'>
@@ -477,7 +462,7 @@ const CheckOut = () => {
                           )}
                         />
                       </div>
-                      <div className='grid grid-cols-3 gap-4 max-[768px]:grid-cols-1'>
+                      {/* <div className='grid grid-cols-3 gap-4 max-[768px]:grid-cols-1'>
                         <FormField
                           control={form.control}
                           name='provinceId'
@@ -544,7 +529,7 @@ const CheckOut = () => {
                             </FormItem>
                           )}
                         />
-                      </div>
+                      </div> */}
                       <div className='flex'>
                         <div className=' flex-1'>
                           <FormField
@@ -579,7 +564,7 @@ const CheckOut = () => {
                                 <Checkbox
                                   checked={field.value}
                                   onCheckedChange={field.onChange}
-                                  className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]" 
+                                  className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]"
                                 />
                               </FormControl>
                             </FormItem>
@@ -626,7 +611,7 @@ const CheckOut = () => {
                     <RadioGroup>
                       <div className='flex flex-col gap-y-4'>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='compact' id='r2' onClick={() => setMethodPayment(PAYMENT_COD)}/>
+                          <RadioGroupItem value='compact' id='r2' onClick={() => setMethodPayment(PAYMENT_COD)} />
                           <Label
                             htmlFor='r2'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -651,7 +636,7 @@ const CheckOut = () => {
                           </Label>
                         </div>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='comfortabl' id='r3' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)}/>
+                          <RadioGroupItem value='comfortabl' id='r3' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)} />
                           <Label
                             htmlFor='r3'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -676,116 +661,6 @@ const CheckOut = () => {
                     </RadioGroup>
 
                   </div>
-                  {/* <div className='flex flex-col gap-y-4'>
-                    <div className=' flex items-center gap-x-2'>
-                      <PiHandbagThin size={24} />
-                      <h3 className=' text-[20px] font-bold'>Thông Tin Tặng Quà</h3>
-                    </div>
-
-                    <div className=' flex flex-col gap-y-4 '>
-                      <div className=' flex items-center gap-x-1'>
-                        <Checkbox className='border-[#BFBFBF] w-[18px] h-[18px]' />
-                        <p className=' text-[#202020]'>
-                          Gửi quà cho bạn bè và người thân
-                          <span className=' font-bold pl-1'>
-                            (30.000đ bao gồm phí gói quà và thiệp)
-                          </span>
-                        </p>
-                      </div>
-                      <div className=' flex gap-x-4 justify-between items-center'>
-                        <div className=' flex-1'>
-                          <FormField
-                            control={form.control}
-                            name='fullNameSender'
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                  Họ và tên người gửi
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                    placeholder='Họ và tên người gửi'
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        <div className='flex-1'>
-                          <FormField
-                            control={form.control}
-                            name='phoneReceiver'
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                  Số điện thoại người nhận
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                    placeholder='Nhập số điện thoại'
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div className='flex'>
-                        <div className=' flex-1'>
-                          <FormField
-                            control={form.control}
-                            name='fullNameReceiver'
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                  Họ và tên người nhận
-                                </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                    placeholder='Họ và tên người nhận'
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                          <FormField
-                            control={form.control}
-                            name='description'
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Textarea
-                                    placeholder='Ví dụ: Chúc mừng sinh nhật bạn (Tối đa 200 ký tự)'
-                                    className=' rounded-[8px] py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381] h-[103px]'
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <p className=' text-sm text-[#745B3E] font-medium'>
-                          * Hóa đơn này sẽ không in giá
-                        </p>
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               </div>
               <div className='col-span-2 max-[768px]:order-1'>

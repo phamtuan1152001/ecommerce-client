@@ -19,6 +19,7 @@ import SlideInModal from '../slide-in-modal';
 export const CartInformationRight = () => {
   const router = useRouter()
   const carts = useSelector(getCartSelector);
+  // console.log("carts", carts);
 
   const handleCancelCheckout = () => {
     DiaglogPopup({
@@ -56,7 +57,9 @@ export const CartInformationRight = () => {
         <div className='grid grid-cols-2 gap-2.5'>
           <div>
             <p className='text-base text-white font-semibold'>Tổng cộng</p>
-            <p className='text-lg font-bold text-[#FA9E14]'>{formatToCurrencyVND(carts.total)}</p>
+            <p className='text-lg font-bold text-[#FA9E14]'>
+              {formatToCurrencyVND(carts.totalPrice)}
+            </p>
           </div>
 
           <div className='space-y-2.5'>
