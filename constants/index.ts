@@ -1,6 +1,7 @@
 import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 
 export const BASE_URL_API_DEV = "http://localhost:3002"
+export const URL_DEV_VNAPPMOB = "https://vapi.vnappmob.com/api"
 export const PUBLIC_API = '/public/api'
 export const PUBLIC_ORDER_DETAIL = "/public/orders"
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
@@ -10,6 +11,7 @@ export const GET_LIST_PRODUCTS_IN_CART = "/cart/get-cart"
 export const ADD_ONE_ITEM_IN_CART = "/cart/add-single-item"
 export const DELETE_ONE_ITEM_IN_CART = "/cart/delete-single-item"
 export const REMOVE_PRODUCT_IN_CART = "/cart/remove-item-cart"
+export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const V1_API = "/v1/api"
 export const V1_LOCATION = "/v1/location"
 export const V1_CUSTOMER = "/v1/customer"

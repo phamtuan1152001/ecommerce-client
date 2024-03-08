@@ -8,6 +8,7 @@ import {
   ProductImage,
   ProductFinalPrice,
   ProductTitle,
+  ProductOldPrice,
 } from '@/components/product/product';
 import { Button } from '../ui/button';
 import { TailSpin } from "react-loader-spinner"
@@ -38,7 +39,7 @@ export const CartOrderDetails = () => {
   const carts = useSelector(getCartSelector);
   const loading = useSelector(getLoadingSelector);
 
-  console.log("carts", carts);
+  // console.log("carts", carts);
 
   const handleUpdateItemInCart = (
     type: string,
@@ -123,12 +124,27 @@ export const CartOrderDetails = () => {
                         item.product
                       )}
                     />
-
-                    <ProductFinalPrice className='text-base'>
+                    <div className='flex flex-col justify-start'>
+                      {!!item.product.onSale ? (
+                        <>
+                          <ProductOldPrice>
+                            {formatToCurrencyVND(item.product.regularPrice)}
+                          </ProductOldPrice>
+                          <ProductFinalPrice className='text-base'>
+                            {formatToCurrencyVND(item.product.salePrice)}
+                          </ProductFinalPrice>
+                        </>
+                      ) : (
+                        <ProductFinalPrice className='text-base'>
+                          {formatToCurrencyVND(item.product.regularPrice)}
+                        </ProductFinalPrice>
+                      )}
+                    </div>
+                    {/* <ProductFinalPrice className='text-base'>
                       {!!item.product.onSale
                         ? formatToCurrencyVND(item.product.salePrice)
                         : formatToCurrencyVND(item.product.regularPrice)}
-                    </ProductFinalPrice>
+                    </ProductFinalPrice> */}
                   </div>
                 </div>
 

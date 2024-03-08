@@ -39,7 +39,6 @@ import { formSchema } from "@/validation/form-checkout";
 // @api
 import {
   getListProvinces,
-  getListDistricts,
   getListDistrictsAsProvincesId,
   getListWardsAsDistrictId
 } from "@/lib/api/common";
@@ -84,276 +83,255 @@ const CheckOut = () => {
   const router = useRouter()
   const dispatch = useDispatch()
 
-  const userCheckoutInfoRaw: string | null = localStorage.getItem("USER_INFO_CHECKOUT");
-  const userCheckoutInfo: UserType = userCheckoutInfoRaw
-    ? JSON.parse(userCheckoutInfoRaw) : {};
+  // const userCheckoutInfoRaw: string | null = localStorage.getItem("USER_INFO_CHECKOUT");
+  // const userCheckoutInfo: UserType = userCheckoutInfoRaw
+  //   ? JSON.parse(userCheckoutInfoRaw) : {};
   const isAuthenticated = !!getUserToken()
 
   const carts = useSelector(getCartSelector);
   // console.log("carts", carts);
 
-  // const [listProvinces, setListProvinces] = React.useState([])
-  // const [listDistricts, setListDistricts] = React.useState([])
-  // const [listWards, setListWards] = React.useState([])
+  const [listProvinces, setListProvinces] = React.useState<{
+    id: string,
+    name: string,
+    type: string
+  }[]>([])
+  const [listDistricts, setListDistricts] = React.useState<{
+    id: string,
+    name: string,
+    type: string,
+  }[]>([])
+  const [listWards, setListWards] = React.useState<{
+    id: string,
+    name: string,
+    type: string,
+  }[]>([])
   const [methodPayment, setMethodPayment] = React.useState<string>("")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullNameSender: "",
-      phoneReceiver: "",
-      fullNameReceiver: "",
-      description: "",
-      saveInfo: userCheckoutInfo.saveInfo ?? false,
-      email: userCheckoutInfo.email ?? "",
-      fullName: userCheckoutInfo.fullName ?? "",
-      phone: userCheckoutInfo.phone ?? "",
-      address: userCheckoutInfo.address ?? "",
-      provinceId: userCheckoutInfo.provinceId ?? "",
-      districtId: userCheckoutInfo.districtId ?? "",
-      wardId: userCheckoutInfo.wardId ?? "",
+      email: "",
+      fullName: "",
+      phone: "",
+      address: "",
+      provinceId: "",
+      districtId: "",
+      wardId: "",
+      // description: "",
+      // saveInfo: userCheckoutInfo.saveInfo ?? false,
     },
   })
 
-  // React.useEffect(() => {
-  //   if (isAuthenticated) {
-  //     if (!!userCheckoutInfoRaw) {
-  //       fetchGetListProvinces()
-  //       fetchGetListDistrictsAsProvincesId(parseInt(userCheckoutInfo.provinceId))
-  //       fetchGetListWardsAsDistrictId(parseInt(userCheckoutInfo.districtId))
-  //     } else {
-  //       fetchGetListProvinces()
-  //     }
-  //   } else {
-  //     window.location.href = "/"
-  //   }
-  // }, [])
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      fetchGetListProvinces()
+    } else {
+      window.location.href = "/"
+    }
+  }, [])
 
-  // const fetchGetListProvinces = async () => {
-  //   try {
-  //     const res = await getListProvinces()
-  //     if (res?.statusCode === SUCCESS) {
-  //       setListProvinces(res?.data?.items)
-  //     } else {
-  //       setListProvinces([])
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   }
-  // }
+  const fetchGetListProvinces = async () => {
+    try {
+      const res: {
+        results: {
+          province_id: string,
+          province_name: string,
+          province_type: string
+        }[]
+      } = await getListProvinces()
+      if (res.results.length > 0) {
+        const lists = res.results.map((item) => {
+          return {
+            id: item.province_id,
+            name: item.province_name,
+            type: item.province_type
+          }
+        })
+        setListProvinces(lists)
+      }
+    } catch (err) {
+      console.log("FETCH FAIL!", err);
+    }
+  }
 
-  // const fetchGetListDistrictsAsProvincesId = async (id: number) => {    
-  //   try {
-  //     const req = {
-  //       provincesId: id
-  //     }
-  //     const res = await getListDistrictsAsProvincesId(req)
-  //     if (res?.statusCode === SUCCESS) {
-  //       setListDistricts(res?.data?.items)
-  //     } else {
-  //       return
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   }
-  // }
+  const fetchGetListDistrictsAsProvincesId = async (id: string) => {
+    try {
+      const res: {
+        results: {
+          district_id: string,
+          district_name: string,
+          district_type: string,
+          province_id: string
+        }[]
+      } = await getListDistrictsAsProvincesId(id)
+      // console.log("res", res);
+      if (res?.results.length > 0) {
+        const lists = res.results.map((item) => {
+          return {
+            id: item.district_id,
+            name: item.district_name,
+            type: item.district_type,
+          }
+        })
+        setListDistricts(lists)
+      } else {
+        return
+      }
+    } catch (err) {
+      console.log("FETCH FAIL!", err);
+    }
+  }
 
-  // const fetchGetListWardsAsDistrictId = async (id: number) => {
-  //   try {
-  //     const req = {
-  //       districtId: id
-  //     }
-  //     const res = await getListWardsAsDistrictId(req)
-  //     if (res?.statusCode === SUCCESS) {
-  //       setListWards(res?.data)
-  //     } else {
-  //       return
-  //     }
-  //   } catch (err) {
-  //     console.log("FETCH FAIL!", err);
-  //   }
-  // }
-
-  // Delete all item in cart after create order successfully
-  const handleDeleteAllItemInCart = async (type: number, code: string) => {
-    // const promises = carts.items.map(async (item) => {
-    //   try {
-    //     const req = {
-    //       productId: item.productId,
-    //       accessToken: getUserToken()
-    //     }
-    //     await removeProductInCart(req)
-    //     return 
-    //   } catch (err) {
-    //     console.log("Err", err)
-    //   }
-    // })
-    // Promise.all(promises)
-    //   .then((results) => {
-    //     dispatch(fetchCartRequest({
-    //       accessToken: getUserToken()
-    //     }));
-    //     dispatch(resetCart());
-    //     if (type === 1) {
-    //       window.location.href = "/"
-    //     } else {
-    //       router.push(`/checkout/order-detail?orderId=${code}`)
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log('Error in one of the promises:', error);
-    //     // Handle error
-    //   });
+  const fetchGetListWardsAsDistrictId = async (id: string) => {
+    try {
+      const res: {
+        results: {
+          district_id: string,
+          ward_name: string,
+          ward_type: string,
+          ward_id: string
+        }[]
+      } = await getListWardsAsDistrictId(id)
+      if (res?.results.length > 0) {
+        const lists = res.results.map((item) => {
+          return {
+            id: item.ward_id,
+            name: item.ward_name,
+            type: item.ward_type,
+          }
+        })
+        setListWards(lists)
+      } else {
+        return
+      }
+    } catch (err) {
+      console.log("FETCH FAIL!", err);
+    }
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
-      description,
-      districtId,
+      // description,
       email,
       fullName,
-      fullNameReceiver,
-      fullNameSender,
       phone,
-      phoneReceiver,
       provinceId,
+      districtId,
       wardId,
-      saveInfo
+      // saveInfo
     } = values || {}
-    // const cartOrders = carts.items.map(item => {
-    //   return {
-    //     productId: item.productId,
-    //     quantity: item.quantity,
-    //     price: item.product.onSale ? parseInt(item.product.salePrice) : parseInt(item.product.regularPrice),
-    //     productName: item.product.name,
-    //     variationId: item.variationId
-    //   }
-    // })
-    // const req = {
-    //   accessToken: getUserToken(),
-    //   status: "order",
-    //   note: /* description */ "Note payment",
-    //   paymentMethod: methodPayment,
-    //   // livestreamDate: "",
-    //   // shopId: 0,
-    //   orderAddress: {
-    //     fullName: fullName,
-    //     phone: phone,
-    //     email: email,
-    //     address: address,
-    //     provinceId: parseInt(provinceId),
-    //     districtId: parseInt(districtId),
-    //     wardId: parseInt(wardId),
-    //     fullAddress: address
-    //   },
-    //   items: cartOrders
-    // }
-    // if (!!methodPayment) {
-    //   if (cartOrders?.length > 0) {
-    //     try {
-    //       const res = await postCreateOrder(req)
-    //       if (res.statusCode === SUCCESS) {
-    //         if (saveInfo) {
-    //           const userInfoCheckout = {
-    //             email,
-    //             fullName,
-    //             phone,
-    //             provinceId,
-    //             districtId,
-    //             wardId,
-    //             address,
-    //             saveInfo
-    //           }
-    //           localStorage.setItem("USER_INFO_CHECKOUT", JSON.stringify(userInfoCheckout))
-    //         } else {
-    //           if (!!userCheckoutInfoRaw) {
-    //             localStorage.removeItem("USER_INFO_CHECKOUT")
-    //           }
-    //         }
-    //         DiaglogPopup({
-    //           icon: <IconSuccess/>,
-    //           title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
-    //           description: "Đơn hàng của bạn đã được tạo thành công",
-    //           textButtonOk: methodPayment === PAYMENT_ATM_BANKING
-    //             ? "Chuyển khoản ngân hàng"
-    //             : "Trở về trang chủ",
-    //           textButtonCancel: "Xem lại đơn",
-    //           isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
-    //           closeOnClickOverlay: false,
-    //           className: "max-[768px]:w-[380px]",
-    //           onSubmit: () => {
-    //             SlideInModal.hide()
-    //             handleDeleteAllItemInCart(
-    //               methodPayment === PAYMENT_ATM_BANKING
-    //                 ? 2
-    //                 : 1
-    //               , res?.data?.id
-    //             ) // type = 1 back to home page
-    //             // router.push("/")
-    //           },
-    //           onCancle: () => { 
-    //             SlideInModal.hide()
-    //             handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
-    //           }
-    //         })
-    //       } else {
-    //         DiaglogPopup({
-    //           icon: <IconFail/>,
-    //           title: "TẠO ĐƠN HÀNG THẤT BẠI",
-    //           description: "Đơn hàng của bạn đã được tạo thất bại",
-    //           textButtonOk: "Đóng",
-    //           textButtonCancel: "",
-    //           isBtnCancel: false,
-    //           closeOnClickOverlay: false,
-    //           className: "max-[768px]:w-[380px]",
-    //           onSubmit: () => {
-    //             SlideInModal.hide()
-    //           },
-    //           onCancle: () => { }
-    //         })
-    //       }
-    //     } catch (err) {
-    //       console.log("FETCH FAIL!", err);
-    //       DiaglogPopup({
-    //         icon: <IconFail/>,
-    //         title: "LỖI HỆ THỐNG",
-    //         description: "Vui lòng thử lại sau",
-    //         textButtonOk: "Đóng",
-    //         textButtonCancel: "",
-    //         isBtnCancel: false,
-    //         closeOnClickOverlay: false,
-    //         className: "max-[768px]:w-[380px]",
-    //         onSubmit: () => {
-    //           SlideInModal.hide()
-    //         },
-    //         onCancle: () => { }
-    //       })
-    //     }
-    //   } else {
-    //     DiaglogPopup({
-    //       icon: <IconFail/>,
-    //       title: "TẠO ĐƠN HÀNG THẤT BẠI",
-    //       description: "Danh sách sản phẩm không được để trống",
-    //       textButtonOk: "Đóng",
-    //       textButtonCancel: "",
-    //       isBtnCancel: false,
-    //       closeOnClickOverlay: false,
-    //       className: "max-[768px]:w-[380px]",
-    //       onSubmit: () => {
-    //         SlideInModal.hide()
-    //       },
-    //       onCancle: () => { }
-    //     })
-    //   }
-    // } else {
-    //   toastNotiFail("Vui lòng chọn phương thức thanh toán")
-    // }
+
+    const req = {
+      userId: carts.userId,
+      statusOrder: 0,
+      paymentMethod: methodPayment,
+      orderAddress: {
+        fullName: fullName,
+        phone: phone,
+        email: email,
+        address: address,
+        provinceId: provinceId,
+        districtId: districtId,
+        wardId: wardId,
+        fullAddress: `${address} ${listWards.find((item) => item.id === wardId)?.name} ${listDistricts.find((item) => item.id === districtId)?.name} ${listProvinces.find((item) => item.id === provinceId)?.name}`
+      },
+      cartId: carts._id,
+      cartDetail: carts._id
+    }
+    console.log("Req", req);
+    try {
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: {
+          _id: string,
+          createdAt: string,
+          updatedAt: string,
+          userId: string,
+          statusOrder: number,
+          paymentMethod: string,
+          orderAddress: {
+            fullName: string,
+            phone: string,
+            address: string,
+            provinceId: string,
+            districtId: string,
+            wardId: string,
+            fullAddress: string,
+          }
+          cartId: string,
+          cartDetail: string
+        }
+      } = await postCreateOrder(req)
+      if (res.retCode === 0) {
+        DiaglogPopup({
+          icon: <IconSuccess />,
+          title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
+          description: "Đơn hàng của bạn đã được tạo thành công",
+          textButtonOk: methodPayment === PAYMENT_ATM_BANKING
+            ? "Chuyển khoản ngân hàng"
+            : "Trở về trang chủ",
+          textButtonCancel: "Xem lại đơn",
+          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
+          closeOnClickOverlay: false,
+          className: "max-[768px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+            // handleDeleteAllItemInCart(
+            //   methodPayment === PAYMENT_ATM_BANKING
+            //     ? 2
+            //     : 1
+            //   , res?.data?.id
+            // ) // type = 1 back to home page
+            // // router.push("/")
+          },
+          onCancle: () => {
+            SlideInModal.hide()
+            // handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
+          }
+        })
+      } else {
+        DiaglogPopup({
+          icon: <IconFail />,
+          title: "TẠO ĐƠN HÀNG THẤT BẠI",
+          description: "Đơn hàng của bạn đã được tạo thất bại",
+          textButtonOk: "Đóng",
+          textButtonCancel: "",
+          isBtnCancel: false,
+          closeOnClickOverlay: false,
+          className: "max-[768px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+          },
+          onCancle: () => { }
+        })
+      }
+    } catch (err) {
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "LỖI HỆ THỐNG",
+        description: "Vui lòng thử lại sau",
+        textButtonOk: "Đóng",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[768px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+        },
+        onCancle: () => { }
+      })
+    } finally {
+
+    }
   }
 
   if (!isAuthenticated) {
     return null
   }
+  // console.log("form", form.getValues());
 
   return (
     <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
@@ -462,7 +440,7 @@ const CheckOut = () => {
                           )}
                         />
                       </div>
-                      {/* <div className='grid grid-cols-3 gap-4 max-[768px]:grid-cols-1'>
+                      <div className='grid grid-cols-3 gap-4 max-[768px]:grid-cols-1'>
                         <FormField
                           control={form.control}
                           name='provinceId'
@@ -479,7 +457,7 @@ const CheckOut = () => {
                                   field.onChange(value)
                                   const data = form.getValues()
                                   fetchGetListDistrictsAsProvincesId(
-                                    parseInt(data.provinceId)
+                                    data.provinceId
                                   )
                                 }}
                               />
@@ -503,7 +481,7 @@ const CheckOut = () => {
                                   field.onChange(value)
                                   const data = form.getValues()
                                   fetchGetListWardsAsDistrictId(
-                                    parseInt(data.districtId)
+                                    data.districtId
                                   )
                                 }}
                               />
@@ -529,7 +507,7 @@ const CheckOut = () => {
                             </FormItem>
                           )}
                         />
-                      </div> */}
+                      </div>
                       <div className='flex'>
                         <div className=' flex-1'>
                           <FormField
@@ -552,27 +530,6 @@ const CheckOut = () => {
                             )}
                           />
                         </div>
-                      </div>
-                      <div className=' flex items-center gap-x-1'>
-                        {/* <Checkbox className='border-[#BFBFBF] w-[18px] h-[18px]' /> */}
-                        <FormField
-                          control={form.control}
-                          name="saveInfo"
-                          render={({ field }) => (
-                            <FormItem className=" flex items-center">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value}
-                                  onCheckedChange={field.onChange}
-                                  className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]"
-                                />
-                              </FormControl>
-                            </FormItem>
-                          )}
-                        />
-                        <p className=' text-[#202020]'>
-                          Lưu thông tin cho lần thanh toán tiếp theo
-                        </p>
                       </div>
                     </div>
                   </div>

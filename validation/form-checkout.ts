@@ -34,9 +34,9 @@ export const formSchema = z.object({
   address: z.string({
     required_error: "Vui lòng nhập Địa chỉ"
   }),
-  fullNameSender: z.string(),
-  phoneReceiver: z.string(),
-  fullNameReceiver: z.string(),
-  description: z.string(),
-  saveInfo: z.boolean().default(false).optional()
+  // fullNameSender: z.string(),
+  // phoneReceiver: z.string(),
+  // fullNameReceiver: z.string(),
+  // description: z.string(),
+  // saveInfo: z.boolean().default(false).optional()
 })

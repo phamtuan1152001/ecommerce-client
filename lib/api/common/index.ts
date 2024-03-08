@@ -1,109 +1,17 @@
-import { BASE_URL_API_DEV, V1_LOCATION } from "@/constants";
+import { URL_DEV_VNAPPMOB } from "@/constants";
+import axios from "axios";
 
 export const getListProvinces =async () => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_LOCATION +
-      `/provinces`,
-      {
-        method: "GET",
-        headers: {
-          'Accept': 'application/json'
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province")
+  return data
 }
 
-export const getListDistrictsAsProvincesId = async (req: {
-  provincesId: number
-}) => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_LOCATION +
-      `/provinces/${req.provincesId}/districts`,
-      {
-        method: "GET",
-        headers: {
-          'Accept': 'application/json'
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const getListDistrictsAsProvincesId = async (provinceId: string) => {
+  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/district/${provinceId}`)
+  return data
 }
 
-export const getListWardsAsDistrictId = async (req: {
-  districtId: number
-}) => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_LOCATION +
-      `/wards?parentId=${req.districtId}`,
-      {
-        method: "GET",
-        headers: {
-          'Accept': 'application/json'
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
-}
-
-export const getListDistricts =async () => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_LOCATION +
-      `/districts`,
-      {
-        method: "GET",
-        headers: {
-          'Accept': 'application/json'
-        },
-        cache: 'no-cache'
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const getListWardsAsDistrictId = async (districtId: string) => {
+  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/ward/${districtId}`)
+  return data
 }

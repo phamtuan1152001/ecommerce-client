@@ -11,14 +11,9 @@ import {
 
 interface SelectionComponentProps {
   datas: {
-    id: number,
-    codename: string,
+    id: string,
     name: string,
-    divisionType: string,
-    isActive: boolean,
-    phoneCode: string,
-    regionId: number,
-    provinceId: number
+    type: string
   }[],
   placeholder: string,
   value: string,
