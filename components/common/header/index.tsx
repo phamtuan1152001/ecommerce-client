@@ -10,7 +10,7 @@ import { HeaderMobile } from '@/components/common/header-mobile';
 
 export const Header = () => {
   const isMobile = useMediaQuery(768)
-  
+
   return (
     <header
       className={`${isMobile ? "bg-backgroundColor-nav" : "pt-8 bg-[#727272]"}`}>

@@ -233,18 +233,10 @@ export const Footer = () => {
       <div className='py-3.5 bg-[#333131]'>
         <Container>
           <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
-            {/* Copyright © 2023 Công Ty THHH Shop Vũ Hoàng. Mã số doanh nghiệp
-            129128911 do Sở Kế hoạch Đầu tư Đồng Nai cấp lần 1 ngày 18/8/2018 */}
-            CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ TRANG NAM DŨNG
-          </p>
-          <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
-            Số ĐKKD: 3603794118 Ngày cấp: 09-03-2021 Nơi cấp: Sở Kế Hoạch và Đầu Tư Tỉnh Đồng Nai.
-          </p>
-          <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
-            Địa chỉ: Số 334/13/7, đường Võ Thị Sáu, KP 1 - Phường Thống Nhất - Thành phố Biên Hoà - Đồng Nai.
+            Địa chỉ: Số 126/9 Lê Thiệt, phường Phú Thọ Hòa, quận Tân Phú, thành phố Hồ Chí Minh.
           </p>
           <p className='text-sm leading-normal text-center text-[#c51143]'>
-            Powered by PSA Solutions
+            Powered by PHẠM LÊ SONG TUẤN - ITITIU19062
           </p>
         </Container>
       </div>
