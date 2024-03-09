@@ -2,23 +2,28 @@ import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 
 export const BASE_URL_API_DEV = "http://localhost:3002"
 export const URL_DEV_VNAPPMOB = "https://vapi.vnappmob.com/api"
-export const PUBLIC_API = '/public/api'
-export const PUBLIC_ORDER_DETAIL = "/public/orders"
+
+/* PRODUCTS API */
+export const GET_LIST_PRODUCTS = "/products/listProducts"
+export const GET_DETAIL_PRODUCT = "/products/detail"
+
+/* AUTHENTICATION API */
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
 export const AUTHENTICATE_API_SIGNUP = '/auth/signup'
+
+/* CART API */
 export const ADD_ITEM_TO_CART = "/cart/create-cart"
 export const GET_LIST_PRODUCTS_IN_CART = "/cart/get-cart"
 export const ADD_ONE_ITEM_IN_CART = "/cart/add-single-item"
 export const DELETE_ONE_ITEM_IN_CART = "/cart/delete-single-item"
 export const REMOVE_PRODUCT_IN_CART = "/cart/remove-item-cart"
 export const DELETE_ALL_PRODUCTS_IN_CART = "/cart/delete-all-products-in-cart"
+
+/* ORDER API */
 export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order"
-export const V1_API = "/v1/api"
-export const V1_LOCATION = "/v1/location"
-export const V1_CUSTOMER = "/v1/customer"
-export const V1_ORDER_DETAIL = "/v1/customer/orders"
 
+/* CONSTANTS DATA */
 export const SUCCESS = 200;
 export const BAD_REQUEST = 400;
 export const SESSION_EXPIRED = 401;

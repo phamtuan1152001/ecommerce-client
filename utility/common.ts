@@ -29,11 +29,15 @@ export const getRefreshToken = () => {
 }
 
 export const getUserToken = () => {
-  const userTokenRaw: string | null = localStorage.getItem("USER_INFO");
-  const userToken: string = userTokenRaw ? JSON.parse(userTokenRaw) : "";
-  const accessToken: string = (userToken as any).accessToken;
-  
-  return accessToken
+  if (typeof window !== 'undefined') { 
+    const userTokenRaw: string | null = localStorage.getItem("USER_INFO");
+    const userToken: string = userTokenRaw ? JSON.parse(userTokenRaw) : "";
+    const accessToken: string = (userToken as any).accessToken;
+    
+    return accessToken
+  } else {
+    console.log('localStorage is not available');
+  }
 }
 
 export const logOut = () => {

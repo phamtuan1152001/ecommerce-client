@@ -10,10 +10,11 @@ import { SearchHistory } from '@/components/search/search-history';
 import { SearchSuggestion } from '@/components/search/search-suggestion';
 
 // @api
-import { getProductsBySearching } from '@/lib/api/product';
+import { getProducts } from '@/lib/api/product';
 
 // @constants
 import { LANGUAGE_VI, SUCCESS } from '@/constants';
+import { ProductType } from '@/types';
 
 let timeoutId: any;
 
@@ -25,7 +26,7 @@ export const GlobalSearch = () => {
   }
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [listData, setListData] = useState([])
+  const [listData, setListData] = useState<ProductType[]>([])
   // search
   const [input, setInput] = useState("");
   const [prevSearch, setPrevSearch] = useState("");
@@ -34,41 +35,51 @@ export const GlobalSearch = () => {
   useEffect(() => {
     if (!!searchData) {
       const payload: {
-      currentPage: number,
-      limit: number,
-      lang: string,
-      search: string
-    } = {
-      currentPage: 0,
-      limit: 100,
-      lang: LANGUAGE_VI,
-      search: searchData
-    };
-    fetchProductsBySearching(
-      payload.currentPage,
-      payload.limit,
-      payload.lang,
-      payload.search
-    );
+        page: number,
+        size: number,
+        categories: string,
+        productText: string
+      } = {
+        page: 1,
+        size: 100,
+        categories: "",
+        productText: searchData
+      };
+      fetchProductsBySearching(
+        payload.page,
+        payload.size,
+        payload.categories,
+        payload.productText
+      );
     }
   }, [searchData]);
 
   const fetchProductsBySearching = async (
-    currentPage: number = 0,
-    limit: number = 100,
-    lang: string = LANGUAGE_VI,
-    search: string = ""
+    page: number = 1,
+    size: number = 100,
+    categories: string = LANGUAGE_VI,
+    productText: string = ""
   ) => {
     try {
       setLoading(true)
-      const res = await getProductsBySearching(
-        currentPage,
-        limit,
-        lang,
-        search
-      )      
-      if (res?.statusCode === SUCCESS) {
-        setListData(res?.data?.items)
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: {
+          currentPage: number,
+          totalItems: number,
+          totalPages: number,
+          products: ProductType[]
+        }
+      } = await getProducts(
+        page,
+        size,
+        categories,
+        productText
+      )
+      // console.log("res", res);
+      if (res?.retCode === 0) {
+        setListData(res?.retData?.products)
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
@@ -112,10 +123,6 @@ export const GlobalSearch = () => {
 
       {isOpen && (
         <div className='w-[620px] absolute top-[calc(100%_+_8px)] right-0 bg-white rounded-lg overflow-hidden divide-y divide-[#DFE3E8] z-50 shadow'>
-          {/* <TopSearch /> */}
-
-          {/* <SearchHistory /> */}
-
           <SearchSuggestion loading={loading} datas={listData} />
         </div>
       )}

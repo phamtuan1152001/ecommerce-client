@@ -7,18 +7,12 @@ import {
 } from '../product/product';
 import { formatToCurrencyVND } from '@/utility/common';
 import { TailSpin } from "react-loader-spinner"
+import { ProductType } from '@/types';
+import { NO_DATA_IMAGE } from '@/constants';
 
 interface SearchSuggestionProps {
   loading: boolean,
-  datas: {
-    name: string,
-    onSale: boolean,
-    regularPrice: string,
-    salePrice: string,
-    images: {
-      url: string
-    }[]
-  }[]
+  datas: ProductType[]
 }
 
 export const SearchSuggestion = ({ loading, datas }: SearchSuggestionProps) => {
@@ -47,8 +41,8 @@ export const SearchSuggestion = ({ loading, datas }: SearchSuggestionProps) => {
               <div className='flex' key={index}>
                 <ProductImage
                   wrapperClassName='w-28 flex-shrink-0'
-                  src={item.images[0].url}
-                  alt={item.name}
+                  src={item.images.find((ele) => ele.uid === item.defaultImageId)?.url || NO_DATA_IMAGE}
+                  alt={item.slug || ""}
                 />
 
                 <div className='p-2 flex-1 flex flex-col'>
@@ -59,16 +53,16 @@ export const SearchSuggestion = ({ loading, datas }: SearchSuggestionProps) => {
                       ? (
                         <>
                           <ProductOldPrice className='text-xs'>
-                            {formatToCurrencyVND(parseInt(item.regularPrice))}
+                            {formatToCurrencyVND(item.regularPrice)}
                           </ProductOldPrice>
                           <ProductFinalPrice className='text-sm'>
-                            {formatToCurrencyVND(parseInt(item.salePrice))}
+                            {formatToCurrencyVND(item.salePrice)}
                           </ProductFinalPrice>
                         </>
                       )
                       : (
                         <ProductFinalPrice className='text-sm'>
-                          {formatToCurrencyVND(parseInt(item.regularPrice))}
+                          {formatToCurrencyVND(item.regularPrice)}
                         </ProductFinalPrice>
                       )}
                   </div>
