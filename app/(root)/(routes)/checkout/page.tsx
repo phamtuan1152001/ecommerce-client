@@ -56,7 +56,7 @@ import { getCartSelector } from '@/redux/cart/selector';
 
 // @api
 import { postCreateOrder } from "@/lib/api/order";
-import { removeProductInCart } from "@/redux/cart/service";
+import { deleteAllProductsInCart, removeProductInCart } from "@/redux/cart/service";
 
 // @svg
 import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
@@ -210,6 +210,33 @@ const CheckOut = () => {
     }
   }
 
+  const handleDeleteAllProductsInCart = async (type: number, orderId: string) => {
+    try {
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: {
+          userId: string
+        }
+      } = await deleteAllProductsInCart(carts.userId)
+      if (res.retCode === 0) {
+        if (type === 1) {
+          dispatch(resetCart())
+          setTimeout(() => {
+            router.push("/")
+          }, 500)
+        } else {
+          dispatch(resetCart())
+          setTimeout(() => {
+            router.push(`/checkout/order-detail?orderId=${orderId}`)
+          }, 500)
+        }
+      }
+    } catch (err) {
+      console.log("FETCH FAIL", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
@@ -238,9 +265,17 @@ const CheckOut = () => {
         fullAddress: `${address} ${listWards.find((item) => item.id === wardId)?.name} ${listDistricts.find((item) => item.id === districtId)?.name} ${listProvinces.find((item) => item.id === provinceId)?.name}`
       },
       cartId: carts._id,
-      cartDetail: carts._id
+      cartDetail: {
+        ...carts,
+        items: carts.items.map((item) => {
+          return {
+            ...item,
+            product: item.productId
+          }
+        })
+      }
     }
-    console.log("Req", req);
+    // console.log("Req", req);
     try {
       const res: {
         retCode: number,
@@ -279,17 +314,17 @@ const CheckOut = () => {
           className: "max-[768px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
-            // handleDeleteAllItemInCart(
-            //   methodPayment === PAYMENT_ATM_BANKING
-            //     ? 2
-            //     : 1
-            //   , res?.data?.id
+            handleDeleteAllProductsInCart(
+              methodPayment === PAYMENT_ATM_BANKING
+                ? 2
+                : 1
+              , res.retData._id)
             // ) // type = 1 back to home page
-            // // router.push("/")
           },
           onCancle: () => {
             SlideInModal.hide()
-            // handleDeleteAllItemInCart(2, res?.data?.id) // type = 2 push to order detail page
+            handleDeleteAllProductsInCart(2, res.retData._id)
+            // type = 2 push to order detail page
           }
         })
       } else {

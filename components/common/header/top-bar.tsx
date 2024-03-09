@@ -43,7 +43,7 @@ export const TopBar = () => {
   const isOpen = useSelector(getIsOpenDialog);
 
   const handleLogOut = () => {
-    // dispatch(resetCart());
+    dispatch(resetCart());
     setTimeout(() => {
       logOut()
     }, 500)

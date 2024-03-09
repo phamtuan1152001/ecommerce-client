@@ -33,7 +33,7 @@ import {
 // @toast-fuction
 import { toastNotiSuccess, toastNotiFail } from "@/utility/toast";
 
-function* fetchListCustomerCart({payload}: any) {
+function* fetchListCustomerCart({ payload }: any) {  
   try {
     const response: ReturnType<typeof getListProductsInCart> = yield call(getListProductsInCart, payload);    
     yield put(

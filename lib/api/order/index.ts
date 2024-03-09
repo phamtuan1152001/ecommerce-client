@@ -1,7 +1,7 @@
 import {
   BASE_URL_API_DEV,
-  V1_ORDER_DETAIL,
-  CREATE_ORDER_CLIENT
+  CREATE_ORDER_CLIENT,
+  GET_ORDER_DETAIL
 } from "@/constants";
 import apiMethod from "@/utility/ApiMethod";
 
@@ -19,37 +19,31 @@ export const postCreateOrder = async (payload: {
     fullAddress: string,
   }
   cartId: string,
-  cartDetail: string
-}) => {  
+  cartDetail: {
+    _id: string;
+    __v: number;
+    createdAt: string,
+    updatedAt: string,
+    userId: string;
+    items: {
+      _id: string;
+      total: number;
+      subTotal: number;
+      quantity: number;
+      productId: string;
+      product: string
+    }[],
+    totalPrice: number,
+    subTotalPrice: number
+  }
+}) => {
   const { data } = await apiMethod.post(BASE_URL_API_DEV + CREATE_ORDER_CLIENT, {
     ...payload
   })
   return data
 }
 
-export const getOrderDetail = async (code: string | null, accessToken: string | null) => {
-  try {
-    const response = await fetch(
-      BASE_URL_API_DEV + V1_ORDER_DETAIL +
-      `/${code}`,
-      {
-        method: "GET",
-        headers: {
-          'Accept': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        cache: "no-cache"
-      }
-    );
-      
-    if (!response.ok) {
-      console.log(response);
-      throw new Error(`Error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err) {
-    console.log("FETCHING FAIL!", err);
-  }
+export const getOrderDetail = async (code: string | null) => {
+  const { data } = await apiMethod.get(GET_ORDER_DETAIL + `/${code}`)
+  return data
 }

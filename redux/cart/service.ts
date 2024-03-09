@@ -4,7 +4,8 @@ import {
   GET_LIST_PRODUCTS_IN_CART,
   ADD_ONE_ITEM_IN_CART,
   DELETE_ONE_ITEM_IN_CART,
-  REMOVE_PRODUCT_IN_CART
+  REMOVE_PRODUCT_IN_CART,
+  DELETE_ALL_PRODUCTS_IN_CART
 } from "@/constants";
 
 export const addProductToCart = async (payload: {
@@ -63,6 +64,13 @@ export const removeProductInCart = async (payload: {
 }) => {
   const { data } = await apiMethod.patch(REMOVE_PRODUCT_IN_CART, {
     ...payload
+  })
+  return data
+}
+
+export const deleteAllProductsInCart = async (userId: string) => {
+  const { data } = await apiMethod.post(DELETE_ALL_PRODUCTS_IN_CART, {
+    userId
   })
   return data
 }

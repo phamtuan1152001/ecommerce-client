@@ -87,7 +87,7 @@ const SignIn = ({ setOpen }: Props) => {
         retText: string,
         retData: UserInfoType
       } = await loginUser(req)
-      // console.log("res", res)
+      console.log("res", res)
       if (res?.retCode === 0) {
         const user_info = {
           savepassword,
@@ -95,9 +95,9 @@ const SignIn = ({ setOpen }: Props) => {
         }
         localStorage.setItem("USER_INFO", JSON.stringify(user_info))
         apiMethod.defaults.headers.common["Authorization"] = res.retData.accessToken;
-        // dispatch(fetchCartRequest({
-        //   accessToken: res?.data?.accessToken
-        // }));
+        dispatch(fetchCartRequest({
+          userId: res.retData.id
+        }));
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ĐĂNG NHẬP THÀNH CÔNG",
