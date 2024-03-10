@@ -8,7 +8,7 @@ import s from './CustomPagination.module.css'
 import PageLink from './components/PageLink'
 
 export type Props = {
-  data: [],
+  data: any,
   currentPage: number
   lastPage: number
   maxLength: number
@@ -30,10 +30,6 @@ const CustomPagination: FC<Props> = ({
 }: Props) => {
   return (
     <div className='flex flex-col space-y-6 items-center max-[768px]:space-y-4'>
-      <p className='text-black text-base'>
-        Hiển thị từ 1 đến {data?.length} / {data?.length} sản phẩm
-      </p>
-      
       <nav className={cn(s.pagination)} aria-label="Pagination">
         <PageLink
           disabled={currentPage === 1}
