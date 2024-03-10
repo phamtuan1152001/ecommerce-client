@@ -17,8 +17,8 @@ const mulish = Mulish({
 });
 
 export const metadata: Metadata = {
-  title: 'Shop Vũ Hoàng',
-  description: 'Shop Vũ Hoàng',
+  title: 'Shop PTuan',
+  description: 'Shop PTuan',
 };
 
 export default function RootLayout({

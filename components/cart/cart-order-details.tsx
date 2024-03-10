@@ -25,7 +25,7 @@ import {
 import { getCartSelector, getLoadingSelector } from '@/redux/cart/selector';
 
 // @utility
-import { formatToCurrencyVND, getUserToken } from '@/utility/common';
+import { formatToCurrencyVND } from '@/utility/common';
 
 // @constants
 import { INCREMENT_BTN, DECREMTN_BTN, NO_DATA_IMAGE } from '@/constants';
