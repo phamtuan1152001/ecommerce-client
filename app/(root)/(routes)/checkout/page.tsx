@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/navigation";
 
+// @container
 import { Container } from '@/components/ui/container';
 import {
   Form,
@@ -19,19 +20,17 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio';
 import { Textarea } from '@/components/ui/textarea';
-
-import { PiHandbagThin } from 'react-icons/pi';
 import { CartInformationRight } from '@/components/cart/cart-information-right';
-
 import SelectionComponent from "@/components/form/selection-component";
-// import Selection from "@/components/form/selection";
 import BreadcrumbComponent from "@/components/bread-crumd";
 import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 import SlideInModal from "@/components/slide-in-modal";
+
+// @icon
+import { PiHandbagThin } from 'react-icons/pi';
 
 // @validation
 import { formSchema } from "@/validation/form-checkout";
@@ -47,7 +46,6 @@ import {
 import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants";
 
 // @utility
-import { parseInt } from "lodash";
 import { getUserToken } from "@/utility/common";
 import { toastNotiFail } from "@/utility/toast";
 
@@ -64,28 +62,10 @@ import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 // @action-cart
 import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
 
-interface UserType {
-  email: string;
-  fullName: string;
-  phone: string;
-  provinceId: string;
-  districtId: string;
-  wardId: string;
-  address: string;
-  fullNameSender: string;
-  phoneReceiver: string;
-  fullNameReceiver: string;
-  description: string;
-  saveInfo: boolean;
-}
-
 const CheckOut = () => {
   const router = useRouter()
   const dispatch = useDispatch()
 
-  // const userCheckoutInfoRaw: string | null = localStorage.getItem("USER_INFO_CHECKOUT");
-  // const userCheckoutInfo: UserType = userCheckoutInfoRaw
-  //   ? JSON.parse(userCheckoutInfoRaw) : {};
   const isAuthenticated = !!getUserToken()
 
   const carts = useSelector(getCartSelector);
@@ -303,12 +283,12 @@ const CheckOut = () => {
       if (res.retCode === 0) {
         DiaglogPopup({
           icon: <IconSuccess />,
-          title: "TẠO ĐƠN HÀNG THÀNH CÔNG",
-          description: "Đơn hàng của bạn đã được tạo thành công",
+          title: "ORDER CREATION SUCCESSFULLY",
+          description: "Your order has been successfully created",
           textButtonOk: methodPayment === PAYMENT_ATM_BANKING
-            ? "Chuyển khoản ngân hàng"
-            : "Trở về trang chủ",
-          textButtonCancel: "Xem lại đơn",
+            ? "Bank transfer"
+            : "Back to home",
+          textButtonCancel: "Review order",
           isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
           closeOnClickOverlay: false,
           className: "max-[768px]:w-[380px]",
@@ -330,9 +310,9 @@ const CheckOut = () => {
       } else {
         DiaglogPopup({
           icon: <IconFail />,
-          title: "TẠO ĐƠN HÀNG THẤT BẠI",
-          description: "Đơn hàng của bạn đã được tạo thất bại",
-          textButtonOk: "Đóng",
+          title: "CREATE ORDER FAILED",
+          description: "Your order has failed to be created",
+          textButtonOk: "Close",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
@@ -346,9 +326,9 @@ const CheckOut = () => {
     } catch (err) {
       DiaglogPopup({
         icon: <IconFail />,
-        title: "LỖI HỆ THỐNG",
-        description: "Vui lòng thử lại sau",
-        textButtonOk: "Đóng",
+        title: "SYSTEM ERROR",
+        description: "Please try again later",
+        textButtonOk: "Close",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
@@ -374,11 +354,11 @@ const CheckOut = () => {
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
-              title: "Giỏ hàng",
+              title: "Cart",
               to: "/"
             },
             {
-              title: "Thanh toán",
+              title: "Payment",
               to: `/checkout`
             }
           ]} />
@@ -401,7 +381,7 @@ const CheckOut = () => {
                   <div className=' flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
-                      <h3 className=' text-[20px] font-bold'>Thông Tin Liên Hệ</h3>
+                      <h3 className=' text-[20px] font-bold'>Contact Info</h3>
                     </div>
                     <div className=' flex flex-col gap-y-4 '>
                       <div className=' flex gap-x-6 justify-between items-end'>
@@ -417,7 +397,7 @@ const CheckOut = () => {
                                 <FormControl>
                                   <Input
                                     className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                    placeholder='Nhập Email'
+                                    placeholder='Enter Email'
                                     {...field}
                                   />
                                 </FormControl>
@@ -432,7 +412,7 @@ const CheckOut = () => {
                   <div className='flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
-                      <h3 className=' text-[20px] font-bold'>Địa Chỉ Giao Hàng</h3>
+                      <h3 className=' text-[20px] font-bold'>Delivery address</h3>
                     </div>
                     <div className=' flex flex-col gap-y-4 '>
                       <div className='grid grid-cols-2 gap-4 max-[768px]:grid-cols-1'>
@@ -442,12 +422,12 @@ const CheckOut = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                Họ và tên
+                                Full name
                               </FormLabel>
                               <FormControl>
                                 <Input
                                   className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                  placeholder='Nhập Họ và tên'
+                                  placeholder='Enter your first and last name'
                                   {...field}
                                 />
                               </FormControl>
@@ -461,12 +441,12 @@ const CheckOut = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                Số điện thoại
+                                Phone
                               </FormLabel>
                               <FormControl>
                                 <Input
                                   className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                  placeholder='Nhập số điện thoại'
+                                  placeholder='Enter your phone number'
                                   {...field}
                                 />
                               </FormControl>
@@ -482,11 +462,11 @@ const CheckOut = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                Tỉnh/Thành phố
+                                Province/City
                               </FormLabel>
                               <SelectionComponent
                                 datas={listProvinces}
-                                placeholder="Chọn Tỉnh/Thành phố"
+                                placeholder="Select Province/City"
                                 value={field.value}
                                 onChange={(value) => {
                                   field.onChange(value)
@@ -506,11 +486,11 @@ const CheckOut = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                Quận/Huyện
+                                District
                               </FormLabel>
                               <SelectionComponent
                                 datas={listDistricts}
-                                placeholder="Chọn Quận/Huyện"
+                                placeholder="Select District"
                                 value={field.value}
                                 onChange={(value) => {
                                   field.onChange(value)
@@ -530,11 +510,11 @@ const CheckOut = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                Phường/Xã
+                                Wards
                               </FormLabel>
                               <SelectionComponent
                                 datas={listWards}
-                                placeholder="Chọn Phường/Xã"
+                                placeholder="Select Ward/Commune"
                                 value={field.value}
                                 onChange={field.onChange}
                               />
@@ -551,12 +531,12 @@ const CheckOut = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className=' text-sm font-bold text-[#333333]'>
-                                  Số nhà, đường, khu vực
+                                  Address house, street, area
                                 </FormLabel>
                                 <FormControl>
                                   <Input
                                     className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                                    placeholder='Nhập số nhà, đường, khu vực'
+                                    placeholder='Enter house number, street, area'
                                     {...field}
                                   />
                                 </FormControl>
@@ -597,7 +577,7 @@ const CheckOut = () => {
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
                       <h3 className=' text-[20px] font-bold'>
-                        Phương Thức Thanh Toán
+                        Payment methods
                       </h3>
                     </div>
                     <RadioGroup>
@@ -618,11 +598,10 @@ const CheckOut = () => {
                             </div>
                             <div>
                               <p className=' font-bold'>
-                                Thanh toán khi nhận hàng
+                                Payment on delivery
                               </p>
                               <p className=' text-sm font-medium text-[#745B3E]'>
-                                Quý khách hàng sẽ thanh toán hết mặt hàng khi
-                                nhận hàng
+                                Customers will pay for all items upon receipt
                               </p>
                             </div>
                           </Label>
@@ -642,9 +621,9 @@ const CheckOut = () => {
                               />
                             </div>
                             <div>
-                              <p className=' font-bold'>Thanh toán bằng phương thức chuyển khoản</p>
+                              <p className=' font-bold'>Payment by bank transfer</p>
                               <p className=' text-sm font-medium text-[#745B3E]'>
-                                Qua ứng dụng ngân hàng
+                                Via banking app
                               </p>
                             </div>
                           </Label>

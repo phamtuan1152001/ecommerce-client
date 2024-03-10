@@ -26,11 +26,11 @@ export const FOOTER_MENU = {
   info: {
     logo: {
       imgUrl: '/assets/images/logo.png',
-      alt: 'Shop Vũ Hoàng',
+      alt: 'Shop PTuan',
     },
     children: [
       {
-        label: 'Số 126/9 Lê Thiệt, phường Phú Thọ Hòa, quận Tân Phú, thành phố Hồ Chí Minh',
+        label: '126/9 Le Bach, Phu Tho Hoa Ward, Tan Phu District, Ho Chi Minh City',
         icon: MdLocationCity,
       },
       {
@@ -43,65 +43,65 @@ export const FOOTER_MENU = {
       },
     ],
     description:
-      'Phạm Lê Song Tuấn - ITITIU19062',
+      'Pham Le Song Tuan - ITITIU19062',
   },
   about: {
-    title: 'Giới thiệu',
+    title: 'Introduction',
     children: [
       {
-        label: 'Tin tức',
+        label: 'News',
         href: '#',
       },
       {
-        label: 'Trung tâm hỗ trợ',
+        label: 'Support center',
         href: '#',
       },
     ],
   },
   customer_care: {
-    title: 'Chăm sóc khách hàng',
+    title: 'Customer care',
     children: [
       {
-        label: "Chính sách kiểm hàng",
+        label: "Products inspection policy",
         href: "/chinh-sach/chinh-sach-kiem-hang"
       },
       {
-        label: "Bảo Mật Thông Tin",
+        label: "Information security",
         href: "/chinh-sach/chinh-sach-bao-mat-thong-tin"
       },
     ],
   },
   policy: {
-    title: "Chính sách",
+    title: "Policy",
     children: [
       {
-        label: "Chính sách thanh toán",
+        label: "Payment policy",
         href: "/chinh-sach-thanh-toan"
       },
       {
-        label: "Xử lý khiếu nại",
+        label: "Complaint handling",
         href: "/chinh-sach-xu-li-khieu-nai"
       },
       {
-        label: "Vận chuyển và giao nhận",
+        label: "Shipping and delivery",
         href: "/chinh-sach-van-chuyen-va-giao-nhan"
       },
       {
-        label: "Đổi trả và hoàn tiền",
+        label: "Returns and refunds",
         href: "/chinh-sach-doi-tra-va-hoan-tien"
       },
       {
-        label: "Chính sách bảo hành",
+        label: "Warranty Policy",
         href: "/chinh-sach-bao-hanh"
       },
     ]
   },
   certified_by: {
-    title: 'Được chứng nhận bởi',
+    title: 'Certified by',
     children: [
       {
         imgUrl: '/assets/images/footer/da-dang-ky-bo-cong-thuong.svg',
-        alt: 'Đã đăng ký Bộ Công Thương',
+        alt: 'Registered with the Ministry of Industry and Trade',
         href: '#',
       },
       {
@@ -112,7 +112,7 @@ export const FOOTER_MENU = {
     ],
   },
   social_network: {
-    title: 'Kết nối với chúng tôi:',
+    title: 'Connect with us:',
     children: [
       {
         label: 'Facebook',

@@ -71,15 +71,15 @@ const OrderDetailPage = () => {
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
-              title: "Giỏ hàng",
+              title: "Cart",
               to: "/"
             },
             {
-              title: "Thanh toán",
+              title: "Payment",
               to: `/checkout`
             },
             {
-              title: "Xem lại",
+              title: "Review order",
               to: `/checkout/${orderId}`
             }
           ]} />
@@ -107,10 +107,10 @@ const OrderDetailPage = () => {
                   ? (
                     <div className="">
                       <p className="text-base font-normal">
-                        Vui lòng kiểm tra tin nhắn để theo dõi đơn. Shipper sẽ giao hàng sau khi nhận được thanh toán.
+                        Please check your messages to track your order. Shipper will deliver the goods after receiving payment.
                       </p>
                       <p className="text-base font-normal">
-                        Quét mã QR thanh toán:
+                        Scan payment QR code:
                       </p>
                       <div className='flex flex-row justify-center items-center'>
                         <Image
@@ -130,11 +130,11 @@ const OrderDetailPage = () => {
                     <div className="flex flex-col justify-center items-center">
                       <CartIcon className='w-6 h-6' />
                     </div>
-                    <h1 className="font-bold text-lg text-[#000000]">Chi tiết đơn hàng</h1>
+                    <h1 className="font-bold text-lg text-[#000000]">Order details</h1>
                   </div>
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-xs font-semibold text-[#000000]">Sản phẩm</h3>
-                    <h3 className="text-xs font-semibold text-[#000000]">Tổng đơn hàng</h3>
+                    <h3 className="text-xs font-semibold text-[#000000]">Products</h3>
+                    <h3 className="text-xs font-semibold text-[#000000]">Total order</h3>
                   </div>
                   <div className="flex flex-col justify-between items-start">
                     {detailOrder?.cartDetail?.items?.map((item: any, index: number) => {
@@ -145,7 +145,7 @@ const OrderDetailPage = () => {
                               {item?.product?.name}
                             </h3>
                             <p className="text-sm font-normal text-[#676767]">
-                              Số lượng: {String(item?.quantity).padStart(2, "0")}
+                              Quantity: {String(item?.quantity).padStart(2, "0")}
                             </p>
                           </div>
                           <h4 className="text-base font-bold text-[#FA9E14]">
@@ -158,10 +158,10 @@ const OrderDetailPage = () => {
                 </div>
                 <div className="flex flex-col gap-y-4 py-6 border-b-2 border-[#DFE3E8]">
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Phương thức thanh toán</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
                     <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
                       {detailOrder?.paymentMethod
-                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Thanh toán khi nhận hàng)" : "Chuyển khoản ngân hàng"
+                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
                         : "--"}
                     </h3>
                   </div>
@@ -184,7 +184,7 @@ const OrderDetailPage = () => {
                 </div>
                 <div className="flex flex-col pt-6">
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Tổng đơn đặt hàng</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Total order</h3>
                     <h3 className="text-base font-bold text-[#000000]">
                       {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
                     </h3>
@@ -197,16 +197,16 @@ const OrderDetailPage = () => {
                     <PaymentSuccessStatus />
                   </div>
                   <h2 className="text-lg font-bold text-[#4EC389]">
-                    Cảm ơn bạn. Đơn hàng của bạn đã được xác nhận
+                    Thank you. Your order has been confirmed
                   </h2>
                 </div>
                 <div className="flex flex-col gap-y-4 pt-4">
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Mã đơn hàng:</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
                     <h3 className="text-base font-bold text-[#000000]">{detailOrder?._id}</h3>
                   </div>
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Ngày mua hàng:</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Date of purchase:</h3>
                     <h3 className="text-base font-bold text-[#000000]">
                       {moment(detailOrder?.updateAt)?.isValid()
                         ? moment(detailOrder?.updateAt).format("DD/MM/YYYY HH:MM")
@@ -214,16 +214,16 @@ const OrderDetailPage = () => {
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Tổng đơn đặt hàng</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Total order</h3>
                     <h3 className="text-base font-bold text-[#000000]">
                       {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Phương thức Thanh toán:</h3>
+                    <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
                     <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
                       {detailOrder?.paymentMethod
-                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Thanh toán khi nhận hàng)" : "Chuyển khoản ngân hàng"
+                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
                         : "--"}
                     </h3>
                   </div>

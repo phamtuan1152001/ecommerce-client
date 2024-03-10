@@ -95,7 +95,7 @@ const ForgotPassword = ({ idTab, setOpen }: Props) => {
       <div className="mt-8">
         <h4 className="text-center text-base font-normal text-textColor-description">
           Quay trở lại trang?
-          <span onClick={() => setOpen(false)} className="ml-2 text-textColor-login cursor-pointer">Đăng nhập</span>
+          <span onClick={() => setOpen(false)} className="ml-2 text-textColor-login cursor-pointer">Sign In</span>
         </h4>
       </div>
     </React.Fragment>

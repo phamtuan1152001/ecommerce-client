@@ -16,8 +16,8 @@ export const FeaturedCategories = ({ listCategories }: FeaturedCategoriesProps) 
         <Container className='max-[768px]:px-3'>
           <div>
             <Heading
-              title='DANH MỤC NỔI BẬT'
-              description={`${listCategories?.length}+ Danh mục nổi bật`}
+              title='FEATURED LIST'
+              description={`${listCategories?.length}+ Featured categories`}
               className='mb-3 max-[768px]:mb-4'
             />
           </div>

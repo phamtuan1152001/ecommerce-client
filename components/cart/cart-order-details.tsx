@@ -85,7 +85,7 @@ export const CartOrderDetails = () => {
       <div className='flex items-center space-x-2 mb-4'>
         <CartIcon className='w-6 h-6' />
         <h5 className='text-xl text-black font-bold capitalize'>
-          Chi tiết đơn hàng
+          Order details
         </h5>
       </div>
 

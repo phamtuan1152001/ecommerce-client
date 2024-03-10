@@ -115,7 +115,7 @@ export default function ProductsByCategoryItem({
               className='text-[#333] border-current rounded-3xl font-bold'
               onClick={() => router.push(item?.slug || "#")}
             >
-              Xem thêm
+              Read more
               <ArrowRight className='ml-1' />
             </Button>
           </div>

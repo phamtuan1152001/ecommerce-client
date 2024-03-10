@@ -27,7 +27,7 @@ export const DiscountCodeItem = () => {
               variant='ghost'
               className='text-sm font-semibold text-[#202020]'
             >
-              {isOpen ? 'Thu gọn' : 'Xem thêm'}
+              {isOpen ? 'Thu gọn' : 'Read more'}
               {isOpen ? (
                 <LuChevronUp className='w-5 h-5 ml-2 text-[#637381]' />
               ) : (

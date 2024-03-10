@@ -104,7 +104,7 @@ export const GlobalSearch = () => {
   };
 
   return (
-    <div className='relative flex-shrink-0 max-w-[220px] w-full'>
+    <div className='relative flex-shrink-0 max-w-[240px] w-full'>
       <div className='bg-[#F5F5F5] rounded-3xl flex items-center px-4 space-x-2 '>
         <Button variant='ghost' size='icon' className='w-6 h-6 shrink-0'>
           <LuSearch className='w-5 h-5' />
@@ -112,7 +112,7 @@ export const GlobalSearch = () => {
 
         <Input
           type='text'
-          placeholder='Bạn cần tìm gì?'
+          placeholder='What are you looking for?'
           className='bg-transparent border-none placeholder:text-[#2E2E2E] px-0 flex-1 w-full'
           value={input}
           onFocus={() => setIsOpen(true)}

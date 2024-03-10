@@ -137,7 +137,7 @@ const ProductsBody = ({ slug }: ProductsBody) => {
           <Container>
             <BreadcrumbComponent breadcrumbs={[
               {
-                title: "Trang chủ",
+                title: "Home page",
                 to: "/"
               },
               {

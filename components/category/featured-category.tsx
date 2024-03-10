@@ -12,7 +12,7 @@ export const FeaturedCategory = ({ item }: FeaturedCategoryProps) => {
 
   return (
     <div className='px-2.5 pb-5'>
-      <Link href={item.slug ?? "/"}>
+      <Link href={item.slug ?? "/"} scroll={true}>
         <div className='aspect-[160/254] relative w-full rounded-[124px] overflow-hidden flex items-center justify-center'>
           <Image
             src={item.imageUrl}

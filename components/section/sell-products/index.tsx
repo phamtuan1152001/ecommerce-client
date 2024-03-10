@@ -67,7 +67,7 @@ export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
                 />
               </div>
               <h2 className=' font-bold text-[#FFFFFF] text-[26px] leading-9 uppercase max-[768px]:text-2xl'>
-                Sản Phẩm Bán Chạy
+                Selling products
               </h2>
             </div>
             <div className='sell-products pt-6 max-[768px]:pt-4'>

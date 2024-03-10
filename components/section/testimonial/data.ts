@@ -3,22 +3,22 @@ import { MdLocalShipping, MdHandshake, MdPaid, MdChangeCircle } from 'react-icon
 export const TESTIMONIAL = [
   {
     icon: MdPaid,
-    title: 'Đảm bảo chất lượng',
-    subtitle: 'Hàng chất lượng, rõ nguồn gốc',
+    title: 'Quality assurance',
+    subtitle: 'Quality products, clear origin',
   },
   {
     icon: MdLocalShipping,
-    title: 'Giao hàng thần tốc',
-    subtitle: 'Yên tâm mua sắm, giải tỏa rủi ro',
+    title: 'Speedy delivery',
+    subtitle: 'Buy with peace of mind and reduce risks',
   },
   {
     icon: MdHandshake,
-    title: 'Mua hàng giá gốc',
-    subtitle: 'Giá bán niêm yết chính xác',
+    title: 'Buy at original price',
+    subtitle: 'Listed selling price is accurate',
   },
   {
     icon: MdChangeCircle,
-    title: 'Đổi trả linh hoạt',
-    subtitle: 'Yên tâm mua sắm, giải tỏa rủi ro',
+    title: 'Flexible returns',
+    subtitle: 'Buy with peace of mind and reduce risks',
   },
 ]

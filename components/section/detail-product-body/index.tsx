@@ -87,9 +87,9 @@ export default function DetailProductBody({
     } else {
       DiaglogPopup({
         icon: <IconFail />,
-        title: "THÊM ĐƠN HÀNG THẤT BẠI",
-        description: "Vui lòng đăng nhập để tiếp tục",
-        textButtonOk: "Đăng nhập",
+        title: "FAIL TO ADD PRODUCT IN CART",
+        description: "Please log in to continue",
+        textButtonOk: "Sign In",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
@@ -121,9 +121,9 @@ export default function DetailProductBody({
     } else {
       DiaglogPopup({
         icon: <IconFail />,
-        title: "THÊM ĐƠN HÀNG THẤT BẠI",
-        description: "Vui lòng đăng nhập để tiếp tục",
-        textButtonOk: "Đăng nhập",
+        title: "FAIL TO ADD PRODUCT IN CART",
+        description: "Please log in to continue",
+        textButtonOk: "Sign In",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
@@ -222,11 +222,11 @@ export default function DetailProductBody({
 
                 <div className='flex items-center gap-2'>
                   <p className='text-base text-[#003966] font-bold'>
-                    Gọi đặt mua:
+                    Call to order:
                   </p>
-                  <p className='text-lg text-black'>0909 082 912</p>
+                  <p className='text-lg text-black'>089 887 1665</p>
                   <p className='text-base text-[#181818]'>
-                    (8h30 -19h00)
+                    (8h30 -22h00)
                   </p>
                 </div>
 
@@ -236,14 +236,14 @@ export default function DetailProductBody({
                     className='text-[#00508F] font-semibold text-base border-current h-12 w-full'
                     onClick={() => handleAddToCart()}
                   >
-                    Thêm vào giỏ hàng
+                    Add to cart
                   </Button>
 
                   <Button
                     className='font-semibold text-base h-12 w-full text-white'
                     onClick={() => handleBuyNow()}
                   >
-                    Mua ngay
+                    Buy now
                   </Button>
                 </div>
               </div>

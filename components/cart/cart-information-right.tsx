@@ -24,10 +24,10 @@ export const CartInformationRight = () => {
   const handleCancelCheckout = () => {
     DiaglogPopup({
       icon: null,
-      title: "HỦY THANH TOÁN?",
-      description: "Nếu bạn rời khỏi đây, mọi thông tin thanh toán của bạn sẽ bị huỷ. Bạn chắc chắn muốn rời khỏi?",
-      textButtonOk: "Tiếp tục thanh toán",
-      textButtonCancel: "Rời khỏi đây",
+      title: "CANCEL PAYMENT?",
+      description: "If you leave here, all your payment information will be canceled. Are you sure you want to leave?",
+      textButtonOk: "Continue payment",
+      textButtonCancel: "Leave here",
       isBtnCancel: true,
       closeOnClickOverlay: false,
       className: "max-[768px]:w-[400px]",
@@ -56,7 +56,7 @@ export const CartInformationRight = () => {
       <Box className='bg-[#181818] max-[768px]:fixed max-[768px]:bottom-0 max-[768px]:left-0 max-[768px]:z-10'>
         <div className='grid grid-cols-2 gap-2.5'>
           <div>
-            <p className='text-base text-white font-semibold'>Tổng cộng</p>
+            <p className='text-base text-white font-semibold'>Total</p>
             <p className='text-lg font-bold text-[#FA9E14]'>
               {formatToCurrencyVND(carts.totalPrice)}
             </p>
@@ -68,7 +68,7 @@ export const CartInformationRight = () => {
               className=' w-full text-base font-semibold text-[#202020] rounded-lg bg-[#F5F5F5]'
               type='submit'
             >
-              Hoàn tất đơn hàng
+              Complete your order
             </Button>
             <Button
               variant='secondary'
@@ -76,7 +76,7 @@ export const CartInformationRight = () => {
               onClick={() => handleCancelCheckout()}
               type='button'
             >
-              Quay lại giỏ hàng
+              Return to cart
             </Button>
           </div>
         </div>

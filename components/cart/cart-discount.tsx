@@ -27,7 +27,7 @@ export const CartDiscount = () => {
         </Button>
       </div>
 
-      <DiscountCodeModal triggerText='Xem thêm mã giảm giá' />
+      <DiscountCodeModal triggerText='Read more mã giảm giá' />
     </Box>
   );
 };

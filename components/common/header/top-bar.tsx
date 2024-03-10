@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,10 +26,7 @@ import {
 import { resetCart, fetchCartRequest } from '@/redux/cart/actions';
 
 // @utility
-import { slitName, logOut, getUserToken, getRefreshToken, getIsSavePassword, getUserInfo } from '@/utility/common';
-
-// @constants
-import { SUCCESS } from '@/constants';
+import { slitName, logOut, getUserInfo } from '@/utility/common';
 
 // @selector-open-dialog
 import { getIsOpenDialog } from '@/redux/openDiaglog/selector';
@@ -93,7 +89,7 @@ export const TopBar = () => {
                     <DropdownMenuTrigger asChild>
                       <div className='flex flex-row justify-start items-center cursor-pointer'>
                         <h2 className='text-base text-white'>
-                          Xin chào {" "}
+                          Hello {" "}
                           <span className='font-bold'>
                             {slitName((userInfo as any)?.fullName)}
                           </span>
@@ -105,7 +101,7 @@ export const TopBar = () => {
                         className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
                         onClick={() => handleLogOut()}
                       >
-                        <span className='font-bold text-sm'>Đăng xuất</span>
+                        <span className='font-bold text-sm'>Logout</span>
                       </Button>
                     </DropdownMenuContent>
                   </DropdownMenu>

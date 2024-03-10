@@ -40,7 +40,7 @@ export const CategoryView = ({
 
       <div className='flex flex-row justify-between items-center max-[768px]:flex-col'>
         <p className='text-lg text-[#333] font-bold max-[768px]:text-center'>
-          {listProducts.length} sản phẩm
+          {listProducts.length} products
         </p>
       </div>
 

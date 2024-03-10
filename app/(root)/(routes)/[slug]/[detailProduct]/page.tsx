@@ -40,7 +40,7 @@ export default async function Page({ params }: PageProps) {
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
-              title: "Trang chủ",
+              title: "Home page",
               to: "/"
             },
             {

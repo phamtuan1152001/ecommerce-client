@@ -146,7 +146,7 @@ export const Footer = () => {
                 </h5>
 
                 {FOOTER_MENU['certified_by']['children'].length > 0 && (
-                  <ul className='space-x-3 flex items-start'> {/* items-center */}
+                  <ul className='space-x-3 flex items-start'>
                     {FOOTER_MENU['certified_by']['children'].map(
                       ({ imgUrl, alt, href }) => (
                         <li key={imgUrl}>
@@ -212,12 +212,12 @@ export const Footer = () => {
 
       <div className='px-16 pb-8 flex flex-col items-end gap-3 max-[768px]:flex-col max-[768px]:items-start max-[768px]:gap-3 max-[768px]:pl-3 max-[768px]:pb-8 max-[768px]:pr-16'>
         <p className='body-text-normal font-bold text-[#FBFBFB]'>
-          Phương thức thanh toán
+          Payment methods
         </p>
 
         <div className='flex items-center gap-3 max-[768px]:flex-wrap'>
-          {PAYMENT_METHODS.map((item) => (
-            <div>
+          {PAYMENT_METHODS.map((item, index) => (
+            <div key={index}>
               <Image
                 key={item.name}
                 src={item.imgUrl}
@@ -233,10 +233,10 @@ export const Footer = () => {
       <div className='py-3.5 bg-[#333131]'>
         <Container>
           <p className='text-sm leading-normal text-[#C1C1C1] text-center'>
-            Địa chỉ: Số 126/9 Lê Thiệt, phường Phú Thọ Hòa, quận Tân Phú, thành phố Hồ Chí Minh.
+            Address: 126/9 Le Thiet, Phu Tho Hoa Ward, Tan Phu District, Ho Chi Minh City.
           </p>
           <p className='text-sm leading-normal text-center text-[#c51143]'>
-            Powered by PHẠM LÊ SONG TUẤN - ITITIU19062
+            Powered by PHAM LE SONG TUAN - ITITIU19062
           </p>
         </Container>
       </div>

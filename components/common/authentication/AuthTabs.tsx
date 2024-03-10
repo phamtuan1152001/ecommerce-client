@@ -55,7 +55,7 @@ const AuthTabs = ({ setOpen }: Props) => {
                         data-[state=active]:shadow-none data-[state=active]:font-bold data-[state=active]:text-[#333333] relative 
                         after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:inline-block after:bg-transparent after:translate-y-1/2 data-[state=active]:after:bg-[#3F3F3F]'
 							>
-								Đăng nhập
+								Sign In
 							</TabsTrigger>
 							<TabsTrigger
 								value='signup'

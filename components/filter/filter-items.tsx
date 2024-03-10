@@ -52,7 +52,7 @@ export const FilterItems = ({
           className='text-sm text-[#202020] font-bold inline-flex items-center py-2'
         >
           <MdKeyboardDoubleArrowDown className='w-5 h-5 mr-2 text-current' />
-          Xem thêm
+          Read more
         </button>
       )}
     </div>

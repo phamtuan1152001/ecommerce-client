@@ -20,7 +20,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, slugName }: ProductCardProps) => {
   return (
-    <div className='relative mx-2 bg-white rounded-[4px]'>
+    <div key={product._id} className='relative mx-2 bg-white rounded-[4px]'>
       <Link href={`/${product.categories.slug}/` + product.slug} >
         <div className='aspect-square relative'>
           <Image

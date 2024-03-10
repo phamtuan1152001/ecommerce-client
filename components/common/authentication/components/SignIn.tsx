@@ -239,7 +239,7 @@ const SignIn = ({ setOpen }: Props) => {
             <p>Nhớ mật khẩu</p>
           </div>
           <div className=" mt-8 flex flex-col">
-            <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Đăng nhập</Button>
+            <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Sign In</Button>
             <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button>
           </div>
         </form>

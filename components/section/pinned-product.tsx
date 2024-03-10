@@ -21,7 +21,7 @@ export default function PinnedProduct() {
 
         <div className='space-y-3'>
           <Button className='w-full text-base font-semibold bg-[#333] h-12'>
-            Mua ngay
+            Buy now
           </Button>
 
           <Button
