@@ -22,7 +22,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 // @api
-import { postUserRegister } from "@/lib/api/authenticate";
+import { registerUser } from "@/lib/api/authenticate";
 
 // @constants
 import { POST_SUCCESS, SUCCESS } from "@/constants";
@@ -64,14 +64,14 @@ const RegisterAccountPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { fullname, email, phone, usename, password } = values || {}
     try {
-      const req = {
+      const req: any = {
         fullName: fullname,
         username: usename,
         email: email,
         password: password,
         phone: phone
       }
-      const res = await postUserRegister(req)
+      const res: any = await registerUser(req)
       if (res?.statusCode === SUCCESS) {
         DiaglogPopup({
           icon: <IconSuccess />,

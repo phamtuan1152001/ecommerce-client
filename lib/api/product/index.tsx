@@ -8,13 +8,15 @@ export const getProducts = async (
   page: number = 1,
   size: number = 6,
   categories = "",
-  productText = ""
+  productText = "",
+  status = "publish"
 ) => {
   const { data } = await apiMethod.post(GET_LIST_PRODUCTS, {
     page,
     size,
     categories,
-    productText
+    productText,
+    status
   })
   return data
 }
