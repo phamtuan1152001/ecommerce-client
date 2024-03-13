@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link';
 import Image from 'next/image';
 import { BiUserCircle, BiShoppingBag } from 'react-icons/bi';
+import { useRouter } from "next/navigation";
 
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
 
 export const TopBar = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const userInfo = getUserInfo()
   const isOpen = useSelector(getIsOpenDialog);
@@ -96,12 +98,20 @@ export const TopBar = () => {
                         </h2>
                       </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className='bg-transparent p-0 border-0'>
+                    <DropdownMenuContent className='bg-transparent p-0 border-0 flex flex-col justify-center gap-y-4'>
                       <Button
                         className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
                         onClick={() => handleLogOut()}
                       >
                         <span className='font-bold text-sm'>Logout</span>
+                      </Button>
+                      <Button
+                        className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
+                        onClick={() => {
+                          router.push("/customize-product")
+                        }}
+                      >
+                        <span className='font-bold text-sm'>Customize product</span>
                       </Button>
                     </DropdownMenuContent>
                   </DropdownMenu>
