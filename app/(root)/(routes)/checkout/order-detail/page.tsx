@@ -136,7 +136,7 @@ const OrderDetailPage = () => {
                     <h3 className="text-xs font-semibold text-[#000000]">Products</h3>
                     <h3 className="text-xs font-semibold text-[#000000]">Total order</h3>
                   </div>
-                  <div className="flex flex-col justify-between items-start">
+                  <div className="flex flex-row justify-between items-start">
                     {detailOrder?.cartDetail?.items?.map((item: any, index: number) => {
                       return (
                         <React.Fragment key={`${item?.id}-${index}`}>

@@ -33,6 +33,7 @@ export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
     slidesToShow: 4.5,
     slidesToScroll: 2,
     dotsClass: 'mt-6 max-[768px]:mt-4',
+    infinite: false,
     customPaging(index) {
       return (
         <div className={`slick-dot before:bg-white`} />

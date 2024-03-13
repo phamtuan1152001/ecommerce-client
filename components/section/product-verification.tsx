@@ -11,19 +11,19 @@ import { SlickSlider } from '@/components/ui/slick-slider';
 
 const DATA = [
   {
-    name: 'Cam kết hàng chính hãng',
+    name: 'Guaranteed genuine products',
     icon: ShieldCheckIcon,
   },
   {
-    name: 'Đổi trả trong vòng 7 ngày\n(theo chính sách đổi trả)',
+    name: 'Return within 7 days\n(according to return policy)',
     icon: ConsumableIcon,
   },
   {
-    name: 'Giao hàng thần tốc',
+    name: 'Speedy delivery',
     icon: DeliveryTruckIcon,
   },
   {
-    name: 'Mua hàng giá gốc',
+    name: 'Buy at original price',
     icon: LotsOfCashIcon,
   },
 ];
