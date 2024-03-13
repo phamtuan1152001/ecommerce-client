@@ -87,8 +87,8 @@ export const TopBar = () => {
                 ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <div className='flex flex-row justify-start items-center cursor-pointer'>
-                        <h2 className='text-base text-white'>
+                      <div className='flex flex-row justify-start items-center cursor-pointer w-[130px]'>
+                        <h2 className='text-sm text-white'>
                           Hello {" "}
                           <span className='font-bold'>
                             {slitName((userInfo as any)?.fullName)}
