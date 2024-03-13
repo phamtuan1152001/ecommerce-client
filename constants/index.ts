@@ -21,7 +21,7 @@ export const DELETE_ALL_PRODUCTS_IN_CART = "/cart/delete-all-products-in-cart"
 
 /* ORDER API */
 export const CREATE_ORDER_CLIENT = "/order/create-order"
-export const GET_ORDER_DETAIL = "/order/get-detail-order"
+export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
 
 /* CONSTANTS DATA */
 export const SUCCESS = 200;
