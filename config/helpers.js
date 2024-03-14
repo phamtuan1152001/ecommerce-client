@@ -1,8 +1,6 @@
 export const downloadCanvasToImage = () => {
   const canvas = document.querySelector("canvas");
-  console.log("canvas", canvas);
   const dataURL = canvas.toDataURL("image/png");
-  console.log(dataURL);
   const link = document.createElement("a");
 
   link.href = dataURL;

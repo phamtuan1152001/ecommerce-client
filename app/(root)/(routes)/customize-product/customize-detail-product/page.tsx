@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation"
 import CanvasModel from "@/canvas"
 import Image from "next/image"
 import { Container } from "@/components/ui/container"
+import apiMethod from "@/utility/ApiMethod"
 
 type DecalTypeKey = 'logo' | 'full';
 
@@ -28,7 +29,10 @@ const Customizer = () => {
   const [generatingImg, setGeneratingImg] = useState(false)
 
   const [activeEditotTab, setActiveEditorTab] = useState("")
-  const [activeFilterTab, setActiveFilterTab] = useState({
+  const [activeFilterTab, setActiveFilterTab] = useState<{
+    logoShirt: boolean,
+    stylishShirt: boolean
+  }>({
     logoShirt: true,
     stylishShirt: false
   })
@@ -81,19 +85,17 @@ const Customizer = () => {
     try {
       // call our backend to generate an ai image
       setGeneratingImg(true)
-      const response = await fetch('http://localhost:8080/api/v1/dalle', {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          prompt
-        })
+      const response: {
+        data: {
+          retCode: number,
+          retText: string,
+          photo: string
+        }
+      } = await apiMethod.post("http://localhost:3002/dall-e/generate-image-by-text", {
+        prompt
       })
-      const data = await response.json()
-      // console.log("data", data);
 
-      handleDecals(type, `data:image/png;base64,${data.photo}`)
+      handleDecals(type, `data:image/png;base64,${response.data.photo}`)
     } catch (error) {
       console.log(error);
     } finally {
@@ -104,26 +106,28 @@ const Customizer = () => {
   /* Design a simple modern logo icon using geometric shapes and a minimalistic color scheme, without any text or lettering */
   /* Create a unique t-shirt texture that has a vintage and distressed look. The texture should be designed to cover the entire front and should have a rough and gritty feel to it. Please use colors such as faded, red, beige, and black to create a rugged and worn-out appearance */
 
-  const handleDecals = (type: DecalTypeKey, result: any) => {
+  const handleDecals = (type: DecalTypeKey, result: string) => {
     const decalType = DecalTypes[type]
 
-    state[decalType.stateProperty] = result
+    if (type === "logo") {
+      state.logoDecal = result
+    } else {
+      state.fullDecal = result
+    }
+    // state[decalType.stateProperty] = result
 
-
-    if (!activeFilterTab[decalType.filterTab]) {
+    if (!((activeFilterTab as any)[decalType.filterTab])) {
       handleActiveFilterTab(decalType.filterTab)
     }
   }
 
-  const readFile = (type: any) => {
+  const readFile = (type: DecalTypeKey) => {
     reader(file)
       .then((result) => {
         handleDecals(type, result)
         setActiveEditorTab("")
       })
   }
-
-  // console.log("activeFilterTab", activeFilterTab)
 
   return (
     <Container className="my-6">

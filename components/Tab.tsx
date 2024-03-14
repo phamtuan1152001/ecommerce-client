@@ -14,7 +14,7 @@ interface TabProps {
 
 const Tab = ({ keyId, tab, handleClick, isFilterTab, isActiveTab }: TabProps) => {
   const snap = useSnapshot(state)
-  console.log("isActiveTab-1", isActiveTab);
+  // console.log("isActiveTab-1", isActiveTab);
 
   const activeStyles = isFilterTab && isActiveTab
     ? { backgroundColor: snap.color, opacity: 0.5 }
