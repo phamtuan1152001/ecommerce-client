@@ -147,15 +147,19 @@ const Customizer = () => {
           >
             <div className="flex items-center">
               <div className="editortabs-container tabs">
-                {EditorTabs.map((tab, index) => (
-                  <Tab
-                    keyId={`${tab.name}-${index}`}
-                    tab={tab}
-                    handleClick={() => {
-                      setActiveEditorTab(tab.name)
-                    }}
-                  />
-                ))}
+                {EditorTabs.map((tab, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <Tab
+                        keyId={`${tab.name}-${index}`}
+                        tab={tab}
+                        handleClick={() => {
+                          setActiveEditorTab(tab.name)
+                        }}
+                      />
+                    </React.Fragment>
+                  )
+                })}
                 {generateTabContent()}
               </div>
             </div>
@@ -181,18 +185,22 @@ const Customizer = () => {
           className="filtertabs-container mt-4"
           {...slideAnimation("up")}
         >
-          {FilterTabs.map((tab, index) => (
-            <Tab
-              keyId={`${tab.name}-${index}`}
-              tab={tab}
-              isFilterTab
-              // isActiveTab={activeFilterTab[tab.name]}
-              isActiveTab={tab.name === "logoShirt" ? state.isLogoTexture : state.isFullTexture}
-              handleClick={() => {
-                handleActiveFilterTab(tab.name)
-              }}
-            />
-          ))}
+          {FilterTabs.map((tab, index) => {
+            return (
+              <React.Fragment key={index}>
+                <Tab
+                  keyId={`${tab.name}-${index}`}
+                  tab={tab}
+                  isFilterTab
+                  // isActiveTab={activeFilterTab[tab.name]}
+                  isActiveTab={tab.name === "logoShirt" ? state.isLogoTexture : state.isFullTexture}
+                  handleClick={() => {
+                    handleActiveFilterTab(tab.name)
+                  }}
+                />
+              </React.Fragment>
+            )
+          })}
           <button className='download-btn' onClick={downloadCanvasToImage}>
             <Image
               src={download}
