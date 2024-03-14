@@ -1,3 +1,5 @@
+export type DecalTypeKey = 'logo' | 'full';
+
 export interface ProductType {
   _id: string,
   __v: number,
