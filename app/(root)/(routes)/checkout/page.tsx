@@ -43,7 +43,7 @@ import {
 } from "@/lib/api/common";
 
 // @constants
-import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants";
+import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants";
 
 // @utility
 import { getUserToken } from "@/utility/common";
@@ -61,6 +61,7 @@ import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 
 // @action-cart
 import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
+import { createPaymentWithMOMO } from "@/lib/api/payment";
 
 const CheckOut = () => {
   const router = useRouter()
@@ -205,6 +206,9 @@ const CheckOut = () => {
           setTimeout(() => {
             router.push("/")
           }, 500)
+        } else if (type === 3) {
+          dispatch(resetCart())
+          createPaymentMomo(orderId)
         } else {
           dispatch(resetCart())
           setTimeout(() => {
@@ -214,6 +218,38 @@ const CheckOut = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL", err)
+    }
+  }
+
+  const createPaymentMomo = async (orderId: string) => {
+    try {
+      const req = {
+        amount: JSON.stringify(carts.totalPrice),
+        orderId: orderId,
+        orderInfo: carts.items.map(item => item.product.name).join(", ")
+      }
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: string
+      } = await createPaymentWithMOMO(req)
+      if (res.retCode === 0) {
+        router.push(res?.retData)
+      }
+      // console.log("res", res);
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
+  const renderTextButton = (type: string) => {
+    switch (type) {
+      case PAYMENT_ATM_BANKING:
+        return "Banking transfer"
+      case PAYMENT_MOMO_BANKING:
+        return "MOMO transfer"
+      default:
+        return "Back to homepage"
     }
   }
 
@@ -285,11 +321,9 @@ const CheckOut = () => {
           icon: <IconSuccess />,
           title: "ORDER CREATION SUCCESSFULLY",
           description: "Your order has been successfully created",
-          textButtonOk: methodPayment === PAYMENT_ATM_BANKING
-            ? "Bank transfer"
-            : "Back to home",
+          textButtonOk: renderTextButton(methodPayment),
           textButtonCancel: "Review order",
-          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING ? false : true,
+          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING || methodPayment === PAYMENT_MOMO_BANKING ? false : true,
           closeOnClickOverlay: false,
           className: "max-[768px]:w-[380px]",
           onSubmit: () => {
@@ -297,7 +331,7 @@ const CheckOut = () => {
             handleDeleteAllProductsInCart(
               methodPayment === PAYMENT_ATM_BANKING
                 ? 2
-                : 1
+                : methodPayment === PAYMENT_MOMO_BANKING ? 3 : 1
               , res.retData._id)
             // ) // type = 1 back to home page
           },
@@ -583,7 +617,7 @@ const CheckOut = () => {
                     <RadioGroup>
                       <div className='flex flex-col gap-y-4'>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='compact' id='r2' onClick={() => setMethodPayment(PAYMENT_COD)} />
+                          <RadioGroupItem value={PAYMENT_COD} id='r1' onClick={() => setMethodPayment(PAYMENT_COD)} />
                           <Label
                             htmlFor='r2'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -607,7 +641,7 @@ const CheckOut = () => {
                           </Label>
                         </div>
                         <div className='w-full flex items-center gap-x-4'>
-                          <RadioGroupItem value='comfortabl' id='r3' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)} />
+                          <RadioGroupItem value={PAYMENT_ATM_BANKING} id='r2' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)} />
                           <Label
                             htmlFor='r3'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
@@ -624,6 +658,28 @@ const CheckOut = () => {
                               <p className=' font-bold'>Payment by bank transfer</p>
                               <p className=' text-sm font-medium text-[#745B3E]'>
                                 Via banking app
+                              </p>
+                            </div>
+                          </Label>
+                        </div>
+                        <div className='w-full flex items-center gap-x-4'>
+                          <RadioGroupItem value={PAYMENT_MOMO_BANKING} id='r3' onClick={() => setMethodPayment(PAYMENT_MOMO_BANKING)} />
+                          <Label
+                            htmlFor='r3'
+                            className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
+                          >
+                            <div className=' aspect-square relative w-full max-w-[50px] '>
+                              <Image
+                                alt='image'
+                                src='/assets/images/checkout/momo.png'
+                                fill
+                                className='object-cover object-center rounded-[8px]'
+                              />
+                            </div>
+                            <div>
+                              <p className=' font-bold'>Payment by Momo</p>
+                              <p className=' text-sm font-medium text-[#745B3E]'>
+                                Via Momo banking app
                               </p>
                             </div>
                           </Label>

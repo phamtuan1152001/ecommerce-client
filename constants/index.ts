@@ -24,6 +24,9 @@ export const DELETE_ALL_PRODUCTS_IN_CART = "/cart/delete-all-products-in-cart"
 export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
 
+/* PAYMENT API */
+export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"
+
 /* CONSTANTS DATA */
 export const SUCCESS = 200;
 export const BAD_REQUEST = 400;
@@ -46,7 +49,8 @@ export const DECREMTN_BTN = "dec"
 
 export const NUM_NAME_SLICE = 2
 
-export const PAYMENT_COD = "COD"
-export const PAYMENT_ATM_BANKING = "atm-banking"
+export const PAYMENT_COD: string = "COD"
+export const PAYMENT_ATM_BANKING: string = "atm-banking"
+export const PAYMENT_MOMO_BANKING: string = "momo-banking"
 
 export const NO_DATA_IMAGE = NO_IMG
