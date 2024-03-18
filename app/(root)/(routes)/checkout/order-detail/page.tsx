@@ -197,7 +197,7 @@ const OrderDetailPage = () => {
                     <PaymentSuccessStatus />
                   </div>
                   <h2 className="text-lg font-bold text-[#4EC389]">
-                    Thank you. Your order has been confirmed
+                    Thank you. Your order has been confirmed and wait for you to pay
                   </h2>
                 </div>
                 <div className="flex flex-col gap-y-4 pt-4">
