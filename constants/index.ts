@@ -3,6 +3,8 @@ import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 export const BASE_URL_API_DEV = "http://localhost:3002"
 // export const BASE_URL_API_DEV = "https://ecommerce-ptuanstore-api.onrender.com"
 export const URL_DEV_VNAPPMOB = "https://vapi.vnappmob.com/api"
+export const USD_TO_VND_API = "https://open.er-api.com/v6/latest/USD"
+export const ETH_EXCHANGE_RATE_API = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
 
 /* PRODUCTS API */
 export const GET_LIST_PRODUCTS = "/products/listProducts"
@@ -23,6 +25,7 @@ export const DELETE_ALL_PRODUCTS_IN_CART = "/cart/delete-all-products-in-cart"
 /* ORDER API */
 export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
+export const UPDATE_ORDER_DETAIL = "/order/update-detail-order-client"
 
 /* PAYMENT API */
 export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"
@@ -52,5 +55,7 @@ export const NUM_NAME_SLICE = 2
 export const PAYMENT_COD: string = "COD"
 export const PAYMENT_ATM_BANKING: string = "atm-banking"
 export const PAYMENT_MOMO_BANKING: string = "momo-banking"
+export const PAYMENT_METAMASK: string = "metamask"
 
 export const NO_DATA_IMAGE = NO_IMG
+export const WALLET_ADDRESS_OWNER = "0xAFdF41f48E7796580B909054FF75b3428ecD9E1B"

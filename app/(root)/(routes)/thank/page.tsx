@@ -15,10 +15,10 @@ import BreadcrumbComponent from "@/components/bread-crumd"
 import { TailSpin } from "react-loader-spinner"
 
 //@constants
-import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_MOMO_BANKING } from "@/constants"
+import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_MOMO_BANKING, PAYMENT_METAMASK } from "@/constants"
 
 //@api
-import { getOrderDetail } from "@/lib/api/order"
+import { getOrderDetail, updateOrderDetail } from "@/lib/api/order"
 import { formatToCurrencyVND, getUserToken } from "@/utility/common"
 
 const ThankPage = () => {
@@ -51,11 +51,27 @@ const ThankPage = () => {
       // console.log("res", res);
       if (res.retCode === 0) {
         setDetailOrder(res.retData)
+        if (res.retData.statusOrder === 0) {
+          fetchUpdateDetailOrder(res.retData)
+        }
       }
     } catch (err) {
       console.log("FETCH FAIL!", err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchUpdateDetailOrder = async (detailOrder: any) => {
+    try {
+      const req = {
+        ...detailOrder,
+        statusOrder: 1
+      }
+      return await updateOrderDetail(req)
+      // console.log("res", res);
+    } catch (err) {
+      console.log("FETCHING FAIL!", err);
     }
   }
 
@@ -69,6 +85,8 @@ const ThankPage = () => {
         return "MOMO transfer"
       case PAYMENT_COD:
         return "COD"
+      case PAYMENT_METAMASK:
+        return "Metamask payment"
       default:
         return "--"
     }

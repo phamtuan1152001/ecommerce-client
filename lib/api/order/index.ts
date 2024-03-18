@@ -1,7 +1,8 @@
 import {
   BASE_URL_API_DEV,
   CREATE_ORDER_CLIENT,
-  GET_ORDER_DETAIL
+  GET_ORDER_DETAIL,
+  UPDATE_ORDER_DETAIL
 } from "@/constants";
 import apiMethod from "@/utility/ApiMethod";
 
@@ -45,5 +46,12 @@ export const postCreateOrder = async (payload: {
 
 export const getOrderDetail = async (code: string | null) => {
   const { data } = await apiMethod.get(GET_ORDER_DETAIL + `/${code}`)
+  return data
+}
+
+export const updateOrderDetail = async (payload: any) => {
+  const { data } = await apiMethod.put(UPDATE_ORDER_DETAIL + `/${payload._id}`, {
+    ...payload
+  })
   return data
 }

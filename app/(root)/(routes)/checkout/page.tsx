@@ -43,7 +43,7 @@ import {
 } from "@/lib/api/common";
 
 // @constants
-import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants";
+import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK } from "@/constants";
 
 // @utility
 import { getUserToken } from "@/utility/common";
@@ -62,6 +62,7 @@ import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 // @action-cart
 import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
 import { createPaymentWithMOMO } from "@/lib/api/payment";
+import { DiaglogMetamask } from "@/components/dialog-metamask";
 
 const CheckOut = () => {
   const router = useRouter()
@@ -87,7 +88,10 @@ const CheckOut = () => {
     name: string,
     type: string,
   }[]>([])
+
   const [methodPayment, setMethodPayment] = React.useState<string>("")
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [orderId, setOrderId] = React.useState("")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -209,6 +213,10 @@ const CheckOut = () => {
         } else if (type === 3) {
           dispatch(resetCart())
           createPaymentMomo(orderId)
+        } else if (type === 4) {
+          dispatch(resetCart())
+          setOrderId(orderId)
+          onOpenChange()
         } else {
           dispatch(resetCart())
           setTimeout(() => {
@@ -248,9 +256,15 @@ const CheckOut = () => {
         return "Banking transfer"
       case PAYMENT_MOMO_BANKING:
         return "MOMO transfer"
+      case PAYMENT_METAMASK:
+        return "Metamask payment"
       default:
         return "Back to homepage"
     }
+  }
+
+  const onOpenChange = () => {
+    setIsOpen(!isOpen)
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -323,17 +337,25 @@ const CheckOut = () => {
           description: "Your order has been successfully created",
           textButtonOk: renderTextButton(methodPayment),
           textButtonCancel: "Review order",
-          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING || methodPayment === PAYMENT_MOMO_BANKING ? false : true,
+          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING
+            || methodPayment === PAYMENT_MOMO_BANKING
+            || methodPayment === PAYMENT_METAMASK
+            ? false : true,
           closeOnClickOverlay: false,
           className: "max-[768px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
-            handleDeleteAllProductsInCart(
-              methodPayment === PAYMENT_ATM_BANKING
-                ? 2
-                : methodPayment === PAYMENT_MOMO_BANKING ? 3 : 1
-              , res.retData._id)
-            // ) // type = 1 back to home page
+            if (methodPayment === PAYMENT_METAMASK) {
+              // onOpenChange()
+              handleDeleteAllProductsInCart(4, res.retData._id)
+            } else {
+              handleDeleteAllProductsInCart(
+                methodPayment === PAYMENT_ATM_BANKING
+                  ? 2
+                  : methodPayment === PAYMENT_MOMO_BANKING ? 3 : 1
+                , res.retData._id)
+              // ) // type = 1 back to home page
+            }
           },
           onCancle: () => {
             SlideInModal.hide()
@@ -384,6 +406,13 @@ const CheckOut = () => {
 
   return (
     <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
+      <DiaglogMetamask
+        orderId={orderId}
+        totalPrice={carts.totalPrice}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
+
       <div className=" pb-5 max-[768px]:hidden">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
@@ -619,7 +648,7 @@ const CheckOut = () => {
                         <div className='w-full flex items-center gap-x-4'>
                           <RadioGroupItem value={PAYMENT_COD} id='r1' onClick={() => setMethodPayment(PAYMENT_COD)} />
                           <Label
-                            htmlFor='r2'
+                            htmlFor='r1'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
                           >
                             <div className=' aspect-square relative w-full max-w-[50px] '>
@@ -643,7 +672,7 @@ const CheckOut = () => {
                         <div className='w-full flex items-center gap-x-4'>
                           <RadioGroupItem value={PAYMENT_ATM_BANKING} id='r2' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)} />
                           <Label
-                            htmlFor='r3'
+                            htmlFor='r2'
                             className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
                           >
                             <div className=' aspect-square relative w-full max-w-[50px] '>
@@ -680,6 +709,28 @@ const CheckOut = () => {
                               <p className=' font-bold'>Payment by Momo</p>
                               <p className=' text-sm font-medium text-[#745B3E]'>
                                 Via Momo banking app
+                              </p>
+                            </div>
+                          </Label>
+                        </div>
+                        <div className='w-full flex items-center gap-x-4'>
+                          <RadioGroupItem value={PAYMENT_METAMASK} id='r4' onClick={() => setMethodPayment(PAYMENT_METAMASK)} />
+                          <Label
+                            htmlFor='r4'
+                            className='flex-1 flex items-center gap-x-4 text-base font-normal text-[#202020]'
+                          >
+                            <div className=' aspect-square relative w-full max-w-[50px] '>
+                              <Image
+                                alt='image'
+                                src='/assets/images/checkout/metamask-icon.png'
+                                fill
+                                className='object-cover object-center rounded-[8px]'
+                              />
+                            </div>
+                            <div>
+                              <p className=' font-bold'>Payment by Metamask</p>
+                              <p className=' text-sm font-medium text-[#745B3E]'>
+                                Via Metamask app
                               </p>
                             </div>
                           </Label>
