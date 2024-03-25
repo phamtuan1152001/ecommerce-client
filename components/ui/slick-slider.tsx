@@ -27,8 +27,8 @@ const Arrow = (props: ArrowProps) => {
       className={cn(
         'w-14 h-14 inline-flex items-center justify-center bg-white rounded-full text-[#2E2E2E] shadow-md absolute top-1/2 z-10 -translate-y-1/2',
         {
-          'left-0 -translate-x-1/2': type === 'prev',
-          'right-0 translate-x-1/2': type === 'next',
+          'left-0 max-[1024px]:left-[25px] -translate-x-1/2': type === 'prev',
+          'right-0 max-[1024px]:right-[25px] translate-x-1/2': type === 'next',
         },
         customClassName
       )}
