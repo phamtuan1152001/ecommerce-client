@@ -36,7 +36,7 @@ const MenuNavigation = () => {
                       className="hover:bg-inherit focus:bg-inherit data-[active]:bg-inherit data-[state=open]:bg-inherit hover:underline hover:underline-offset-8 data-[active]:underline data-[state=open]:underline data-[active]:underline-offset-8 data-[state=open]:underline-offset-8 data-[active]:font-bold data-[state=open]:font-bold"
                     >
                       <NavigationMenuLink asChild>
-                        <Link href="" className="">
+                        <Link href="" className="" scroll={true}>
                           {item.name}
                         </Link>
                       </NavigationMenuLink>

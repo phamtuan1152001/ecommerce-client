@@ -24,6 +24,7 @@ const MenuNavBody = () => {
                         <Link
                           href={""}
                           className='text-base font-normal hover:underline'
+                          scroll={true}
                         >
                           {ele?.nameChild}
                         </Link>
@@ -46,6 +47,7 @@ const MenuNavBody = () => {
           <Link
             href={""}
             className={`text-base font-normal hover:underline`}
+            scroll={true}
           >
             <span className="">
               Xem tất cả

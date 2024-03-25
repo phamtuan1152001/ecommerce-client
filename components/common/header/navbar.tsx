@@ -40,6 +40,7 @@ export const Navbar = () => {
                       <Link
                         href={item.href}
                         className={`px-2 flex items-center space-x-1 h-16`}
+                        scroll={true}
                       >
                         <Icon className="w-6 h-6" />
                         <span className="inline-block uppercase">
@@ -49,7 +50,7 @@ export const Navbar = () => {
                     </NavigationMenuLink>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className='rounded-lg border'>
-                      <MenuNavigation />
+                    <MenuNavigation />
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               );

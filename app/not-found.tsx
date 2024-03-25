@@ -22,7 +22,7 @@ export default function NotFound() {
               Xin lỗi nhưng trang bạn đang tìm kiếm không tồn tại, đã được
               LOẠI BỎ. tên đã thay đổi hoặc tạm thời không có
             </p>
-            <Link href="/" className='text-base uppercase font-bold'>
+            <Link href="/" className='text-base uppercase font-bold' scroll={true}>
               Quay lại trang chủ
             </Link>
           </div>

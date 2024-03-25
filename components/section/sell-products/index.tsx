@@ -25,14 +25,19 @@ interface SellProductsProps {
     _id: number,
     productId: string,
     product: ProductType,
-  }[]
+    countReview?: number,
+    countSave?: number,
+    countBuy?: number
+  }[],
+  type: number
 }
 
 export const SellProduts = ({
   title,
-  listItems
+  listItems,
+  type
 }: SellProductsProps) => {
-  // console.log("listBestSellerProducts", listBestSellerProducts);
+  // console.log("listItems", listItems);
 
   const [currentSlide, setCurrentSlide] = React.useState<number>(0)
   const settings: Settings = {
@@ -86,10 +91,20 @@ export const SellProduts = ({
                     _id: number,
                     productId: string,
                     product: ProductType,
+                    countReview?: number,
+                    countSave?: number,
+                    countBuy?: number
                   },
                   index: number
                 ) => (
-                  <ProductCard key={index} product={product.product} />
+                  <ProductCard
+                    key={index}
+                    product={product.product}
+                    type={type}
+                    countBuy={product.countBuy}
+                    countReview={product.countReview}
+                    countSave={product.countSave}
+                  />
                 ))}
               </SlickSlider>
             </div>

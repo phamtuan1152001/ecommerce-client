@@ -36,6 +36,7 @@ const NavbarMobile = () => {
                 <Link
                   href={item.href}
                   className={`p-3 flex items-center gap-3 h-16 text-sm ${activeNav === index ? "text-textColor-nav" : "text-white"}`}
+                  scroll={true}
                 >
                   <Icon className="w-6 h-6" />
                   <span className={`inline-block uppercase ${index === 5 && "w-28"}`}>
@@ -54,6 +55,7 @@ const NavbarMobile = () => {
                   <Link
                     href=""
                     className={`text-base font-normal uppercase`}
+                    scroll={true}
                   >
                     <span
                       className={`${activeTab === index && "underline underline-offset-8 font-bold"}`}
@@ -77,7 +79,7 @@ const NavbarMobile = () => {
                         </AccordionTrigger>
                         {item?.child?.map((ele: any, nth: number) => {
                           return (
-                            <Link key={nth} href={ele?.path}>
+                            <Link key={nth} href={ele?.path} scroll={true}>
                               <AccordionContent>
                                 <span className="text-base font-normal">
                                   {ele?.nameChild}

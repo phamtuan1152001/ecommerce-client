@@ -111,6 +111,7 @@ export const InterestedBlock = () => {
                   key={index}
                   href={item.href}
                   className='text-sm font-medium text-black px-4 py-3 inline-block border border-[#D9D9D9] rounded-[99px]'
+                  scroll={true}
                 >
                   {item.name}
                 </Link>
@@ -125,6 +126,7 @@ export const InterestedBlock = () => {
                       // key={index}
                       href={item.href}
                       className='text-sm font-medium text-black px-4 py-3 inline-block border border-[#D9D9D9] rounded-[99px]'
+                      scroll={true}
                     >
                       {item.name}
                     </Link>

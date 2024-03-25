@@ -38,7 +38,7 @@ export const ViewedProducts = () => {
               Sản phẩm đã xem
             </h2>
             <div className='min-[1280px]:hidden'>
-              <Link href={"/"} className='text-base font-semibold'>
+              <Link href={"/"} className='text-base font-semibold' scroll={true}>
                 Xem tất cả
               </Link>
             </div>
@@ -51,7 +51,7 @@ export const ViewedProducts = () => {
           </SlickSlider> */}
 
           <div className='max-[768px]:hidden text-center'>
-            <Link href={"/"} className='text-base font-semibold'>
+            <Link href={"/"} className='text-base font-semibold' scroll={true}>
               Xem tất cả
             </Link>
           </div>

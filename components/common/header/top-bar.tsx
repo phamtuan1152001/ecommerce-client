@@ -71,7 +71,7 @@ export const TopBar = () => {
             translate: "translate(-50%, -50%)",
             zIndex: 40
           }}>
-            <Link href={"/"}>
+            <Link href={"/"} scroll={true}>
               <Image
                 src='/assets/images/logo.svg'
                 alt='image'

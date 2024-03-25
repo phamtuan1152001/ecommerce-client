@@ -28,6 +28,7 @@ export default async function Home() {
         _id: number,
         productId: string,
         product: ProductType,
+        countReview: number
       }[],
       totalItems: number,
       totalPages: number
@@ -43,6 +44,7 @@ export default async function Home() {
         _id: number,
         productId: string,
         product: ProductType,
+        countBuy: number
       }[],
       totalItems: number,
       totalPages: number
@@ -58,6 +60,7 @@ export default async function Home() {
         _id: number,
         productId: string,
         product: ProductType,
+        countSave: number
       }[],
       totalItems: number,
       totalPages: number
@@ -77,17 +80,19 @@ export default async function Home() {
         <SellProduts
           title={"Most viewed products"}
           listItems={listViewedProducts.retData.rankProducts}
+          type={ACTION_USER.REVIEW}
         />
       )}
 
       <FeaturedCategories listCategories={listCategories.retData} />
 
-      {listPurchasedProducts.retData.rankProducts.length > 0 && (
+      {/* {listPurchasedProducts.retData.rankProducts.length > 0 && (
         <SellProduts
           title={"Most purchased products"}
           listItems={listPurchasedProducts.retData.rankProducts}
+          type={ACTION_USER.BUY}
         />
-      )}
+      )} */}
 
       <ProductsByCategory listCategories={listCategories.retData} />
 
@@ -95,6 +100,7 @@ export default async function Home() {
         <SellProduts
           title={"Most popular product"}
           listItems={listPopularProducts.retData.rankProducts}
+          type={ACTION_USER.SAVE}
         />
       )}
 

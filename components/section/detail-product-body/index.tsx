@@ -33,12 +33,14 @@ import { formatToCurrencyVND, calculatePercentPrice, getUserToken, getUserInfo }
 // @svg
 import { IconBackArrow, IconFail, IconShare, IconSuccess } from '@/public/assets/svg';
 import SlideInModal from '@/components/slide-in-modal';
+import { BsFacebook, BsInstagram, BsHeart } from 'react-icons/bs';
 
 // @constants
-import { SUCCESS } from '@/constants';
+import { ACTION_USER, SUCCESS } from '@/constants';
 
 // @types
 import { UserInfoType } from '@/types';
+import { createRankingProducts } from '@/lib/api/product';
 
 interface DetailProductBodyProps {
   name: string,
@@ -139,6 +141,43 @@ export default function DetailProductBody({
     }
   }
 
+  const handleDetecActionUser = async (id: string) => {
+    try {
+      const req: {
+        productId: string,
+        product: string,
+        actionBuy: number,
+        countBuy: number,
+        actionReview: number,
+        countReview: number,
+        // "actionRate": 0,
+        // "countRate": 0,
+        actionIntroduce: number,
+        countIntroduce: number,
+        actionSave: number,
+        countSave: number,
+        type: number
+      } = {
+        productId: id,
+        product: id,
+        actionBuy: 0,
+        countBuy: 0,
+        actionReview: 1,
+        countReview: 0,
+        // "actionRate": 0,
+        // "countRate": 0,
+        actionIntroduce: 2,
+        countIntroduce: 0,
+        actionSave: 3,
+        countSave: 0,
+        type: ACTION_USER.SAVE // Chi can thay doi field theo type
+      }
+      return await createRankingProducts(req)
+    } catch (err) {
+      console.log("FETCHING FAIL!")
+    }
+  }
+
   return (
     <>
       {/* Header Back Icon for mobile */}
@@ -161,8 +200,8 @@ export default function DetailProductBody({
                   <ProductGallery listImages={images} />
                 )}
 
-                {/* <div className='flex items-center gap-3 max-[768px]:hidden'>
-                  <p className='text-sm font-bold text-[#003966] leading-normal'>
+                <div className='flex items-center gap-3 max-[768px]:hidden'>
+                  {/* <p className='text-sm font-bold text-[#003966] leading-normal'>
                     Share:
                   </p>
 
@@ -172,16 +211,20 @@ export default function DetailProductBody({
 
                   <div className='w-12 h-12 rounded-full inline-flex items-center justify-center bg-[#F5F5F5]'>
                     <BsFacebook className='w-6 h-6 text-[#637381]' />
-                  </div>
+                  </div> */}
 
                   <Button
                     className='text-[#181818] font-medium'
                     variant='ghost'
+                    onClick={() => {
+                      // handle save product to favourite products
+                      handleDetecActionUser(productId)
+                    }}
                   >
                     <BsHeart className='w-6 h-6 mr-2' />
                     333 lượt thích
                   </Button>
-                </div> */}
+                </div>
               </div>
 
               <div className='space-y-4 max-[768px]:space-y-2'>

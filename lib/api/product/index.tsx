@@ -9,6 +9,27 @@ import {
 } from "@/constants";
 import apiMethod from "@/utility/ApiMethod";
 
+export const createRankingProducts = async (payload: {
+  productId: string,
+  product: string,
+  actionBuy: number,
+  countBuy: number,
+  actionReview: number,
+  countReview: number,
+  // "actionRate": 0,
+  // "countRate": 0,
+  actionIntroduce: number,
+  countIntroduce: number,
+  actionSave: number,
+  countSave: number,
+  type: number
+}) => {
+  const { data } = await apiMethod.post(CREATE_RANKLING_PRODUCT_AS_TYPE, {
+    ...payload
+  })
+  return data
+}
+
 export const getRankingProducts = async (
   page: number = PAGE_NUMBER,
   size: number = PAGE_LIMIT,

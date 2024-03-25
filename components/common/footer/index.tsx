@@ -14,7 +14,7 @@ export const Footer = () => {
           {!!FOOTER_MENU['info'] && (
             <div className='space-y-6'>
               {FOOTER_MENU['info']['logo'] && (
-                <Link href='/'>
+                <Link href='/' scroll={true}>
                   <div className='w-[103px] h-[74px] relative'>
                     <Image
                       src={FOOTER_MENU['info']['logo']['imgUrl']}
@@ -75,6 +75,7 @@ export const Footer = () => {
                         <Link
                           href={item.href}
                           className='body-text-normal text-[#CCCFDB] inline-block'
+                          scroll={true}
                         >
                           {item.label}
                         </Link>
@@ -100,6 +101,7 @@ export const Footer = () => {
                         <Link
                           href={`/chinh-sach/${item.href}`}
                           className='body-text-normal text-[#CCCFDB] inline-block'
+                          scroll={true}
                         >
                           {item.label}
                         </Link>
@@ -125,6 +127,7 @@ export const Footer = () => {
                         <Link
                           href={item.href}
                           className='body-text-normal text-[#CCCFDB] inline-block'
+                          scroll={true}
                         >
                           {item.label}
                         </Link>

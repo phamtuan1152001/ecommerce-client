@@ -15,6 +15,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white border border-[#D9D9D9] px-3 mr-2.5'
+          scroll={true}
         >
           Previous
         </Link>
@@ -22,6 +23,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white'
+          scroll={true}
         >
           1
         </Link>
@@ -29,6 +31,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white'
+          scroll={true}
         >
           2
         </Link>
@@ -36,6 +39,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white'
+          scroll={true}
         >
           3
         </Link>
@@ -47,6 +51,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white'
+          scroll={true}
         >
           600
         </Link>
@@ -54,6 +59,7 @@ export const Pagination = (props: PaginationProps) => {
         <Link
           href='/'
           className='min-w-[40px] h-10 text-[#676767] inline-flex items-center justify-center rounded-[6px] transition hover:bg-[#333] hover:text-white border border-[#D9D9D9] px-3 ml-2.5'
+          scroll={true}
         >
           Next
         </Link>
