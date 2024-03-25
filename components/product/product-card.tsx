@@ -20,7 +20,7 @@ import { BsEye } from 'react-icons/bs';
 interface ProductCardProps {
   product: ProductType
   slugName?: string,
-  type: number,
+  type?: number,
   countBuy?: number,
   countSave?: number,
   countReview?: number,
