@@ -9,6 +9,8 @@ export const ETH_EXCHANGE_RATE_API = "https://api.coingecko.com/api/v3/simple/pr
 /* PRODUCTS API */
 export const GET_LIST_PRODUCTS = "/products/listProducts"
 export const GET_DETAIL_PRODUCT = "/products/detail"
+export const GET_RANKING_PRODUCTS_AS_TYPE = "/ranking-products/get-list-client"
+export const CREATE_RANKLING_PRODUCT_AS_TYPE = "/ranking-products/create"
 
 /* AUTHENTICATION API */
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
@@ -59,3 +61,11 @@ export const PAYMENT_METAMASK: string = "metamask"
 
 export const NO_DATA_IMAGE = NO_IMG
 export const WALLET_ADDRESS_OWNER = "0xAFdF41f48E7796580B909054FF75b3428ecD9E1B"
+
+/* ACTION DETEC USER */
+export const ACTION_USER = {
+  BUY: 1,
+  REVIEW: 2,
+  INTRODUCE: 3,
+  SAVE: 4
+}

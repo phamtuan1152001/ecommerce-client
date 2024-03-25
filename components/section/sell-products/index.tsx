@@ -20,10 +20,18 @@ interface ArrowProps extends CustomArrowProps {
 }
 
 interface SellProductsProps {
-  listBestSellerProducts: ProductType[]
+  title: string,
+  listItems: {
+    _id: number,
+    productId: string,
+    product: ProductType,
+  }[]
 }
 
-export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
+export const SellProduts = ({
+  title,
+  listItems
+}: SellProductsProps) => {
   // console.log("listBestSellerProducts", listBestSellerProducts);
 
   const [currentSlide, setCurrentSlide] = React.useState<number>(0)
@@ -68,16 +76,20 @@ export const SellProduts = ({ listBestSellerProducts }: SellProductsProps) => {
                 />
               </div>
               <h2 className=' font-bold text-[#FFFFFF] text-[26px] leading-9 uppercase max-[768px]:text-2xl'>
-                Selling products
+                {title}
               </h2>
             </div>
             <div className='sell-products pt-6 max-[768px]:pt-4'>
               <SlickSlider settings={settings}>
-                {listBestSellerProducts?.map((
-                  product: ProductType,
+                {listItems?.map((
+                  product: {
+                    _id: number,
+                    productId: string,
+                    product: ProductType,
+                  },
                   index: number
                 ) => (
-                  <ProductCard key={index} product={product} />
+                  <ProductCard key={index} product={product.product} />
                 ))}
               </SlickSlider>
             </div>

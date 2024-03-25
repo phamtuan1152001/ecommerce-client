@@ -7,10 +7,11 @@ import { ViewedProducts } from '@/components/section/viewed-products';
 
 // @api
 import { getCategories } from '@/lib/api';
-import { getProducts } from '@/lib/api/product';
+import { getProducts, getRankingProducts } from '@/lib/api/product';
 
 // @types
 import { ProductType, CategoryType } from '@/types';
+import { ACTION_USER, PAGE_LIMIT, PAGE_NUMBER } from '@/constants';
 
 export default async function Home() {
   const listCategories: {
@@ -19,18 +20,52 @@ export default async function Home() {
     retText: string
   } = await getCategories();
 
-  const listBestSellerProducts: {
+  const listViewedProducts: {
     retCode: number,
     retData: {
       currentPage: number,
-      products: ProductType[],
+      rankProducts: {
+        _id: number,
+        productId: string,
+        product: ProductType,
+      }[],
       totalItems: number,
       totalPages: number
     },
     retText: string
-  } = await getProducts()
+  } = await getRankingProducts(PAGE_NUMBER, PAGE_LIMIT, ACTION_USER.REVIEW)
 
-  // console.log("listCategories", listCategories);
+  const listPurchasedProducts: {
+    retCode: number,
+    retData: {
+      currentPage: number,
+      rankProducts: {
+        _id: number,
+        productId: string,
+        product: ProductType,
+      }[],
+      totalItems: number,
+      totalPages: number
+    },
+    retText: string
+  } = await getRankingProducts(PAGE_NUMBER, PAGE_LIMIT, ACTION_USER.BUY)
+
+  const listPopularProducts: {
+    retCode: number,
+    retData: {
+      currentPage: number,
+      rankProducts: {
+        _id: number,
+        productId: string,
+        product: ProductType,
+      }[],
+      totalItems: number,
+      totalPages: number
+    },
+    retText: string
+  } = await getRankingProducts(PAGE_NUMBER, PAGE_LIMIT, ACTION_USER.SAVE)
+
+  // console.log("listViewedProducts", listViewedProducts.retData.rankProducts);
 
   return (
     <div>
@@ -38,13 +73,30 @@ export default async function Home() {
 
       <Testimonial />
 
-      <SellProduts
-        listBestSellerProducts={listBestSellerProducts.retData.products}
-      />
+      {listViewedProducts.retData.rankProducts.length > 0 && (
+        <SellProduts
+          title={"Most viewed products"}
+          listItems={listViewedProducts.retData.rankProducts}
+        />
+      )}
 
       <FeaturedCategories listCategories={listCategories.retData} />
 
+      {listPurchasedProducts.retData.rankProducts.length > 0 && (
+        <SellProduts
+          title={"Most purchased products"}
+          listItems={listPurchasedProducts.retData.rankProducts}
+        />
+      )}
+
       <ProductsByCategory listCategories={listCategories.retData} />
+
+      {listPopularProducts.retData.rankProducts.length > 0 && (
+        <SellProduts
+          title={"Most popular product"}
+          listItems={listPopularProducts.retData.rankProducts}
+        />
+      )}
 
       {/* <ViewedProducts /> */}
     </div>
