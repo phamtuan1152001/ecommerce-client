@@ -11,7 +11,7 @@ import {
   ProductOldPrice,
 } from '@/components/product/product';
 import { Button } from '../ui/button';
-import { TailSpin } from "react-loader-spinner"
+import Spinner from '../spin';
 
 // @action-cart
 import {
@@ -89,21 +89,9 @@ export const CartOrderDetails = () => {
         </h5>
       </div>
 
-      <div className='space-y-4 max-[768px]:mb-6 pb-3'>
-        {loading
-          ? (
-            <div className="flex flex-col justify-center items-center h-full py-3">
-              <TailSpin
-                height="40"
-                width="40"
-                color="#676767"
-                radius="1"
-                visible={true}
-                ariaLabel="tail-spin-loading"
-              />
-            </div>
-          )
-          : carts?.items?.map((item, index) => (
+      <div className='space-y-4 max-[768px]:mb-6 relative py-3'>
+        <Spinner spinning={loading} className='rounded-none'>
+          {carts?.items?.map((item, index) => (
             <div className='flex flex-row justify-start' key={index}>
               <ProductImage
                 wrapperClassName='w-28 flex-shrink-0'
@@ -161,6 +149,7 @@ export const CartOrderDetails = () => {
               </div>
             </div>
           ))}
+        </Spinner>
       </div>
     </Box>
   );

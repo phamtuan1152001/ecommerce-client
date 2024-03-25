@@ -12,7 +12,7 @@ import { PaymentSuccessStatus } from "@/public/assets/svg"
 //@components
 import { Container } from "@/components/ui/container"
 import BreadcrumbComponent from "@/components/bread-crumd"
-import { TailSpin } from "react-loader-spinner"
+import Spinner from "@/components/spin"
 
 //@constants
 import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants"
@@ -87,91 +87,78 @@ const OrderDetailPage = () => {
       </div>
 
       <Container className="max-[768px]:p-4">
-        {loading
-          ? (
-            <div className="flex flex-col justify-center items-center h-full">
-              <TailSpin
-                height="40"
-                width="40"
-                color="#676767"
-                radius="1"
-                visible={true}
-                ariaLabel="tail-spin-loading"
-              />
-            </div>
-          )
-          : (
-            <div className="grid grid-cols-2 gap-x-6 max-[768px]:grid-cols-1 max-[768px]:gap-y-6">
-              <div className="p-[24px] bg-white rounded-[12px]">
-                {detailOrder?.paymentMethod === PAYMENT_ATM_BANKING
-                  ? (
-                    <div className="">
-                      <p className="text-base font-normal">
-                        Please check your messages to track your order. Shipper will deliver the goods after receiving payment.
-                      </p>
-                      <p className="text-base font-normal">
-                        Scan payment QR code:
-                      </p>
-                      <div className='flex flex-row justify-center items-center'>
-                        <Image
-                          alt='image'
-                          src='/assets/images/checkout/qr-banking.png'
-                          // fill
-                          width={250}
-                          height={327}
-                          className='object-cover object-center rounded-[8px]'
-                        />
-                      </div>
+        <Spinner spinning={loading}>
+          <div className="grid grid-cols-2 gap-x-6 max-[768px]:grid-cols-1 max-[768px]:gap-y-6">
+            <div className="p-[24px] bg-white rounded-[12px]">
+              {detailOrder?.paymentMethod === PAYMENT_ATM_BANKING
+                ? (
+                  <div className="">
+                    <p className="text-base font-normal">
+                      Please check your messages to track your order. Shipper will deliver the goods after receiving payment.
+                    </p>
+                    <p className="text-base font-normal">
+                      Scan payment QR code:
+                    </p>
+                    <div className='flex flex-row justify-center items-center'>
+                      <Image
+                        alt='image'
+                        src='/assets/images/checkout/qr-banking.png'
+                        // fill
+                        width={250}
+                        height={327}
+                        className='object-cover object-center rounded-[8px]'
+                      />
                     </div>
-                  )
-                  : null}
-                <div className="flex flex-col gap-y-4 pb-6 border-b-2 border-[#DFE3E8]">
-                  <div className="flex flex-row justify-start items-center gap-x-2">
-                    <div className="flex flex-col justify-center items-center">
-                      <CartIcon className='w-6 h-6' />
-                    </div>
-                    <h1 className="font-bold text-lg text-[#000000]">Order details</h1>
                   </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-xs font-semibold text-[#000000]">Products</h3>
-                    <h3 className="text-xs font-semibold text-[#000000]">Total order</h3>
+                )
+                : null}
+              <div className="flex flex-col gap-y-4 pb-6 border-b-2 border-[#DFE3E8]">
+                <div className="flex flex-row justify-start items-center gap-x-2">
+                  <div className="flex flex-col justify-center items-center">
+                    <CartIcon className='w-6 h-6' />
                   </div>
-                  <div className="flex flex-row justify-between items-start">
-                    {detailOrder?.cartDetail?.items?.map((item: any, index: number) => {
-                      return (
-                        <React.Fragment key={`${item?.id}-${index}`}>
-                          <div className="flex flex-col justify-start gap-y-2">
-                            <h3 className="text-base font-bold text-[#333333]">
-                              {item?.product?.name}
-                            </h3>
-                            <p className="text-sm font-normal text-[#676767]">
-                              Quantity: {String(item?.quantity).padStart(2, "0")}
-                            </p>
-                          </div>
-                          <h4 className="text-base font-bold text-[#FA9E14]">
-                            {formatToCurrencyVND(parseInt(item?.total))}
-                          </h4>
-                        </React.Fragment>
-                      )
-                    })}
-                  </div>
+                  <h1 className="font-bold text-lg text-[#000000]">Order details</h1>
                 </div>
-                <div className="flex flex-col gap-y-4 py-6 border-b-2 border-[#DFE3E8]">
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
-                    <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
-                      {detailOrder?.paymentMethod
-                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
-                        : "--"}
-                    </h3>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Tạm tính</h3>
-                    <h3 className="text-base font-bold text-[#000000]">
-                      {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
-                    </h3>
-                  </div>
-                  {/* <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-xs font-semibold text-[#000000]">Products</h3>
+                  <h3 className="text-xs font-semibold text-[#000000]">Total order</h3>
+                </div>
+                <div className="flex flex-row justify-between items-start">
+                  {detailOrder?.cartDetail?.items?.map((item: any, index: number) => {
+                    return (
+                      <React.Fragment key={`${item?.id}-${index}`}>
+                        <div className="flex flex-col justify-start gap-y-2">
+                          <h3 className="text-base font-bold text-[#333333]">
+                            {item?.product?.name}
+                          </h3>
+                          <p className="text-sm font-normal text-[#676767]">
+                            Quantity: {String(item?.quantity).padStart(2, "0")}
+                          </p>
+                        </div>
+                        <h4 className="text-base font-bold text-[#FA9E14]">
+                          {formatToCurrencyVND(parseInt(item?.total))}
+                        </h4>
+                      </React.Fragment>
+                    )
+                  })}
+                </div>
+              </div>
+              <div className="flex flex-col gap-y-4 py-6 border-b-2 border-[#DFE3E8]">
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
+                  <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
+                    {detailOrder?.paymentMethod
+                      ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
+                      : "--"}
+                  </h3>
+                </div>
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Tạm tính</h3>
+                  <h3 className="text-base font-bold text-[#000000]">
+                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                  </h3>
+                </div>
+                {/* <div className="flex flex-row justify-between items-center">
                     <h3 className="text-base font-normal text-[#637381]">Giảm giá</h3>
                     <h3 className="text-base font-bold text-[#000000]">
                       {formatToCurrencyVND(parseInt(detailOrder?.totalDiscountAmount))}
@@ -181,56 +168,56 @@ const OrderDetailPage = () => {
                     <h3 className="text-base font-normal text-[#637381]">Phí vận chuyển</h3>
                     <h3 className="text-base font-bold text-[#000000]">0VND</h3>
                   </div> */}
-                </div>
-                <div className="flex flex-col pt-6">
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Total order</h3>
-                    <h3 className="text-base font-bold text-[#000000]">
-                      {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
-                    </h3>
-                  </div>
-                </div>
               </div>
-              <div className="p-[24px] bg-white h-fit rounded-[12px]">
-                <div className="flex flex-col justify-center items-center gap-y-4">
-                  <div className="flex flex-col justify-center items-center">
-                    <PaymentSuccessStatus />
-                  </div>
-                  <h2 className="text-lg font-bold text-[#4EC389]">
-                    Thank you. Your order has been confirmed and wait for you to pay
-                  </h2>
-                </div>
-                <div className="flex flex-col gap-y-4 pt-4">
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
-                    <h3 className="text-base font-bold text-[#000000]">{detailOrder?._id}</h3>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Date of purchase:</h3>
-                    <h3 className="text-base font-bold text-[#000000]">
-                      {moment(detailOrder?.updateAt)?.isValid()
-                        ? moment(detailOrder?.updateAt).format("DD/MM/YYYY HH:MM")
-                        : "--"}
-                    </h3>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Total order</h3>
-                    <h3 className="text-base font-bold text-[#000000]">
-                      {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
-                    </h3>
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
-                    <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
-                      {detailOrder?.paymentMethod
-                        ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
-                        : "--"}
-                    </h3>
-                  </div>
+              <div className="flex flex-col pt-6">
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Total order</h3>
+                  <h3 className="text-base font-bold text-[#000000]">
+                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                  </h3>
                 </div>
               </div>
             </div>
-          )}
+            <div className="p-[24px] bg-white h-fit rounded-[12px]">
+              <div className="flex flex-col justify-center items-center gap-y-4">
+                <div className="flex flex-col justify-center items-center">
+                  <PaymentSuccessStatus />
+                </div>
+                <h2 className="text-lg font-bold text-[#4EC389]">
+                  Thank you. Your order has been confirmed and wait for you to pay
+                </h2>
+              </div>
+              <div className="flex flex-col gap-y-4 pt-4">
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
+                  <h3 className="text-base font-bold text-[#000000]">{detailOrder?._id}</h3>
+                </div>
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Date of purchase:</h3>
+                  <h3 className="text-base font-bold text-[#000000]">
+                    {moment(detailOrder?.updateAt)?.isValid()
+                      ? moment(detailOrder?.updateAt).format("DD/MM/YYYY HH:MM")
+                      : "--"}
+                  </h3>
+                </div>
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Total order</h3>
+                  <h3 className="text-base font-bold text-[#000000]">
+                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                  </h3>
+                </div>
+                <div className="flex flex-row justify-between items-center">
+                  <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
+                  <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
+                    {detailOrder?.paymentMethod
+                      ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
+                      : "--"}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Spinner>
       </Container>
     </div>
   )

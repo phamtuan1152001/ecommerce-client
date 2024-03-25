@@ -24,9 +24,8 @@ import {
   ProductTitle,
   ProductOldPrice
 } from '@/components/product/product';
+import Spinner from "../spin";
 import { TrashIcon } from '@/components/icons/TrashIcon';
-import { TailSpin } from "react-loader-spinner"
-
 
 // @action-cart
 import { fetchUpdateQuantityCartRequest, fetchDeleteItemCartRequest, fetchCartRequest } from "@/redux/cart/actions";
@@ -37,7 +36,6 @@ import { formatToCurrencyVND, calculatePercentPrice } from "@/utility/common";
 // @constants
 import { INCREMENT_BTN, NO_DATA_IMAGE } from "@/constants";
 import { IProduct } from "@/redux/cart/types";
-
 
 // @types
 interface ICartItem {
@@ -127,85 +125,72 @@ export const CartButton = () => {
           </SheetTitle>
         </SheetHeader>
 
-        <div className='flex-grow overflow-y-auto p-6 space-y-6 max-[768px]:p-3'>
-          {loading
-            ? (
-              <div className="flex flex-col justify-center items-center h-full">
-                <TailSpin
-                  height="40"
-                  width="40"
-                  color="#676767"
-                  radius="1"
-                  visible={true}
-                  ariaLabel="tail-spin-loading"
-                />
-              </div>
-            )
-            : (
+        <div className='flex-grow overflow-y-auto p-6 space-y-6 max-[768px]:p-3 relative'>
+          <Spinner spinning={loading} className="rounded-none">
+            <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
               <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
-                <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
-                  {carts?.items?.map((item, index) => (
-                    <div className='flex gap-3 max-[768px]:gap-1' key={index}>
-                      <ProductImage
-                        wrapperClassName='w-28 flex-shrink-0'
-                        src={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.url || NO_DATA_IMAGE}
-                        alt={item.product.name}
-                        sizes="(max-width: 768px) 100vw"
-                      />
+                {carts?.items?.map((item, index) => (
+                  <div className='flex gap-3 max-[768px]:gap-1' key={index}>
+                    <ProductImage
+                      wrapperClassName='w-28 flex-shrink-0'
+                      src={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.url || NO_DATA_IMAGE}
+                      alt={item.product.name}
+                      sizes="(max-width: 768px) 100vw"
+                    />
 
-                      <div className='p-2 flex flex-col flex-1'>
-                        <ProductTitle>{item.product.name}</ProductTitle>
+                    <div className='p-2 flex flex-col flex-1'>
+                      <ProductTitle>{item.product.name}</ProductTitle>
 
-                        <div className='mt-auto flex items-center justify-between max-[768px]:flex-col max-[768px]:items-start'>
-                          <div className="flex flex-col flex-start">
-                            {!!item.product.onSale ? (
-                              <>
-                                <ProductFinalPrice className='text-base leading-9'>
-                                  {formatToCurrencyVND(item.total)}
-                                </ProductFinalPrice>
-
-                                <div className='flex flex-row justify-start items-center gap-2'>
-                                  <ProductOldPrice className='text-base font-bold'>
-                                    {formatToCurrencyVND(item.subTotal)}
-                                  </ProductOldPrice>
-                                  <div className='p-1 rounded-full flex flex-col justify-center items-center bg-backgroundColor-salePrice'>
-                                    <h4 className='text-xs text-white font-bold'>{calculatePercentPrice(item.product.regularPrice, item.product.salePrice)}</h4>
-                                  </div>
-                                </div>
-                              </>
-                            ) : (
-                              <ProductFinalPrice className='text-lg leading-9'>
+                      <div className='mt-auto flex items-center justify-between max-[768px]:flex-col max-[768px]:items-start'>
+                        <div className="flex flex-col flex-start">
+                          {!!item.product.onSale ? (
+                            <>
+                              <ProductFinalPrice className='text-base leading-9'>
                                 {formatToCurrencyVND(item.total)}
                               </ProductFinalPrice>
+
+                              <div className='flex flex-row justify-start items-center gap-2'>
+                                <ProductOldPrice className='text-base font-bold'>
+                                  {formatToCurrencyVND(item.subTotal)}
+                                </ProductOldPrice>
+                                <div className='p-1 rounded-full flex flex-col justify-center items-center bg-backgroundColor-salePrice'>
+                                  <h4 className='text-xs text-white font-bold'>{calculatePercentPrice(item.product.regularPrice, item.product.salePrice)}</h4>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <ProductFinalPrice className='text-lg leading-9'>
+                              {formatToCurrencyVND(item.total)}
+                            </ProductFinalPrice>
+                          )}
+                        </div>
+
+                        <div className='flex items-center space-x-6'>
+                          <ProductQuantity
+                            quantity={item.quantity}
+                            onChange={(type: string) => handleUpdateItemInCart(
+                              type,
+                              carts.userId,
+                              item.product
                             )}
-                          </div>
+                          />
 
-                          <div className='flex items-center space-x-6'>
-                            <ProductQuantity
-                              quantity={item.quantity}
-                              onChange={(type: string) => handleUpdateItemInCart(
-                                type,
-                                carts.userId,
-                                item.product
-                              )}
-                            />
-
-                            <Button
-                              size='icon'
-                              variant='ghost'
-                              className='w-9 h-9 rounded-full bg-[#F5F5F5]'
-                              onClick={() => removeItemFromCart(item)}
-                            >
-                              <TrashIcon className='w-5 h-5 text-[#333]' />
-                            </Button>
-                          </div>
+                          <Button
+                            size='icon'
+                            variant='ghost'
+                            className='w-9 h-9 rounded-full bg-[#F5F5F5]'
+                            onClick={() => removeItemFromCart(item)}
+                          >
+                            <TrashIcon className='w-5 h-5 text-[#333]' />
+                          </Button>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          </Spinner>
         </div>
 
         <SheetFooter className='mt-auto p-6 bg-[#F5F5F5] grid grid-cols-3 max-[768px]:p-3 max-[768px]:grid-cols-1'>

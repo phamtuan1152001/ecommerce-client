@@ -5,7 +5,8 @@ import CustomPagination from '../CustomPagination';
 import { getPaginationItems } from '@/utility/pagination';
 
 import { ProductCard } from '@/components/product/product-card';
-import { TailSpin } from "react-loader-spinner"
+import Spinner from '../spin';
+import NoData from '../no-data';
 
 // @constants
 import { PAGE_NUMBER, MAX_LENGTH } from '@/constants';
@@ -45,26 +46,21 @@ export const CategoryView = ({
       </div>
 
       <div className=''>
-        {loading
-          ? (
-            <div className='flex flex-col justify-center items-center h-full'>
-              <TailSpin
-                height="40"
-                width="40"
-                color="#676767"
-                radius="1"
-                visible={true}
-                ariaLabel="tail-spin-loading"
-              />
-            </div>
-          )
-          : (
-            <div className='grid grid-cols-5 gap-x-1 gap-y-6 max-[768px]:grid-cols-2'>
-              {listProducts?.map((product: ProductType, index: number) => (
-                <ProductCard key={index} product={product} slugName={slug} />
-              ))}
-            </div>
-          )}
+        <Spinner spinning={loading}>
+          {listProducts.length > 0
+            ? (
+              <div className='grid grid-cols-5 gap-x-1 gap-y-6 max-[768px]:grid-cols-2'>
+                {listProducts?.map((product: ProductType, index: number) => (
+                  <ProductCard key={index} product={product} slugName={slug} />
+                ))}
+              </div>
+            )
+            : (
+              <div className='flex flex-col justify-center items-center w-full'>
+                <NoData />
+              </div>
+            )}
+        </Spinner>
       </div>
 
 
