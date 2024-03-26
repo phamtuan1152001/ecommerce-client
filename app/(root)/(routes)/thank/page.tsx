@@ -15,7 +15,7 @@ import BreadcrumbComponent from "@/components/bread-crumd"
 import Spinner from "@/components/spin"
 
 //@constants
-import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_MOMO_BANKING, PAYMENT_METAMASK } from "@/constants"
+import { renderText } from "@/utility/common"
 
 //@api
 import { getOrderDetail, updateOrderDetail } from "@/lib/api/order"
@@ -76,21 +76,6 @@ const ThankPage = () => {
   }
 
   // console.log("param", detailOrder)
-
-  const renderText = (type: string) => {
-    switch (type) {
-      case PAYMENT_ATM_BANKING:
-        return "Banking transfer"
-      case PAYMENT_MOMO_BANKING:
-        return "MOMO transfer"
-      case PAYMENT_COD:
-        return "COD"
-      case PAYMENT_METAMASK:
-        return "Metamask payment"
-      default:
-        return "--"
-    }
-  }
 
   if (!isAuthenticated) {
     return null

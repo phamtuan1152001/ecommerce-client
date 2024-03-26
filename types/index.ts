@@ -55,3 +55,40 @@ export interface UserInfoType {
   accessToken: string,
   roles: string[]
 }
+
+export interface OrderType {
+  _id: string,
+  __v: number,
+  userId: string,
+  createdAt: string,
+  updatedAt: string,
+  statusOrder: number,
+  paymentMethod: string,
+  orderAddress: {
+    address: string,
+    districtId: string,
+    email: string,
+    fullAddress: string,
+    fullName: string,
+    phone: string,
+    provinceId: string,
+    wardId: string
+  },
+  cartId: string,
+  cartDetail: {
+    _id: string,
+    userId: string,
+    createdAt: string,
+    updatedAt: string,
+    totalPrice: number,
+    subTotalPrice: number,
+    items: {
+      _id: string,
+      total: number,
+      subTotal: number,
+      quantity: number,
+      productId: string,
+      product: ProductType
+    }[]
+  }
+}

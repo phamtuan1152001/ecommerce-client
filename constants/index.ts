@@ -28,6 +28,7 @@ export const DELETE_ALL_PRODUCTS_IN_CART = "/cart/delete-all-products-in-cart"
 export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
 export const UPDATE_ORDER_DETAIL = "/order/update-detail-order-client"
+export const GET_LIST_ORDERS = "/order/get-list-order-client"
 
 /* PAYMENT API */
 export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"
@@ -69,3 +70,73 @@ export const ACTION_USER = {
   INTRODUCE: 3,
   SAVE: 4
 }
+
+/* INITIAL DATA FOR LIST OF ORDERS */
+export const INITIAL_DATA_ORDERS = [{
+  _id: "",
+    __v: 0,
+    userId: "",
+    createdAt: "",
+    updatedAt: "",
+    statusOrder: 0,
+    paymentMethod: "",
+    orderAddress: {
+      address: "",
+      districtId: "",
+      email: "",
+      fullAddress: "",
+      fullName: "",
+      phone: "",
+      provinceId: "",
+      wardId: ""
+    },
+    cartId: "",
+    cartDetail: {
+      _id: "",
+      userId: "",
+      createdAt: "",
+      updatedAt: "",
+      totalPrice: 0,
+      subTotalPrice: 0,
+      items: [{
+        _id: "",
+        total: 0,
+        subTotal: 0,
+        quantity: 0,
+        productId: "",
+        product: {
+          _id: "",
+          __v: 0,
+          updatedAt: "",
+          status: "",
+          slug: "",
+          salePrice: 0,
+          regularPrice: 0,
+          quantity: 0,
+          onSale: false,
+          name: "",
+          images: [{
+            uid: "",
+            url: "",
+          }],
+          description: "",
+          defaultImageId: "",
+          dateOnSaleTo: "",
+          dateOnSaleFrom: "",
+          createdAt: "",
+          code: "",
+          categories: {
+            _id: "",
+            __v: 0,
+            status: "",
+            slug: "",
+            name: "",
+            imageUrl: "",
+            description: "",
+            createdAt: "",
+            updatedAt: "",
+          }
+        }
+      }]
+    }
+}]

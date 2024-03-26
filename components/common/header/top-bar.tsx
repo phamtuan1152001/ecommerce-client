@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link';
 import Image from 'next/image';
 import { BiUserCircle, BiShoppingBag } from 'react-icons/bi';
+import { LogOut, Receipt, Book, BookUser } from 'lucide-react';
 import { useRouter } from "next/navigation";
 
 import { Container } from '@/components/ui/container';
@@ -20,7 +21,9 @@ import { GlobalSearch } from '@/components/search/global-search';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuTrigger,
+  DropdownMenuItem
 } from "@/components/ui/dropdown-menu"
 
 // @action-cart
@@ -98,21 +101,30 @@ export const TopBar = () => {
                         </h2>
                       </div>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className='bg-transparent p-0 border-0 flex flex-col justify-center gap-y-4'>
-                      <Button
-                        className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
-                        onClick={() => handleLogOut()}
-                      >
-                        <span className='font-bold text-sm'>Logout</span>
-                      </Button>
-                      <Button
-                        className='w-full bg-backgroundColor-cover hover:bg-white hover:border-1 hover:border-[#00508F] hover:text-textColor-deleteFilter'
-                        onClick={() => {
-                          router.push("/customize-product")
-                        }}
-                      >
-                        <span className='font-bold text-sm'>Customize product</span>
-                      </Button>
+                    <DropdownMenuContent className='bg-[#202020] border-0' side='bottom'>
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          className='cursor-pointer hover:bg-inherit focus:bg-transparent [&>span]:focus:underline [&>span]:focus:underline-offset-4'
+                          onClick={() => router.push("/manage-orders")}
+                        >
+                          <Receipt className="mr-2 h-4 w-4" color='white' />
+                          <span className='text-base font-normal text-white'>Quản lý đơn hàng</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className='cursor-pointer hover:bg-inherit focus:bg-transparent [&>span]:focus:underline [&>span]:focus:underline-offset-4'
+                          onClick={() => router.push("/customize-product")}
+                        >
+                          <Book className="mr-2 h-4 w-4" color='white' />
+                          <span className='text-base font-normal text-white'>Customize product</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className='cursor-pointer hover:bg-inherit focus:bg-transparent [&>span]:focus:underline [&>span]:focus:underline-offset-4'
+                          onClick={() => handleLogOut()}
+                        >
+                          <LogOut className="mr-2 h-4 w-4 hover:text-[#000]" color='white' />
+                          <span className='text-base font-normal text-white'>Đăng xuất</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 )
