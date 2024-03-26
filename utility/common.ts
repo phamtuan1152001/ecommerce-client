@@ -3,6 +3,18 @@ import { UserInfoType } from "@/types";
 
 export const phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
 
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  })
+  // const ele = document.getElementById("title-content") 
+  // window.scrollTo({
+  //     top: ele?.getBoundingClientRect().top,
+  //     behavior: "smooth"
+  //   })
+}
+
 export const usdToEth = (usdAmount: number, ethRate: any) => {
   return usdAmount / ethRate;
 }

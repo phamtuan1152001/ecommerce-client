@@ -7,6 +7,9 @@ import s from './CustomPagination.module.css'
 // @components
 import PageLink from './components/PageLink'
 
+// @utility
+import { scrollToTop } from '@/utility/common'
+
 export type Props = {
   data: any,
   currentPage: number
@@ -33,7 +36,10 @@ const CustomPagination: FC<Props> = ({
       <nav className={cn(s.pagination)} aria-label="Pagination">
         <PageLink
           disabled={currentPage === 1}
-          onClick={() => onPrev(currentPage - 1)}
+          onClick={() => {
+            onPrev(currentPage - 1)
+            scrollToTop()
+          }}
           className='border border-[#D9D9D9]'
         >
           Previous
@@ -43,14 +49,20 @@ const CustomPagination: FC<Props> = ({
             key={idx}
             active={currentPage === pageNum}
             disabled={isNaN(pageNum)}
-            onClick={() => onChange(pageNum)}
+            onClick={() => {
+              onChange(pageNum)
+              scrollToTop()
+            }}
           >
             {!isNaN(pageNum) ? pageNum : '...'}
           </PageLink>
         ))}
         <PageLink
           disabled={currentPage === lastPage}
-          onClick={() => onNext(currentPage + 1)}
+          onClick={() => {
+            onNext(currentPage + 1)
+            scrollToTop()
+          }}
           className='border border-[#D9D9D9]'
         >
           Next

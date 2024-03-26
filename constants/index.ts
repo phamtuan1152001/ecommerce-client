@@ -44,7 +44,7 @@ export const RETCODE_SUCCESS = 0;
 export const RETCODE_FAIL = 1;
 
 export const PAGE_NUMBER = 1;
-export const PAGE_LIMIT = 6;
+export const PAGE_LIMIT = 10;
 export const MAX_LENGTH = 7;
 export const LANGUAGE_VI = "vi";
 export const LANGUAGE_EN = "en"
