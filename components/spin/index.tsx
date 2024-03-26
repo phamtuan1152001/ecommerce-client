@@ -26,7 +26,7 @@ const Spinner = ({ spinning, children, className }: SpinnerProps) => {
             />
           </div>
           {/* <!-- Overlay --> */}
-          <div style={{ minHeight: "110vh" }} className={cn("absolute inset-0 z-50 bg-black/20 rounded-lg", className)}></div>
+          <div className={cn("absolute inset-0 z-50 bg-black/20 rounded-lg", className)}></div>
         </>
       )}
       {children}

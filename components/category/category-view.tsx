@@ -46,7 +46,7 @@ export const CategoryView = ({
       </div>
 
       <div className=''>
-        <Spinner spinning={loading}>
+        <Spinner spinning={loading} className='h-[120vh]'>
           {listProducts.length > 0
             ? (
               <div className='grid grid-cols-5 gap-x-1 gap-y-6 max-[1024px]:grid-cols-2'>

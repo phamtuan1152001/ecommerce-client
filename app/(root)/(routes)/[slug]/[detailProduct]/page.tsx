@@ -57,7 +57,6 @@ export default async function Page({ params }: PageProps) {
 
       <Container className='max-[1024px]:p-0'>
         <div className='min-[1280px]:space-y-5'>
-          {/* Detail Product Body */}
           <DetailProductBody
             name={detail.retData.name}
             regularPrice={detail.retData.regularPrice}
@@ -68,7 +67,6 @@ export default async function Page({ params }: PageProps) {
             productId={detail.retData._id}
             onSale={detail.retData.onSale}
           />
-          {/* End */}
         </div>
       </Container>
     </div>

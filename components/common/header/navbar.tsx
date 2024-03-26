@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +27,8 @@ import { renderIcon } from './navbar.data';
 
 export const Navbar = () => {
   const path = usePathname()
+  const router = useRouter()
+
   const [listCategories, setListCategories] = useState<CategoryType[]>([{
     _id: "",
     name: "",
@@ -79,16 +81,24 @@ export const Navbar = () => {
                     <NavigationMenuTrigger className={cn("bg-inherit text-white h-16 px-0 rounded-none hover:bg-backgroundColor-nav focus:bg-backgroundColor-nav data-[active]:bg-backgroundColor-nav data-[state=open]:bg-backgroundColor-nav hover:text-textColor-nav focus:text-textColor-nav data-[active]:text-textColor-nav data-[state=open]:text-textColor-nav", path.substring(1) === item.slug ? "text-textColor-nav bg-backgroundColor-nav" : "")}
                     >
                       <NavigationMenuLink asChild>
-                        <Link
-                          href={item.slug}
+                        <div
+                          // href={item.slug}
                           className={`px-2 flex items-center space-x-1 h-16`}
-                          scroll={true}
+                          onClick={() => {
+                            // router.push(item.slug)
+                            // router.replace(href: item.slug, {scrol})
+                            // console.log("item.slug", item.slug)
+                            window.location.href = `http://localhost:3000/${item.slug}`
+                          }}
+                        // scroll={true}
+                        // replace
+                        // prefetch={true}
                         >
                           <Icon className="w-6 h-6" />
                           <span className="inline-block uppercase">
                             {item.name}
                           </span>
-                        </Link>
+                        </div>
                       </NavigationMenuLink>
                     </NavigationMenuTrigger>
                   </NavigationMenuItem>
