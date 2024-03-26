@@ -83,26 +83,29 @@ export function calculatePercentPrice(originalPrice: number, salePrice: number) 
 
 export const nameCate = (type: string) => {
   switch (type) {
-    case "thoi-trang":
-      return "Thời trang"
-    case "dong-ho":
-      return "Đồng hồ"
-    case "nuoc-hoa":
-      return "Nước hoa"
-    case "my-pham":
-      return "Mỹ phẩm"
-    case "son-moi":
-      return "Son môi"
-    case "kinh-mat":
-      return "Kính mát"
-    case "giay-dep":
-      return "Giày dép"
-    case "trang-suc":
-      return "Trang sức"
-    case "mu-non":
-      return "Mũ nón"
-    case "thuc-pham-chuc-nang":
-      return "Thực phẩm chức năng"
+    case "fashion":
+      return "Fashion"
+    case "watch":
+      return "Watch"
+    case "perfume":
+      return "Perfume"
+    case "cosmetics":
+      return "Cosmetics"
+    case "lipstick":
+      return "Lipstick"
+    case "glasses":
+      return "Glasses"
+    case "shoe":
+      return "Shoe"
+    case "jewelry":
+      return "Jewelry"
+    case "hat":
+      return "Hat"
+    case "functional-foods":
+      return "Functional foods"
+    case "hand-bag":
+      return "Hand bag"
+    
     default:
       return "Thuốc"
   }

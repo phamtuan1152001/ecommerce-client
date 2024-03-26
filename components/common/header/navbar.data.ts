@@ -8,6 +8,31 @@ import { MedicineIcon } from '@/components/icons/MedicineIcon';
 import { PerfumeIcon } from '@/components/icons/PerfumeIcon';
 import { WatchIcon } from '@/components/icons/WatchIcon';
 
+export const renderIcon = (type: string) => {
+  switch (type) {
+    case "fashion":
+      return FashionIcon
+    case "perfume":
+      return PerfumeIcon
+    case "shoe":
+      return FootwearIcon
+    case "hand-bag":
+      return BagIcon
+    case "hat":
+      return FashionIcon
+    case "glasses":
+      return JewelryIcon
+    case "lipstick":
+      return CosmeticIcon
+    case "watch":
+      return WatchIcon
+    case "cosmetics":
+      return CosmeticIcon
+    default:
+      return FashionIcon
+  }
+}
+
 export const MENU = [
   {
     name: 'THỜI TRANG',
