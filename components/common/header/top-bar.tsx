@@ -108,7 +108,7 @@ export const TopBar = () => {
                           onClick={() => router.push("/manage-orders")}
                         >
                           <Receipt className="mr-2 h-4 w-4" color='white' />
-                          <span className='text-base font-normal text-white'>Quản lý đơn hàng</span>
+                          <span className='text-base font-normal text-white'>Manage orders</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className='cursor-pointer hover:bg-inherit focus:bg-transparent [&>span]:focus:underline [&>span]:focus:underline-offset-4'
@@ -122,7 +122,7 @@ export const TopBar = () => {
                           onClick={() => handleLogOut()}
                         >
                           <LogOut className="mr-2 h-4 w-4 hover:text-[#000]" color='white' />
-                          <span className='text-base font-normal text-white'>Đăng xuất</span>
+                          <span className='text-base font-normal text-white'>Logout</span>
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>

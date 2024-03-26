@@ -168,7 +168,7 @@ function ManageOrders() {
                               <div className="flex flex-col justify-start gap-y-1">
                                 <h3 className="text-sm"><span className="font-bold">Họ và tên</span>: {item?.orderAddress?.fullName}</h3>
                                 <h3 className="text-sm"><span className="font-bold">Số điện thoại: </span> {item?.orderAddress?.phone}</h3>
-                                <h3 className="text-sm"><span className="font-bold">Địa chỉ: </span> {item?.orderAddress?.address}</h3>
+                                <h3 className="text-sm"><span className="font-bold">Địa chỉ: </span> {item?.orderAddress?.fullAddress}</h3>
                               </div>
                             </TableCell>
                             <TableCell className="text-sm">{renderStatusOrder(item.statusOrder)}</TableCell>

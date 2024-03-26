@@ -19,7 +19,7 @@ import { PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS } from "@/constants"
 
 //@api
 import { getOrderDetail } from "@/lib/api/order"
-import { formatToCurrencyVND, getUserToken } from "@/utility/common"
+import { formatToCurrencyVND, getUserToken, renderText } from "@/utility/common"
 
 const OrderDetailPage = () => {
   const param = useSearchParams()
@@ -147,9 +147,7 @@ const OrderDetailPage = () => {
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
                   <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
-                    {detailOrder?.paymentMethod
-                      ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
-                      : "--"}
+                    {renderText(detailOrder?.paymentMethod)}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-between items-center">
@@ -183,7 +181,7 @@ const OrderDetailPage = () => {
                 <div className="flex flex-col justify-center items-center">
                   <PaymentSuccessStatus />
                 </div>
-                <h2 className="text-lg font-bold text-[#4EC389]">
+                <h2 className="text-lg font-bold text-[#4EC389] text-center">
                   Thank you. Your order has been confirmed and wait for you to pay
                 </h2>
               </div>
@@ -195,8 +193,8 @@ const OrderDetailPage = () => {
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Date of purchase:</h3>
                   <h3 className="text-base font-bold text-[#000000]">
-                    {moment(detailOrder?.updateAt)?.isValid()
-                      ? moment(detailOrder?.updateAt).format("DD/MM/YYYY HH:MM")
+                    {moment(detailOrder?.createdAt)?.isValid()
+                      ? moment(detailOrder?.createdAt).format("DD/MM/YYYY HH:mm")
                       : "--"}
                   </h3>
                 </div>
@@ -209,9 +207,7 @@ const OrderDetailPage = () => {
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
                   <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
-                    {detailOrder?.paymentMethod
-                      ? detailOrder?.paymentMethod === PAYMENT_COD ? "COD (Cash on delivery)" : "Bank transfer"
-                      : "--"}
+                    {renderText(detailOrder?.paymentMethod)}
                   </h3>
                 </div>
               </div>

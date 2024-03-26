@@ -177,7 +177,7 @@ const ThankPage = () => {
                 <div className="flex flex-col justify-center items-center">
                   <PaymentSuccessStatus />
                 </div>
-                <h2 className="text-lg font-bold text-[#4EC389]">
+                <h2 className="text-lg font-bold text-[#4EC389] text-center">
                   Thank you. Your order has been paid successfully
                 </h2>
               </div>
