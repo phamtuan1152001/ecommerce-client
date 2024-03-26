@@ -85,10 +85,9 @@ export const Navbar = () => {
                           // href={item.slug}
                           className={`px-2 flex items-center space-x-1 h-16`}
                           onClick={() => {
-                            // router.push(item.slug)
-                            // router.replace(href: item.slug, {scrol})
-                            // console.log("item.slug", item.slug)
-                            window.location.href = `http://localhost:3000/${item.slug}`
+                            const currentUrl = window.location.href
+                            const domain = new URL(currentUrl).origin;
+                            router.push(`${domain}/${item.slug}`)
                           }}
                         // scroll={true}
                         // replace
