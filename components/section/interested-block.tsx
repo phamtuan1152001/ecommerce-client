@@ -98,14 +98,14 @@ export const InterestedBlock = () => {
 
   return (
     <section>
-      <div className='py-6 max-[768px]:px-3 max-[768px]:pt-3 max-[768px]:pb-0 border-y-8 border-[#F5F5F5]'>
-        <Container className='max-[768px]:px-0'>
+      <div className='py-6 max-[1024px]:px-3 max-[1024px]:pt-3 max-[1024px]:pb-0 border-y-8 border-[#F5F5F5]'>
+        <Container className='max-[1024px]:px-0'>
           <div className='space-y-3'>
             <h4 className='text-2xl text-[#333] font-bold text-center'>
               Có thể bạn quan tâm
             </h4>
 
-            <div className='flex items-center justify-center flex-wrap gap-4 max-[768px]:hidden'>
+            <div className='flex items-center justify-center flex-wrap gap-4 max-[1024px]:hidden'>
               {DATA.map((item, index) => (
                 <Link
                   key={index}

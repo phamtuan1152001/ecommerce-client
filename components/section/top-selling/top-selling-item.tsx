@@ -10,7 +10,7 @@ export const TopSellingItem = ({ item }: TopSellingItemProps) => {
   return (
     <div
       className={cn(
-        'flex items-center space-x-2.5 p-2 border border-[#D9D9D9] rounded-[99px] mx-2 max-[768px]:mx-4'
+        'flex items-center space-x-2.5 p-2 border border-[#D9D9D9] rounded-[99px] mx-2 max-[1024px]:mx-4'
       )}
     >
       <div className='relative aspect-square w-8 rounded-full overflow-hidden'>

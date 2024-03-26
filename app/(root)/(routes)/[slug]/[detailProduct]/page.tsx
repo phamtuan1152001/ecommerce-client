@@ -35,8 +35,8 @@ export default async function Page({ params }: PageProps) {
   // console.log("detailProduct", detail);
 
   return (
-    <div className='bg-[#F5F5F5] p-6 max-[768px]:p-0'>
-      <div className="max-[768px]:hidden">
+    <div className='bg-[#F5F5F5] p-6 max-[1024px]:p-0'>
+      <div className="max-[1024px]:hidden">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
@@ -55,7 +55,7 @@ export default async function Page({ params }: PageProps) {
         </Container>
       </div>
 
-      <Container className='max-[768px]:p-0'>
+      <Container className='max-[1024px]:p-0'>
         <div className='min-[1280px]:space-y-5'>
           {/* Detail Product Body */}
           <DetailProductBody

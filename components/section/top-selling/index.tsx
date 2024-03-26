@@ -58,7 +58,7 @@ export const TopSelling = () => {
   };
 
   return (
-    <div className='bg-white p-4 border-b border-b-[#D9D9D9] max-[768px]:px-0'>
+    <div className='bg-white p-4 border-b border-b-[#D9D9D9] max-[1024px]:px-0'>
       <SlickSlider settings={settings}>
         {DATA.map((item) => (
           <TopSellingItem key={item.name} item={item} />

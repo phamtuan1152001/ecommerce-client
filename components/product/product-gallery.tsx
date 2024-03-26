@@ -15,7 +15,7 @@ export const ProductGallery = ({ listImages }: ProductGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <div className='space-y-4 max-[768px]:space-y-2'>
+    <div className='space-y-4 max-[1024px]:space-y-2'>
       <div className='relative aspect-square'>
         <Image
           src={listImages[currentIndex]?.url}

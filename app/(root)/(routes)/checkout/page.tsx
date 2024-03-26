@@ -342,7 +342,7 @@ const CheckOut = () => {
             || methodPayment === PAYMENT_METAMASK
             ? false : true,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
             if (methodPayment === PAYMENT_METAMASK) {
@@ -372,7 +372,7 @@ const CheckOut = () => {
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
           },
@@ -388,7 +388,7 @@ const CheckOut = () => {
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
+        className: "max-[1024px]:w-[380px]",
         onSubmit: () => {
           SlideInModal.hide()
         },
@@ -405,7 +405,7 @@ const CheckOut = () => {
   // console.log("form", form.getValues());
 
   return (
-    <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
+    <div className='bg-[#F5F5F5] py-6 max-[1024px]:py-0'>
       <DiaglogMetamask
         orderId={orderId}
         totalPrice={carts.totalPrice}
@@ -413,7 +413,7 @@ const CheckOut = () => {
         onOpenChange={onOpenChange}
       />
 
-      <div className=" pb-5 max-[768px]:hidden">
+      <div className=" pb-5 max-[1024px]:hidden">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
@@ -428,7 +428,7 @@ const CheckOut = () => {
         </Container>
       </div>
 
-      <Container className="max-[768px]:px-0">
+      <Container className="max-[1024px]:px-0">
         {/* Header Back Icon for mobile */}
         <div className='flex flex-row justify-between items-center min-[1280px]:hidden bg-white px-3 pt-2'>
           <button className='flex flex-col justify-center items-center bg-backgroundColor-buttonCommon w-10 h-10 rounded-full' onClick={() => router.back()}>
@@ -438,9 +438,9 @@ const CheckOut = () => {
         {/* End */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='grid grid-cols-5 gap-6 max-[768px]:grid-cols-1 max-[768px]:gap-0'>
-              <div className='bg-white col-span-3 max-[768px]:order-2'>
-                <div className=' p-6 flex flex-col gap-y-12 max-[768px]:gap-y-6 max-[768px]:p-3'>
+            <div className='grid grid-cols-5 gap-6 max-[1024px]:grid-cols-1 max-[1024px]:gap-0'>
+              <div className='bg-white col-span-3 max-[1024px]:order-2'>
+                <div className=' p-6 flex flex-col gap-y-12 max-[1024px]:gap-y-6 max-[1024px]:p-3'>
                   <div className=' flex flex-col gap-y-4'>
                     <div className=' flex items-center gap-x-2'>
                       <PiHandbagThin size={24} />
@@ -478,7 +478,7 @@ const CheckOut = () => {
                       <h3 className=' text-[20px] font-bold'>Delivery address</h3>
                     </div>
                     <div className=' flex flex-col gap-y-4 '>
-                      <div className='grid grid-cols-2 gap-4 max-[768px]:grid-cols-1'>
+                      <div className='grid grid-cols-2 gap-4 max-[1024px]:grid-cols-1'>
                         <FormField
                           control={form.control}
                           name='fullName'
@@ -518,7 +518,7 @@ const CheckOut = () => {
                           )}
                         />
                       </div>
-                      <div className='grid grid-cols-3 gap-4 max-[768px]:grid-cols-1'>
+                      <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1'>
                         <FormField
                           control={form.control}
                           name='provinceId'
@@ -741,7 +741,7 @@ const CheckOut = () => {
                   </div>
                 </div>
               </div>
-              <div className='col-span-2 max-[768px]:order-1'>
+              <div className='col-span-2 max-[1024px]:order-1'>
                 <CartInformationRight />
               </div>
             </div>

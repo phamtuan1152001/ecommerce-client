@@ -111,7 +111,7 @@ export function DiaglogMetamask({
               textButtonCancel: "",
               isBtnCancel: false,
               closeOnClickOverlay: false,
-              className: "max-[768px]:w-[380px]",
+              className: "max-[1024px]:w-[380px]",
               onSubmit: () => {
                 SlideInModal.hide()
                 router.push(`/thank?orderId=${orderId}`)

@@ -97,8 +97,8 @@ const ThankPage = () => {
   }
 
   return (
-    <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
-      <div className="pb-5 max-[768px]:pb-0 max-[768px]:pt-4">
+    <div className='bg-[#F5F5F5] py-6 max-[1024px]:py-0'>
+      <div className="pb-5 max-[1024px]:pb-0 max-[1024px]:pt-4">
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
@@ -117,9 +117,9 @@ const ThankPage = () => {
         </Container>
       </div>
 
-      <Container className="max-[768px]:p-4">
+      <Container className="max-[1024px]:p-4">
         <Spinner spinning={loading}>
-          <div className="grid grid-cols-2 gap-x-6 max-[768px]:grid-cols-1 max-[768px]:gap-y-6">
+          <div className="grid grid-cols-2 gap-x-6 max-[1024px]:grid-cols-1 max-[1024px]:gap-y-6">
             <div className="p-[24px] bg-white rounded-[12px]">
               <div className="flex flex-col gap-y-4 pb-6 border-b-2 border-[#DFE3E8]">
                 <div className="flex flex-row justify-start items-center gap-x-2">
@@ -157,7 +157,7 @@ const ThankPage = () => {
               <div className="flex flex-col gap-y-4 py-6 border-b-2 border-[#DFE3E8]">
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
-                  <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
+                  <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
                     {renderText(detailOrder?.paymentMethod)}
                   </h3>
                 </div>
@@ -217,7 +217,7 @@ const ThankPage = () => {
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
-                  <h3 className="text-base font-bold text-[#000000] max-[768px]:text-right">
+                  <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
                     {renderText(detailOrder?.paymentMethod)}
                   </h3>
                 </div>

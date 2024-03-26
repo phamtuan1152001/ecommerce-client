@@ -47,7 +47,7 @@ export const ProductVerification = () => {
   return (
     <>
       {/* Desktop */}
-      <div className='space-y-[1px] max-[768px]:hidden'>
+      <div className='space-y-[1px] max-[1024px]:hidden'>
         {DATA.map((item) => {
           const { name, icon: Icon } = item;
 

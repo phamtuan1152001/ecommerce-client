@@ -45,7 +45,7 @@ export const SellProduts = ({
     arrows: true,
     slidesToShow: 4.5,
     slidesToScroll: 2,
-    dotsClass: 'mt-6 max-[768px]:mt-4',
+    dotsClass: 'mt-6 max-[1024px]:mt-4',
     infinite: false,
     customPaging(index) {
       return (
@@ -67,9 +67,9 @@ export const SellProduts = ({
 
   return (
     <section>
-      <Container className='max-[768px]:px-0'>
-        <div className='py-10 max-[768px]:px-3 max-[768px]:py-6'>
-          <div className=' bg-[#26282B] rounded-3xl py-8 px-16 max-[768px]:px-0 max-[768px]:py-6'>
+      <Container className='max-[1024px]:px-0'>
+        <div className='py-10 max-[1024px]:px-3 max-[1024px]:py-6'>
+          <div className=' bg-[#26282B] rounded-3xl py-8 px-16 max-[1024px]:px-0 max-[1024px]:py-6'>
             <div className='flex justify-center items-center gap-2'>
               <div className="w-[21px] h-[38px] relative">
                 <Image
@@ -80,11 +80,11 @@ export const SellProduts = ({
                   className="object-contain"
                 />
               </div>
-              <h2 className=' font-bold text-[#FFFFFF] text-[26px] leading-9 uppercase max-[768px]:text-2xl'>
+              <h2 className=' font-bold text-[#FFFFFF] text-[26px] leading-9 uppercase max-[1024px]:text-2xl'>
                 {title}
               </h2>
             </div>
-            <div className='sell-products pt-6 max-[768px]:pt-4'>
+            <div className='sell-products pt-6 max-[1024px]:pt-4'>
               <SlickSlider settings={settings}>
                 {listItems?.map((
                   product: {

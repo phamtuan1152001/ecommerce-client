@@ -132,8 +132,8 @@ const ProductsBody = ({ slug }: ProductsBody) => {
 
   return (
     <React.Fragment>
-      <div className='bg-[#F5F5F5] p-6 max-[768px]:p-0'>
-        <div className="pb-5 max-[768px]:hidden">
+      <div className='bg-[#F5F5F5] p-6 max-[1024px]:p-0'>
+        <div className="pb-5 max-[1024px]:hidden">
           <Container>
             <BreadcrumbComponent breadcrumbs={[
               {
@@ -148,14 +148,14 @@ const ProductsBody = ({ slug }: ProductsBody) => {
           </Container>
         </div>
 
-        <Container className='max-[768px]:px-0'>
+        <Container className='max-[1024px]:px-0'>
           <div className=''>
             <div className='bg-white'>
-              {/* <div className='py-6 px-4 max-[768px]:p-0'>
+              {/* <div className='py-6 px-4 max-[1024px]:p-0'>
                 <TopSelling />
               </div> */}
 
-              <div className='px-4 py-6 max-[768px]:p-0 max-[768px]:pb-6 max-[768px]:px-3'>
+              <div className='px-4 py-6 max-[1024px]:p-0 max-[1024px]:pb-6 max-[1024px]:px-3'>
                 <CategoryView
                   titleCate={cateDetail?.name}
                   loading={loading}

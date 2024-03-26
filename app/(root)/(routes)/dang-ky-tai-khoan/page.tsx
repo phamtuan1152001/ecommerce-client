@@ -81,7 +81,7 @@ const RegisterAccountPage = () => {
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             window.location.reload()
           },
@@ -96,7 +96,7 @@ const RegisterAccountPage = () => {
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
           },
@@ -113,7 +113,7 @@ const RegisterAccountPage = () => {
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
+        className: "max-[1024px]:w-[380px]",
         onSubmit: () => {
           SlideInModal.hide()
         },
@@ -123,8 +123,8 @@ const RegisterAccountPage = () => {
   };
 
   return (
-    <div className='bg-[#F5F5F5] py-6 max-[768px]:py-0'>
-      <Container className="max-[768px]:px-0">
+    <div className='bg-[#F5F5F5] py-6 max-[1024px]:py-0'>
+      <Container className="max-[1024px]:px-0">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className=" flex flex-col gap-y-6">

@@ -30,7 +30,7 @@ export const ViewedProducts = () => {
   };
 
   return (
-    <section className='py-10 max-[768px]:py-6 max-[768px]:px-3'>
+    <section className='py-10 max-[1024px]:py-6 max-[1024px]:px-3'>
       <Container>
         <div className='space-y-6'>
           <div className='flex items-center justify-between'>
@@ -50,7 +50,7 @@ export const ViewedProducts = () => {
             ))}
           </SlickSlider> */}
 
-          <div className='max-[768px]:hidden text-center'>
+          <div className='max-[1024px]:hidden text-center'>
             <Link href={"/"} className='text-base font-semibold' scroll={true}>
               Xem tất cả
             </Link>

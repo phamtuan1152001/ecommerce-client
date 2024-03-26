@@ -89,7 +89,7 @@ export const CartOrderDetails = () => {
         </h5>
       </div>
 
-      <div className='space-y-4 max-[768px]:mb-6 relative py-3'>
+      <div className='space-y-4 max-[1024px]:mb-6 relative py-3'>
         <Spinner spinning={loading} className='rounded-none'>
           {carts?.items?.map((item, index) => (
             <div className='flex flex-row justify-start' key={index}>

@@ -34,7 +34,7 @@ export const Banners = () => {
 
   return (
     <section>
-      <Container className='max-[768px]:px-0'>
+      <Container className='max-[1024px]:px-0'>
         <div>
           <SlickSlider settings={settings}>
             {BANNERS.map((item, index) => (

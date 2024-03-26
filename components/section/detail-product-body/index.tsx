@@ -95,7 +95,7 @@ export default function DetailProductBody({
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
+        className: "max-[1024px]:w-[380px]",
         onSubmit: () => {
           SlideInModal.hide()
           setTimeout(() => {
@@ -129,7 +129,7 @@ export default function DetailProductBody({
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
+        className: "max-[1024px]:w-[380px]",
         onSubmit: () => {
           SlideInModal.hide()
           setTimeout(() => {
@@ -191,16 +191,16 @@ export default function DetailProductBody({
       </div>
       {/* End */}
 
-      <div className='bg-white p-6 max-[768px]:px-3 max-[768px]:pt-3 max-[768px]:pb-6'>
-        <div className='grid grid-cols-4 gap-6 max-[768px]:grid-cols-1 max-[768px]:gap-0'>
+      <div className='bg-white p-6 max-[1024px]:px-3 max-[1024px]:pt-3 max-[1024px]:pb-6'>
+        <div className='grid grid-cols-4 gap-6 max-[1024px]:grid-cols-1 max-[1024px]:gap-0'>
           <div className='col-span-3'>
-            <div className='grid grid-cols-[348px_minmax(0,_1fr)] gap-6 max-[768px]:gap-3 max-[768px]:grid-cols-1'>
+            <div className='grid grid-cols-[348px_minmax(0,_1fr)] gap-6 max-[1024px]:gap-3 max-[1024px]:grid-cols-1'>
               <div className='space-y-4'>
                 {images?.length > 0 && (
                   <ProductGallery listImages={images} />
                 )}
 
-                <div className='flex items-center gap-3 max-[768px]:hidden'>
+                <div className='flex items-center gap-3 max-[1024px]:hidden'>
                   {/* <p className='text-sm font-bold text-[#003966] leading-normal'>
                     Share:
                   </p>
@@ -227,7 +227,7 @@ export default function DetailProductBody({
                 </div>
               </div>
 
-              <div className='space-y-4 max-[768px]:space-y-2'>
+              <div className='space-y-4 max-[1024px]:space-y-2'>
                 <ProductTitle className='text-xl text-[#181818]'>
                   {name}
                 </ProductTitle>
@@ -293,14 +293,14 @@ export default function DetailProductBody({
             </div>
           </div>
 
-          <div className='space-y-6 max-[768px]:space-y-4'>
+          <div className='space-y-6 max-[1024px]:space-y-4'>
             <ProductVerification />
           </div>
         </div>
       </div>
 
-      <div className='bg-white p-6 max-[768px]:p-3 border-t-8 border-[#F5F5F5]'>
-        <div className='grid grid-cols-4 gap-6 max-[768px]:grid-cols-1 max-[768px]:gap-0'>
+      <div className='bg-white p-6 max-[1024px]:p-3 border-t-8 border-[#F5F5F5]'>
+        <div className='grid grid-cols-4 gap-6 max-[1024px]:grid-cols-1 max-[1024px]:gap-0'>
           <div className='col-span-3'>
             <ProductInfoTabs description={description} />
           </div>

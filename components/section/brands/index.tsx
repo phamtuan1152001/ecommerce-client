@@ -11,9 +11,9 @@ import { BRANDS } from './data';
 export const Brands = () => {
   return (
     <section>
-      <div className='bg-[#F8F7F7] py-[80px] max-[768px]:px-3 max-[768px]:py-6'>
+      <div className='bg-[#F8F7F7] py-[80px] max-[1024px]:px-3 max-[1024px]:py-6'>
         <Container>
-          <Heading title='Thương hiệu nổi bật' className='text-left max-[768px]:text-center' />
+          <Heading title='Thương hiệu nổi bật' className='text-left max-[1024px]:text-center' />
         </Container>
 
         <Marquee>

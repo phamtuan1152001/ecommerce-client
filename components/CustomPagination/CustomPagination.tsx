@@ -32,7 +32,7 @@ const CustomPagination: FC<Props> = ({
   onNext,
 }: Props) => {
   return (
-    <div className='flex flex-col space-y-6 items-center max-[768px]:space-y-4'>
+    <div className='flex flex-col space-y-6 items-center max-[1024px]:space-y-4'>
       <nav className={cn(s.pagination)} aria-label="Pagination">
         <PageLink
           disabled={currentPage === 1}

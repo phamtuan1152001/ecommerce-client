@@ -53,14 +53,14 @@ export default function ProductsByCategoryItem({
 
   return (
     <div>
-      <div className='py-10 max-[768px]:px-3 max-[768px]:py-6'>
+      <div className='py-10 max-[1024px]:px-3 max-[1024px]:py-6'>
         <div
-          className={cn('flex gap-4 max-[768px]:flex-wrap', {
+          className={cn('flex gap-4 max-[1024px]:flex-wrap', {
             'flex-row-reverse': index % 2 !== 0,
           })}
         >
-          <div className='max-w-[20%] w-full max-[768px]:max-w-[100%]'>
-            <div className='relative flex items-center justify-center aspect-[218/341] rounded-2xl overflow-hidden max-[768px]:aspect-[351/168]'>
+          <div className='max-w-[20%] w-full max-[1024px]:max-w-[100%]'>
+            <div className='relative flex items-center justify-center aspect-[218/341] rounded-2xl overflow-hidden max-[1024px]:aspect-[351/168]'>
               <Image
                 src={item?.imageUrl || NO_DATA_IMAGE}
                 alt={item?.name || "no-data-image"}
@@ -75,7 +75,7 @@ export default function ProductsByCategoryItem({
             </div>
           </div>
 
-          <div className='max-w-[80%] w-full max-[768px]:max-w-[100%]'>
+          <div className='max-w-[80%] w-full max-[1024px]:max-w-[100%]'>
             <SlickSlider settings={settings}>
               {(item as any).products?.length > 0
                 ? (
@@ -109,7 +109,7 @@ export default function ProductsByCategoryItem({
         </div>
 
         {(item as any)?.products?.length > 0 && (
-          <div className='text-center mt-6 max-[768px]:mt-4'>
+          <div className='text-center mt-6 max-[1024px]:mt-4'>
             <Button
               variant='outline'
               className='text-[#333] border-current rounded-3xl font-bold'

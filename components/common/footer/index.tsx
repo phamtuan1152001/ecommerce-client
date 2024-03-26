@@ -9,7 +9,7 @@ import { PAYMENT_METHODS } from '@/constants/footer';
 export const Footer = () => {
   return (
     <footer className='bg-[#181818]'>
-      <div className='p-16 grid grid-cols-3 gap-14 max-[768px]:grid-cols-1 max-[768px]:gap-6 max-[768px]:py-6 max-[768px]:px-3'>
+      <div className='p-16 grid grid-cols-3 gap-14 max-[1024px]:grid-cols-1 max-[1024px]:gap-6 max-[1024px]:py-6 max-[1024px]:px-3'>
         <div>
           {!!FOOTER_MENU['info'] && (
             <div className='space-y-6'>
@@ -60,7 +60,7 @@ export const Footer = () => {
           )}
         </div>
 
-        <div className='flex flex-row justify-between items-start max-[768px]:justify-between gap-6'>
+        <div className='flex flex-row justify-between items-start max-[1024px]:justify-between gap-6'>
           <div>
             {!!FOOTER_MENU['about'] && (
               <div className='space-y-4'>
@@ -213,12 +213,12 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className='px-16 pb-8 flex flex-col items-end gap-3 max-[768px]:flex-col max-[768px]:items-start max-[768px]:gap-3 max-[768px]:pl-3 max-[768px]:pb-8 max-[768px]:pr-16'>
+      <div className='px-16 pb-8 flex flex-col items-end gap-3 max-[1024px]:flex-col max-[1024px]:items-start max-[1024px]:gap-3 max-[1024px]:pl-3 max-[1024px]:pb-8 max-[1024px]:pr-16'>
         <p className='body-text-normal font-bold text-[#FBFBFB]'>
           Payment methods
         </p>
 
-        <div className='flex items-center gap-3 max-[768px]:flex-wrap'>
+        <div className='flex items-center gap-3 max-[1024px]:flex-wrap'>
           {PAYMENT_METHODS.map((item, index) => (
             <div key={index}>
               <Image

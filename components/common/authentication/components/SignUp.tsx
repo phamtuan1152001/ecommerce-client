@@ -87,7 +87,7 @@ const SignUp = () => {
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             window.location.reload()
           },
@@ -102,7 +102,7 @@ const SignUp = () => {
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
-          className: "max-[768px]:w-[380px]",
+          className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
           },
@@ -119,7 +119,7 @@ const SignUp = () => {
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
-        className: "max-[768px]:w-[380px]",
+        className: "max-[1024px]:w-[380px]",
         onSubmit: () => {
           SlideInModal.hide()
         },

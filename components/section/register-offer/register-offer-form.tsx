@@ -39,7 +39,7 @@ export const RegisterOfferForm = () => {
                   <Input
                     placeholder='Điền email của bạn'
                     {...field}
-                    className='focus-visible:ring-0  focus-visible:ring-offset-0 placeholder:text-[#777] bg-transparent border-none w-[260px] max-[768px]:w-[200px]'
+                    className='focus-visible:ring-0  focus-visible:ring-offset-0 placeholder:text-[#777] bg-transparent border-none w-[260px] max-[1024px]:w-[200px]'
                   />
                 </FormControl>
               </FormItem>

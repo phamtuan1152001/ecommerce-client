@@ -49,7 +49,7 @@ export const ProductsByCategory = async ({
 
   return (
     <section>
-      <Container className='max-[768px]:px-0'>
+      <Container className='max-[1024px]:px-0'>
         <div>
           {resultData.map((item, index) => (
             <ProductsByCategoryItem key={index} item={item} index={index} />

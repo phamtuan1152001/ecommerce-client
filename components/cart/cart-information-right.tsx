@@ -30,7 +30,7 @@ export const CartInformationRight = () => {
       textButtonCancel: "Leave here",
       isBtnCancel: true,
       closeOnClickOverlay: false,
-      className: "max-[768px]:w-[400px]",
+      className: "max-[1024px]:w-[400px]",
       onSubmit: () => {
         SlideInModal.hide()
       },
@@ -43,7 +43,7 @@ export const CartInformationRight = () => {
 
   return (
     <>
-      <Box className='divide-y divide-[#DFE3E8] max-[768px]:p-3 border-b-8 border-[#F5F5F5]'>
+      <Box className='divide-y divide-[#DFE3E8] max-[1024px]:p-3 border-b-8 border-[#F5F5F5]'>
         <CartOrderDetails />
 
         {/* <CartDiscount /> */}
@@ -53,7 +53,7 @@ export const CartInformationRight = () => {
         <CartTerm />
       </Box>
 
-      <Box className='bg-[#181818] max-[768px]:fixed max-[768px]:bottom-0 max-[768px]:left-0 max-[768px]:z-10'>
+      <Box className='bg-[#181818] max-[1024px]:fixed max-[1024px]:bottom-0 max-[1024px]:left-0 max-[1024px]:z-10'>
         <div className='grid grid-cols-2 gap-2.5'>
           <div>
             <p className='text-base text-white font-semibold'>Total</p>

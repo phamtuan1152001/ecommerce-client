@@ -117,20 +117,20 @@ export const CartButton = () => {
       {/* <SheetOverlay /> */}
       <SheetContent className='sm:max-w-xl p-0 flex flex-col gap-0 w-full'>
         {/* <SheetClose>
-          <X className='h-6 w-6 max-[768px]:h-5 max-[768px]:w-5' />
+          <X className='h-6 w-6 max-[1024px]:h-5 max-[1024px]:w-5' />
         </SheetClose> */}
-        <SheetHeader className='p-6 border-b border-b-[#DFE3E8] max-[768px]:px-3'>
-          <SheetTitle className='text-2xl font-bold text-[#333] max-[768px]:text-left max-[768px]:text-lg'>
+        <SheetHeader className='p-6 border-b border-b-[#DFE3E8] max-[1024px]:px-3'>
+          <SheetTitle className='text-2xl font-bold text-[#333] max-[1024px]:text-left max-[1024px]:text-lg'>
             Giỏ hàng ({carts?.items?.length})
           </SheetTitle>
         </SheetHeader>
 
-        <div className='flex-grow overflow-y-auto p-6 space-y-6 max-[768px]:p-3 relative'>
+        <div className='flex-grow overflow-y-auto p-6 space-y-6 max-[1024px]:p-3 relative'>
           <Spinner spinning={loading} className="rounded-none">
-            <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
-              <div className="flex flex-col justify-start gap-6 max-[768px]:gap-4">
+            <div className="flex flex-col justify-start gap-6 max-[1024px]:gap-4">
+              <div className="flex flex-col justify-start gap-6 max-[1024px]:gap-4">
                 {carts?.items?.map((item, index) => (
-                  <div className='flex gap-3 max-[768px]:gap-1' key={index}>
+                  <div className='flex gap-3 max-[1024px]:gap-1' key={index}>
                     <ProductImage
                       wrapperClassName='w-28 flex-shrink-0'
                       src={item.product.images.find((ele) => ele.uid === item.product.defaultImageId)?.url || NO_DATA_IMAGE}
@@ -141,7 +141,7 @@ export const CartButton = () => {
                     <div className='p-2 flex flex-col flex-1'>
                       <ProductTitle>{item.product.name}</ProductTitle>
 
-                      <div className='mt-auto flex items-center justify-between max-[768px]:flex-col max-[768px]:items-start'>
+                      <div className='mt-auto flex items-center justify-between max-[1024px]:flex-col max-[1024px]:items-start'>
                         <div className="flex flex-col flex-start">
                           {!!item.product.onSale ? (
                             <>
@@ -193,8 +193,8 @@ export const CartButton = () => {
           </Spinner>
         </div>
 
-        <SheetFooter className='mt-auto p-6 bg-[#F5F5F5] grid grid-cols-3 max-[768px]:p-3 max-[768px]:grid-cols-1'>
-          <div className='flex-1 text-[#181818] max-[768px]:w-full max-[768px]:grid max-[768px]:grid-cols-2'>
+        <SheetFooter className='mt-auto p-6 bg-[#F5F5F5] grid grid-cols-3 max-[1024px]:p-3 max-[1024px]:grid-cols-1'>
+          <div className='flex-1 text-[#181818] max-[1024px]:w-full max-[1024px]:grid max-[1024px]:grid-cols-2'>
             <p className='text-base font-semibold'>Tạm tính</p>
             <p className='text-lg font-bold'>
               {formatToCurrencyVND(carts?.totalPrice)}

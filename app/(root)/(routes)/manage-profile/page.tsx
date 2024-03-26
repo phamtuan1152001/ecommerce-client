@@ -113,7 +113,7 @@ const ManageProfile = () => {
   }
 
   return (
-    <div className="bg-[#F5F5F5] py-6 max-[768px]:py-0">
+    <div className="bg-[#F5F5F5] py-6 max-[1024px]:py-0">
       <Container>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
