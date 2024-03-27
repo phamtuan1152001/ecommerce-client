@@ -1,8 +1,17 @@
+export const PaymentFailIcon = (props: any) => {
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <circle cx="32" cy="32" r="28" fill="#FF0000" />
+      <path d="M21.6066 42.1127L32.2132 31.5061M42.8198 20.8995L32.2132 31.5061M32.2132 31.5061L21.6066 20.8995M32.2132 31.5061L42.8198 42.1127" stroke="#D9D9D9" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export const PaymentSuccessStatus = (props: any) => {
   return (
     <svg width="56" height="57" viewBox="0 0 56 57" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <circle cx="28" cy="28.8008" r="28" fill="#23A26D" fill-opacity="0.12"/>
-      <path d="M27.4993 15.4688C20.1527 15.4688 14.166 21.4554 14.166 28.8021C14.166 36.1487 20.1527 42.1354 27.4993 42.1354C34.846 42.1354 40.8327 36.1487 40.8327 28.8021C40.8327 21.4554 34.846 15.4688 27.4993 15.4688ZM33.8727 25.7354L26.3127 33.2954C26.126 33.4821 25.8727 33.5887 25.606 33.5887C25.3393 33.5887 25.086 33.4821 24.8993 33.2954L21.126 29.5221C20.7393 29.1354 20.7393 28.4954 21.126 28.1087C21.5127 27.7221 22.1527 27.7221 22.5393 28.1087L25.606 31.1754L32.4593 24.3221C32.846 23.9354 33.486 23.9354 33.8727 24.3221C34.2593 24.7087 34.2593 25.3354 33.8727 25.7354Z" fill="#23A26D"/>
+      <circle cx="28" cy="28.8008" r="28" fill="#23A26D" fill-opacity="0.12" />
+      <path d="M27.4993 15.4688C20.1527 15.4688 14.166 21.4554 14.166 28.8021C14.166 36.1487 20.1527 42.1354 27.4993 42.1354C34.846 42.1354 40.8327 36.1487 40.8327 28.8021C40.8327 21.4554 34.846 15.4688 27.4993 15.4688ZM33.8727 25.7354L26.3127 33.2954C26.126 33.4821 25.8727 33.5887 25.606 33.5887C25.3393 33.5887 25.086 33.4821 24.8993 33.2954L21.126 29.5221C20.7393 29.1354 20.7393 28.4954 21.126 28.1087C21.5127 27.7221 22.1527 27.7221 22.5393 28.1087L25.606 31.1754L32.4593 24.3221C32.846 23.9354 33.486 23.9354 33.8727 24.3221C34.2593 24.7087 34.2593 25.3354 33.8727 25.7354Z" fill="#23A26D" />
     </svg>
   )
 }
@@ -10,8 +19,8 @@ export const PaymentSuccessStatus = (props: any) => {
 export const ToastIconFail = (props: any) => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16.3401 1.9999H7.67009C4.28009 1.9999 2.00009 4.3799 2.00009 7.9199V16.0909C2.00009 19.6199 4.28009 21.9999 7.67009 21.9999H16.3401C19.7301 21.9999 22.0001 19.6199 22.0001 16.0909V7.9199C22.0001 4.3799 19.7301 1.9999 16.3401 1.9999" fill="#FF0000"/>
-      <path d="M9.81557 14.1844L12 12M14.1844 9.81557L12 12M12 12L9.81557 9.81557M12 12L14.1844 14.1844" stroke="#D9D9D9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16.3401 1.9999H7.67009C4.28009 1.9999 2.00009 4.3799 2.00009 7.9199V16.0909C2.00009 19.6199 4.28009 21.9999 7.67009 21.9999H16.3401C19.7301 21.9999 22.0001 19.6199 22.0001 16.0909V7.9199C22.0001 4.3799 19.7301 1.9999 16.3401 1.9999" fill="#FF0000" />
+      <path d="M9.81557 14.1844L12 12M14.1844 9.81557L12 12M12 12L9.81557 9.81557M12 12L14.1844 14.1844" stroke="#D9D9D9" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -19,7 +28,7 @@ export const ToastIconFail = (props: any) => {
 export const ToastIconSuccess = (props: any) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-      <path fillRule="evenodd" clipRule="evenodd" d="M7.67 2H16.34C19.73 2 22 4.38 22 7.92V16.091C22 19.62 19.73 22 16.34 22H7.67C4.28 22 2 19.62 2 16.091V7.92C2 4.38 4.28 2 7.67 2ZM11.43 14.99L16.18 10.24C16.52 9.9 16.52 9.35 16.18 9C15.84 8.66 15.28 8.66 14.94 9L10.81 13.13L9.06 11.38C8.72 11.04 8.16 11.04 7.82 11.38C7.48 11.72 7.48 12.27 7.82 12.62L10.2 14.99C10.37 15.16 10.59 15.24 10.81 15.24C11.04 15.24 11.26 15.16 11.43 14.99Z" fill="#70BE54"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M7.67 2H16.34C19.73 2 22 4.38 22 7.92V16.091C22 19.62 19.73 22 16.34 22H7.67C4.28 22 2 19.62 2 16.091V7.92C2 4.38 4.28 2 7.67 2ZM11.43 14.99L16.18 10.24C16.52 9.9 16.52 9.35 16.18 9C15.84 8.66 15.28 8.66 14.94 9L10.81 13.13L9.06 11.38C8.72 11.04 8.16 11.04 7.82 11.38C7.48 11.72 7.48 12.27 7.82 12.62L10.2 14.99C10.37 15.16 10.59 15.24 10.81 15.24C11.04 15.24 11.26 15.16 11.43 14.99Z" fill="#70BE54" />
     </svg>
   )
 }
@@ -28,11 +37,11 @@ export const IconShare = (props: any) => {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g id="share-android">
-      <path id="Vector" d="M15 18.332C16.3807 18.332 17.5 17.2127 17.5 15.832C17.5 14.4513 16.3807 13.332 15 13.332C13.6193 13.332 12.5 14.4513 12.5 15.832C12.5 17.2127 13.6193 18.332 15 18.332Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path id="Vector_2" d="M15 6.66797C16.3807 6.66797 17.5 5.54868 17.5 4.16797C17.5 2.78726 16.3807 1.66797 15 1.66797C13.6193 1.66797 12.5 2.78726 12.5 4.16797C12.5 5.54868 13.6193 6.66797 15 6.66797Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path id="Vector_3" d="M5 12.5C6.38071 12.5 7.5 11.3807 7.5 10C7.5 8.61929 6.38071 7.5 5 7.5C3.61929 7.5 2.5 8.61929 2.5 10C2.5 11.3807 3.61929 12.5 5 12.5Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path id="Vector 2" d="M12.9168 5.41797L7.0835 8.7513" stroke="#202020" strokeWidth="1.5"/>
-      <path id="Vector 3" d="M7.0835 11.25L12.9168 14.5833" stroke="#202020" strokeWidth="1.5"/>
+        <path id="Vector" d="M15 18.332C16.3807 18.332 17.5 17.2127 17.5 15.832C17.5 14.4513 16.3807 13.332 15 13.332C13.6193 13.332 12.5 14.4513 12.5 15.832C12.5 17.2127 13.6193 18.332 15 18.332Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_2" d="M15 6.66797C16.3807 6.66797 17.5 5.54868 17.5 4.16797C17.5 2.78726 16.3807 1.66797 15 1.66797C13.6193 1.66797 12.5 2.78726 12.5 4.16797C12.5 5.54868 13.6193 6.66797 15 6.66797Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector_3" d="M5 12.5C6.38071 12.5 7.5 11.3807 7.5 10C7.5 8.61929 6.38071 7.5 5 7.5C3.61929 7.5 2.5 8.61929 2.5 10C2.5 11.3807 3.61929 12.5 5 12.5Z" stroke="#202020" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path id="Vector 2" d="M12.9168 5.41797L7.0835 8.7513" stroke="#202020" strokeWidth="1.5" />
+        <path id="Vector 3" d="M7.0835 11.25L12.9168 14.5833" stroke="#202020" strokeWidth="1.5" />
       </g>
     </svg>
   )
@@ -42,7 +51,7 @@ export const IconBackArrow = (props: any) => {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g id="arrow-left">
-      <path id="Vector" d="M15.4167 10H5M5 10L10 5M5 10L10 15" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path id="Vector" d="M15.4167 10H5M5 10L10 5M5 10L10 15" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </g>
     </svg>
   )
@@ -51,8 +60,8 @@ export const IconBackArrow = (props: any) => {
 export const IconArrange = (props: any) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none" {...props}>
-      <path d="M14.4163 6.66667L10.2497 2.5L6.08301 6.66667" stroke="#181818" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M14.4163 13.3333L10.2497 17.5L6.08301 13.3333" stroke="#181818" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M14.4163 6.66667L10.2497 2.5L6.08301 6.66667" stroke="#181818" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14.4163 13.3333L10.2497 17.5L6.08301 13.3333" stroke="#181818" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -60,9 +69,9 @@ export const IconArrange = (props: any) => {
 export const IconFilter = (props: any) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none" {...props}>
-      <path d="M2.75 5H17.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M6.08301 10L14.4163 10" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M9.41699 15L11.0837 15" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M2.75 5H17.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.08301 10L14.4163 10" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.41699 15L11.0837 15" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -195,9 +204,9 @@ export const IconCloseX = (props: any) => {
 export const IconFail = (props: any) => {
   return (
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="32" cy="32" r="28" fill="#FF0000"/>
-      <path d="M21.6066 42.1127L32.2132 31.5061M42.8198 20.8995L32.2132 31.5061M32.2132 31.5061L21.6066 20.8995M32.2132 31.5061L42.8198 42.1127" stroke="#D9D9D9" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>  
+      <circle cx="32" cy="32" r="28" fill="#FF0000" />
+      <path d="M21.6066 42.1127L32.2132 31.5061M42.8198 20.8995L32.2132 31.5061M32.2132 31.5061L21.6066 20.8995M32.2132 31.5061L42.8198 42.1127" stroke="#D9D9D9" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
 

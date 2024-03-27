@@ -7,7 +7,8 @@ import Image from 'next/image'
 
 //@svg 
 import { CartIcon } from "@/components/icons/CartIcon"
-import { PaymentSuccessStatus } from "@/public/assets/svg"
+import { PaymentSuccessStatus, PaymentFailIcon } from "@/public/assets/svg"
+import PaymentPendingIcon from "../../../../../public/assets/images/pending-icon.png"
 
 //@components
 import { Container } from "@/components/ui/container"
@@ -60,6 +61,53 @@ const OrderDetailPage = () => {
   }
 
   // console.log("param", detailOrder)
+
+  const renderStatusOrder = (type: number) => {
+    switch (type) {
+      case 0:
+        return (
+          <div className="flex flex-col justify-center items-center gap-y-4">
+            <div className="flex flex-col justify-center items-center relative aspect-square h-[50px]">
+              <Image
+                alt='404-image'
+                src={'/assets/images/pending-icon.png'}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw"
+                className='object-cover object-center rounded-[8px]'
+              />
+            </div>
+            <h2 className="text-lg font-bold text-yellow-500">
+              This payment is waiting for purchasing
+            </h2>
+          </div>
+        )
+      case 1:
+        return (
+          <div className="flex flex-col justify-center items-center gap-y-4">
+            <div className="flex flex-col justify-center items-center">
+              <PaymentSuccessStatus />
+            </div>
+            <h2 className="text-lg font-bold text-[#4EC389]">
+              This payment has been paid successfully
+            </h2>
+          </div>
+        )
+      case 2:
+        return (
+          <div className="flex flex-col justify-center items-center gap-y-4">
+            <div className="flex flex-col justify-center items-center">
+              <PaymentFailIcon />
+            </div>
+            <h2 className="text-lg font-bold text-red-500">
+              This payment has been canceled
+            </h2>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
 
   if (!isAuthenticated) {
     return null
@@ -177,14 +225,7 @@ const OrderDetailPage = () => {
               </div>
             </div>
             <div className="p-[24px] bg-white h-fit rounded-[12px]">
-              <div className="flex flex-col justify-center items-center gap-y-4">
-                <div className="flex flex-col justify-center items-center">
-                  <PaymentSuccessStatus />
-                </div>
-                <h2 className="text-lg font-bold text-[#4EC389] text-center">
-                  Thank you. Your order has been confirmed and wait for you to pay
-                </h2>
-              </div>
+              {renderStatusOrder(detailOrder?.statusOrder)}
               <div className="flex flex-col gap-y-4 pt-4">
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
