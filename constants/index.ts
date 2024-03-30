@@ -5,6 +5,8 @@ export const BASE_URL_API_DEV = "http://localhost:3002"
 export const URL_DEV_VNAPPMOB = "https://vapi.vnappmob.com/api"
 export const USD_TO_VND_API = "https://open.er-api.com/v6/latest/USD"
 export const ETH_EXCHANGE_RATE_API = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+export const UPLOAD_PRODUCT = "/upload/upload-cloudinary"
+export const CONVERT_IMAGE_TO_PSD = "/convert-to-svg/png-to-svg"
 
 /* PRODUCTS API */
 export const GET_LIST_PRODUCTS = "/products/listProducts"

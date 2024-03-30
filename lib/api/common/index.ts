@@ -1,5 +1,23 @@
-import { URL_DEV_VNAPPMOB, USD_TO_VND_API, ETH_EXCHANGE_RATE_API } from "@/constants";
+import { URL_DEV_VNAPPMOB, USD_TO_VND_API, ETH_EXCHANGE_RATE_API, UPLOAD_PRODUCT, CONVERT_IMAGE_TO_PSD } from "@/constants";
 import axios from "axios";
+import apiMethod from "@/utility/ApiMethod";
+
+export const convertImageToPsd = async (payload: any) => {
+  const { data } = await apiMethod.post(CONVERT_IMAGE_TO_PSD, {
+    ...payload
+  })
+  return data
+}
+
+export const uploadImgProduct = (payload: {
+  data: string
+}) => {
+  return apiMethod.post(UPLOAD_PRODUCT, payload, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
 
 export const getListProvinces =async () => {
   const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province")

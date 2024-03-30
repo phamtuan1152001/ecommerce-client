@@ -48,6 +48,7 @@ const Customizer = () => {
   })
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [canvasBase64, setCanvasBase64] = useState<string>("")
 
   // show tab content depending on the active tab
   const generateTabContent = () => {
@@ -179,6 +180,7 @@ const Customizer = () => {
               const canvas = document.querySelector("canvas");
               const dataURL = (canvas as any).toDataURL("image/png");
               // console.log("dataUrl", dataURL)
+              setCanvasBase64(dataURL)
               handleOpen()
             }}
             customStyles="w-fit px-4 py-2.5 font-bold text-sm max-w-[100px]"
@@ -217,6 +219,7 @@ const Customizer = () => {
       <DialogCustomizedProduct
         isOpen={isOpen}
         handleOpen={handleOpen}
+        canvasBase64={canvasBase64}
       />
     </Container>
   )
