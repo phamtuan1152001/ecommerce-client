@@ -16,7 +16,7 @@ interface SelectionComponentProps {
     type: string
   }[],
   placeholder: string,
-  value: string,
+  value: string | undefined,
   onChange: (...event: any) => void
 }
 

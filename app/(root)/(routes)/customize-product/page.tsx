@@ -25,6 +25,7 @@ import apiMethod from "@/utility/ApiMethod"
 
 // @type
 import { DecalTypeKey } from "@/types"
+import DialogCustomizedProduct from "@/components/dialog-customized-product"
 
 const Customizer = () => {
   const snap = useSnapshot(state)
@@ -45,6 +46,8 @@ const Customizer = () => {
     logoShirt: true,
     stylishShirt: false
   })
+
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   // show tab content depending on the active tab
   const generateTabContent = () => {
@@ -136,6 +139,10 @@ const Customizer = () => {
       })
   }
 
+  const handleOpen = () => {
+    setIsOpen(!isOpen)
+  }
+
   return (
     <Container className="my-6">
       <AnimatePresence>
@@ -163,12 +170,16 @@ const Customizer = () => {
           </div>
           <CustomButton
             type="filled"
-            title="Go back"
+            title="Create customized product"
             handleClick={() => {
-              state.intro = true
-              setTimeout(() => {
-                router.push("/")
-              }, 500)
+              // state.intro = true
+              // setTimeout(() => {
+              //   router.push("/")
+              // }, 500)
+              const canvas = document.querySelector("canvas");
+              const dataURL = (canvas as any).toDataURL("image/png");
+              // console.log("dataUrl", dataURL)
+              handleOpen()
             }}
             customStyles="w-fit px-4 py-2.5 font-bold text-sm max-w-[100px]"
           />
@@ -202,6 +213,11 @@ const Customizer = () => {
           </button>
         </div>
       </AnimatePresence>
+
+      <DialogCustomizedProduct
+        isOpen={isOpen}
+        handleOpen={handleOpen}
+      />
     </Container>
   )
 }
