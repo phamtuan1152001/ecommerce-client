@@ -140,50 +140,41 @@ const Customizer = () => {
     <Container className="my-6">
       <AnimatePresence>
         <div className="flex flex-row justify-between items-start">
-          <motion.div
-            key={"custom"}
-            className=""
-            {...slideAnimation("left")}
-          >
-            <div className="flex items-center">
-              <div className="editortabs-container tabs">
-                {EditorTabs.map((tab, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <Tab
-                        keyId={`${tab.name}-${index}`}
-                        tab={tab}
-                        handleClick={() => {
-                          setActiveEditorTab(tab.name)
-                        }}
-                      />
-                    </React.Fragment>
-                  )
-                })}
-                {generateTabContent()}
-              </div>
+          <div className="flex items-center">
+            <div className="editortabs-container tabs">
+              {EditorTabs.map((tab, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <Tab
+                      keyId={`${tab.name}-${index}`}
+                      tab={tab}
+                      handleClick={() => {
+                        setActiveEditorTab(tab.name)
+                      }}
+                    />
+                  </React.Fragment>
+                )
+              })}
+              {generateTabContent()}
             </div>
-          </motion.div>
+          </div>
           <div className="">
             <CanvasModel />
           </div>
-          <motion.div className="" {...fadeAnimation}>
-            <CustomButton
-              type="filled"
-              title="Go back"
-              handleClick={() => {
-                state.intro = true
-                setTimeout(() => {
-                  router.push("/")
-                }, 500)
-              }}
-              customStyles="w-fit px-4 py-2.5 font-bold text-sm"
-            />
-          </motion.div>
+          <CustomButton
+            type="filled"
+            title="Go back"
+            handleClick={() => {
+              state.intro = true
+              setTimeout(() => {
+                router.push("/")
+              }, 500)
+            }}
+            customStyles="w-fit px-4 py-2.5 font-bold text-sm max-w-[100px]"
+          />
         </div>
-        <motion.div
+        <div
           className="filtertabs-container mt-4"
-          {...slideAnimation("up")}
         >
           {FilterTabs.map((tab, index) => {
             return (
@@ -209,7 +200,7 @@ const Customizer = () => {
               className='w-3/5 h-3/5 object-contain'
             />
           </button>
-        </motion.div>
+        </div>
       </AnimatePresence>
     </Container>
   )
