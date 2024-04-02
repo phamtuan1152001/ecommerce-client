@@ -2,6 +2,7 @@ import apiMethod from "@/utility/ApiMethod";
 import {
   CREATE_CUSTOMIZED_PRODUCT,
   GET_LIST_CUSTOMIZED_PRODUCT_CLIENT,
+  GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
   UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
   DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT
 } from "@/constants";
@@ -27,6 +28,16 @@ export const getListCustomizedProductClient = async (
   const { data } = await apiMethod.post(GET_LIST_CUSTOMIZED_PRODUCT_CLIENT, {
     ...payload
   })
+  return data
+}
+
+export const getDetailCustomizedProductClient = async (payload: {
+  customizedProductId: string
+}) => {  
+  const { data } = await apiMethod.get(
+    GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT +
+    `/${payload.customizedProductId}`
+  )
   return data
 }
 

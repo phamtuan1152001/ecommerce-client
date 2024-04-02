@@ -3,6 +3,9 @@ import React, { useState } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
+
+// @validation
 import { formCustomizedProductSchema } from "@/validation/form-customized-product"
 
 // @components
@@ -27,16 +30,25 @@ import {
 import { Input } from "@/components/ui/input"
 import SelectionComponent from "@/components/form/selection-component"
 import { Checkbox } from "@/components/ui/checkbox"
-import { formatNumber, getUserInfo } from "@/utility/common"
-import { convertImageToPsd, uploadImgProduct } from "@/lib/api/common"
 import Spinner from "../spin"
-import { SIZE_LIST, SUCCESS } from "@/constants"
-import { createCustomizedProduct } from "@/lib/api/customized-product"
-import { CustomizedProductTypePayload, CustomizedProductTypeResponse } from "@/types"
-import { IconSuccess, IconFail } from "@/public/assets/svg"
 import { DiaglogPopup } from "../pop-up/dialog-popup"
-import { useRouter } from "next/navigation"
 import SlideInModal from "../slide-in-modal"
+
+// @common
+import { formatNumber, getUserInfo } from "@/utility/common"
+
+// @services
+import { convertImageToPsd, uploadImgProduct } from "@/lib/api/common"
+import { createCustomizedProduct } from "@/lib/api/customized-product"
+
+// @constants
+import { SIZE_LIST, SUCCESS } from "@/constants"
+
+// @types
+import { CustomizedProductTypePayload, CustomizedProductTypeResponse } from "@/types"
+
+// @icon
+import { IconSuccess, IconFail } from "@/public/assets/svg"
 
 interface DialogCustomizedProductProps {
   isOpen: boolean,

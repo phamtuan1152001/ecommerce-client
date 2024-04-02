@@ -44,8 +44,8 @@ export interface CustomizedProductType {
   size: string,
   imageUrl: string,
   imagePsd: string,
-  statusProductAdmin: number,
-  statusProductClient: number,
+  statusProductAdmin: number | undefined,
+  statusProductClient: number | undefined,
   regularPrice: number,
   totalPrice: number,
   createdAt: string

@@ -17,6 +17,7 @@ export const CREATE_RANKLING_PRODUCT_AS_TYPE = "/ranking-products/create"
 /* CUSTOMIZED PRODUCT API */
 export const CREATE_CUSTOMIZED_PRODUCT = "/customized-product/create"
 export const GET_LIST_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/getListClient"
+export const GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/detail-customized-product-client"
 export const UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/update-customized-product-client"
 export const DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/delete-customized-product"
 

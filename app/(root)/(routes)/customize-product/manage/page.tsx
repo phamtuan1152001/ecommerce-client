@@ -32,11 +32,28 @@ import { PAGE_LIMIT, PAGE_NUMBER, SUCCESS, MAX_LENGTH, LANGUAGE_VI, INITIAL_DATA
 import { IconBackArrow } from '@/public/assets/svg'
 import { GetListCustomizedProductPayload, CustomizedProductTypeResponse, CustomizedProductType } from '@/types';
 import { getListCustomizedProductClient } from '@/lib/api/customized-product';
+import EditCustomizedProduct from '@/components/pop-up/edit-customized-product';
 
 const ManageCustomizedProduct = () => {
   const router = useRouter()
 
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const [record, setRecord] = useState<CustomizedProductType>({
+    _id: "",
+    userId: "",
+    code: "",
+    name: "",
+    quantity: 0,
+    size: "",
+    imageUrl: "",
+    imagePsd: "",
+    statusProductAdmin: 0,
+    statusProductClient: 0,
+    regularPrice: 0,
+    totalPrice: 0,
+    createdAt: ""
+  })
   const [
     listCustomizedProduct,
     setListCustomizedProduct
@@ -98,7 +115,7 @@ const ManageCustomizedProduct = () => {
     fetchGetListCustomizedProductClient(req)
   }
 
-  const renderStatus = (type: number) => {
+  const renderStatus = (type: number | undefined) => {
     switch (type) {
       case 0:
         return (
@@ -125,6 +142,14 @@ const ManageCustomizedProduct = () => {
           </span>
         )
     }
+  }
+
+  const handleOpen = () => {
+    setIsOpen(!isOpen)
+  }
+
+  const handleSubmit = (values: CustomizedProductType) => {
+    console.log("values", values)
   }
 
   return (
@@ -210,9 +235,10 @@ const ManageCustomizedProduct = () => {
                             <TableCell className="">
                               <span
                                 className="text-sm font-bold hover:underline hover:underline-offset-4 cursor-pointer transition-all"
-                              // onClick={() =>
-                              //   router.push(`/checkout/order-detail?orderId=${item?._id}`)
-                              // }
+                                onClick={() => {
+                                  setRecord(item)
+                                  handleOpen()
+                                }}
                               >
                                 Edit
                               </span>
@@ -252,6 +278,13 @@ const ManageCustomizedProduct = () => {
           </div>
         </div>
       </Container>
+
+      <EditCustomizedProduct
+        data={record}
+        isOpen={isOpen}
+        handleOpen={handleOpen}
+        onSubmit={handleSubmit}
+      />
     </div>
   )
 }
