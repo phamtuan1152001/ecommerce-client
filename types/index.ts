@@ -6,47 +6,49 @@ export interface GetListCustomizedProductPayload {
 }
 
 export interface CustomizedProductTypeResponse {
-    _id: string,
-    userId: string,
-    code: string,
-    name: string,
-    quantity: number,
-    size: string,
-    imageUrl: string,
-    imagePsd: string,
-    statusProductAdmin: number,
-    statusProductClient: number,
-    regularPrice: number,
-    totalPrice: number
+  _id: string,
+  userId: string,
+  code: string,
+  name: string,
+  quantity: number,
+  size: string,
+  imageUrl: string,
+  imagePsd: string,
+  statusProductAdmin: number,
+  statusProductClient: number,
+  regularPrice: number,
+  totalPrice: number,
+  createdAt: string
 }
 
 export interface CustomizedProductTypePayload {
-    userId: string,
-    code: string,
-    name: string,
-    quantity: number,
-    size: string | undefined,
-    imageUrl: string,
-    imagePsd: string,
-    statusProductAdmin: number,
-    statusProductClient: number,
-    regularPrice: number,
-    totalPrice: number
+  userId: string,
+  code: string,
+  name: string,
+  quantity: number,
+  size: string | undefined,
+  imageUrl: string,
+  imagePsd: string,
+  statusProductAdmin: number,
+  statusProductClient: number,
+  regularPrice: number,
+  totalPrice: number
 }
 
 export interface CustomizedProductType {
-    _id: string,
-    userId: string,
-    code: string,
-    name: string,
-    quantity: number,
-    size: string,
-    imageUrl: string,
-    imagePsd: string,
-    statusProductAdmin: number,
-    statusProductClient: number,
-    regularPrice: number,
-    totalPrice: number
+  _id: string,
+  userId: string,
+  code: string,
+  name: string,
+  quantity: number,
+  size: string,
+  imageUrl: string,
+  imagePsd: string,
+  statusProductAdmin: number,
+  statusProductClient: number,
+  regularPrice: number,
+  totalPrice: number,
+  createdAt: string
 }
 
 export type DecalTypeKey = 'logo' | 'full';

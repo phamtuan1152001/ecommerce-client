@@ -169,22 +169,32 @@ const Customizer = () => {
           <div className="">
             <CanvasModel />
           </div>
-          <CustomButton
-            type="filled"
-            title="Create customized product"
-            handleClick={() => {
-              // state.intro = true
-              // setTimeout(() => {
-              //   router.push("/")
-              // }, 500)
-              const canvas = document.querySelector("canvas");
-              const dataURL = (canvas as any).toDataURL("image/png");
-              // console.log("dataUrl", dataURL)
-              setCanvasBase64(dataURL)
-              handleOpen()
-            }}
-            customStyles="w-fit px-4 py-2.5 font-bold text-sm max-w-[100px]"
-          />
+          <div className="flex flex-col justify-end gap-3">
+            <CustomButton
+              type="filled"
+              title="Create"
+              handleClick={() => {
+                // state.intro = true
+                // setTimeout(() => {
+                //   router.push("/")
+                // }, 500)
+                const canvas = document.querySelector("canvas");
+                const dataURL = (canvas as any).toDataURL("image/png");
+                // console.log("dataUrl", dataURL)
+                setCanvasBase64(dataURL)
+                handleOpen()
+              }}
+              customStyles="w-fit px-4 py-2.5 font-bold text-sm w-full"
+            />
+            <CustomButton
+              type="filled"
+              title="Manage"
+              handleClick={() => {
+                router.push("/customize-product/manage")
+              }}
+              customStyles="w-fit px-4 py-2.5 font-bold text-sm w-full"
+            />
+          </div>
         </div>
         <div
           className="filtertabs-container mt-4"
