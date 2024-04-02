@@ -1,3 +1,54 @@
+export interface GetListCustomizedProductPayload {
+  page: number,
+  size: number,
+  userId: string,
+  search: string
+}
+
+export interface CustomizedProductTypeResponse {
+    _id: string,
+    userId: string,
+    code: string,
+    name: string,
+    quantity: number,
+    size: string,
+    imageUrl: string,
+    imagePsd: string,
+    statusProductAdmin: number,
+    statusProductClient: number,
+    regularPrice: number,
+    totalPrice: number
+}
+
+export interface CustomizedProductTypePayload {
+    userId: string,
+    code: string,
+    name: string,
+    quantity: number,
+    size: string | undefined,
+    imageUrl: string,
+    imagePsd: string,
+    statusProductAdmin: number,
+    statusProductClient: number,
+    regularPrice: number,
+    totalPrice: number
+}
+
+export interface CustomizedProductType {
+    _id: string,
+    userId: string,
+    code: string,
+    name: string,
+    quantity: number,
+    size: string,
+    imageUrl: string,
+    imagePsd: string,
+    statusProductAdmin: number,
+    statusProductClient: number,
+    regularPrice: number,
+    totalPrice: number
+}
+
 export type DecalTypeKey = 'logo' | 'full';
 
 export interface ProductType {

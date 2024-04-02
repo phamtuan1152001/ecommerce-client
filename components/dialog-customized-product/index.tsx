@@ -27,9 +27,16 @@ import {
 import { Input } from "@/components/ui/input"
 import SelectionComponent from "@/components/form/selection-component"
 import { Checkbox } from "@/components/ui/checkbox"
-import { formatNumber } from "@/utility/common"
+import { formatNumber, getUserInfo } from "@/utility/common"
 import { convertImageToPsd, uploadImgProduct } from "@/lib/api/common"
 import Spinner from "../spin"
+import { SIZE_LIST, SUCCESS } from "@/constants"
+import { createCustomizedProduct } from "@/lib/api/customized-product"
+import { CustomizedProductTypePayload, CustomizedProductTypeResponse } from "@/types"
+import { IconSuccess, IconFail } from "@/public/assets/svg"
+import { DiaglogPopup } from "../pop-up/dialog-popup"
+import { useRouter } from "next/navigation"
+import SlideInModal from "../slide-in-modal"
 
 interface DialogCustomizedProductProps {
   isOpen: boolean,
@@ -42,7 +49,8 @@ const DialogCustomizedProduct = ({
   handleOpen,
   canvasBase64
 }: DialogCustomizedProductProps) => {
-  const [isOnSale, setIsOnSale] = useState<boolean>(false)
+  const router = useRouter()
+
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingConvert, setLoadingConvert] = useState<boolean>(false)
 
@@ -51,17 +59,13 @@ const DialogCustomizedProduct = ({
     defaultValues: {
       code: `ECOM-U1`,
       name: undefined,
-      regularPrice: undefined,
-      status: "draft",
-      onSale: false,
-      salePrice: undefined,
-      dateOnSaleFrom: undefined,
-      dateOnSaleTo: undefined
+      quantity: undefined,
+      size: "1"
     },
   })
 
   function onSubmit(values: z.infer<typeof formCustomizedProductSchema>) {
-    console.log(values)
+    // console.log(values)
     fetchUploadImg(canvasBase64, values)
   }
 
@@ -124,13 +128,77 @@ const DialogCustomizedProduct = ({
 
   const fetchCreateCustomizedProduct = async (
     urlImage: string,
-    psdImage: string /* https://eu-central.storage.cloudconvert.com/tasks/9791b880-42b5-4339-8d8d-85371833fe08/brvn0id9lu74jetmchxm.psd?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cloudconvert-production%2F20240330%2Ffra%2Fs3%2Faws4_request&X-Amz-Date=20240330T172204Z&X-Amz-Expires=86400&X-Amz-Signature=c4556504739bee6deee842108e03dc9ab490d3eb866be5358413f7a8419b256d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22brvn0id9lu74jetmchxm.psd%22&response-content-type=image%2Fvnd.adobe.photoshop&x-id=GetObject */,
+    psdImage: string,
     values: z.infer<typeof formCustomizedProductSchema>
   ) => {
     try {
-      console.log("data", { urlImage, psdImage, values })
+      const req: CustomizedProductTypePayload = {
+        userId: getUserInfo().id,
+        code: values.code,
+        name: values.name,
+        size: SIZE_LIST.find(item => item.id === values.size)?.name,
+        quantity: parseInt(values.quantity),
+        regularPrice: 0,
+        totalPrice: 0,
+        imageUrl: urlImage,
+        imagePsd: psdImage,
+        statusProductAdmin: 0,
+        statusProductClient: 0
+      }
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: CustomizedProductTypeResponse
+      } = await createCustomizedProduct(req)
+      if (res.retCode === 0) {
+        DiaglogPopup({
+          icon: <IconSuccess />,
+          title: "CREATE CUSTOMIZED PRODUCT SUCCESSFULLY",
+          description: "Your customized product has been successfully created",
+          textButtonOk: "Come back to Homepage",
+          textButtonCancel: "",
+          isBtnCancel: false,
+          closeOnClickOverlay: false,
+          className: "max-[1024px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+            router.push("/")
+          },
+          onCancle: () => { }
+        })
+      } else {
+        DiaglogPopup({
+          icon: <IconFail />,
+          title: "CREATE CUSTOMIZED PRODUCT UNSUCCESSFULLY",
+          description: "Your customized product has been unsuccessfully created",
+          textButtonOk: "Close",
+          textButtonCancel: "",
+          isBtnCancel: false,
+          closeOnClickOverlay: false,
+          className: "max-[1024px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+          },
+          onCancle: () => { }
+        })
+      }
+      // console.log("data", req)
     } catch (err) {
       console.log("FETCHING FAIL!", err)
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "System error",
+        description: "Please, try again later",
+        textButtonOk: "Close",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[1024px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+        },
+        onCancle: () => { }
+      })
     } finally {
       setLoading(false);
     }
@@ -186,53 +254,38 @@ const DialogCustomizedProduct = ({
                   />
                   <FormField
                     control={form.control}
-                    name="regularPrice"
+                    name="quantity"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel
                           className='text-sm font-bold text-[#333333]'
                         >
-                          Regular price:
+                          Quantity:
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Regular price of product"
+                            placeholder="Quantity of product"
                             type="number"
                             {...field}
                           />
                         </FormControl>
-                        <FormDescription>
-                          Regular price: {formatNumber(field.value)} VND
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   <FormField
                     control={form.control}
-                    name='status'
+                    name='size'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className='text-sm font-bold text-[#333333]'>
-                          Status:
+                        <FormLabel className=' text-sm font-bold text-[#333333]'>
+                          Size:
                         </FormLabel>
                         <SelectionComponent
-                          datas={[
-                            {
-                              id: "draft",
-                              name: "Draft",
-                              type: ""
-                            },
-                            {
-                              id: "publish",
-                              name: "Publish",
-                              type: ""
-                            },
-                          ]}
-                          placeholder="Select status of product"
+                          datas={SIZE_LIST}
+                          placeholder="Select size of product"
                           value={field.value}
                           onChange={(value) => {
-                            // console.log("v", value)
                             field.onChange(value)
                           }}
                         />
@@ -240,109 +293,6 @@ const DialogCustomizedProduct = ({
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="onSale"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex flex-row justify-start items-center gap-x-2">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              onClick={() => {
-                                if (isOnSale) {
-                                  setIsOnSale(false)
-                                  form.setValue("salePrice", undefined)
-                                  form.setValue("dateOnSaleFrom", undefined)
-                                  form.setValue("dateOnSaleTo", undefined)
-                                } else {
-                                  setIsOnSale(true)
-                                }
-                              }}
-                            />
-                          </FormControl>
-                          <div className="">
-                            <FormLabel className='text-sm font-bold text-[#333333]'>
-                              On sale
-                            </FormLabel>
-                          </div>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {isOnSale && (
-                    <>
-                      <FormField
-                        control={form.control}
-                        name="salePrice"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel
-                              className='text-sm font-bold text-[#333333]'
-                            >
-                              Sale price:
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Sale price of product"
-                                type="number"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription>
-                              Sale price: {formatNumber(field.value)} VND
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="dateOnSaleFrom"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel
-                              className='text-sm font-bold text-[#333333]'
-                            >
-                              Date on sale from:
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Date on sale from of product"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="dateOnSaleTo"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel
-                              className='text-sm font-bold text-[#333333]'
-                            >
-                              Date on sale to:
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Date on sale to of product"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </>
-                  )}
                 </div>
                 <DialogFooter>
                   <Button type="submit">Save changes</Button>

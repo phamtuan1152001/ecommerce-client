@@ -14,6 +14,12 @@ export const GET_DETAIL_PRODUCT = "/products/detail"
 export const GET_RANKING_PRODUCTS_AS_TYPE = "/ranking-products/get-list-client"
 export const CREATE_RANKLING_PRODUCT_AS_TYPE = "/ranking-products/create"
 
+/* CUSTOMIZED PRODUCT API */
+export const CREATE_CUSTOMIZED_PRODUCT = "/customized-product/create"
+export const GET_LIST_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/getListClient"
+export const UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/update-customized-product-client"
+export const DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/delete-customized-product"
+
 /* AUTHENTICATION API */
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
 export const AUTHENTICATE_API_SIGNUP = '/auth/signup'
@@ -64,6 +70,39 @@ export const PAYMENT_METAMASK: string = "metamask"
 
 export const NO_DATA_IMAGE = NO_IMG
 export const WALLET_ADDRESS_OWNER = "0xAFdF41f48E7796580B909054FF75b3428ecD9E1B"
+
+export const SIZE_LIST = [
+  {
+    id: "1",
+    name: "XS",
+    type: "xs"
+  },
+  {
+    id: "2",
+    name: "S",
+    type: "s"
+  },
+  {
+    id: "3",
+    name: "M",
+    type: "m"
+  },
+  {
+    id: "4",
+    name: "L",
+    type: "l"
+  },
+  {
+    id: "5",
+    name: "XL",
+    type: "xl"
+  },
+  {
+    id: "6",
+    name: "XXL",
+    type: "xxl"
+  },
+]
 
 /* ACTION DETEC USER */
 export const ACTION_USER = {
