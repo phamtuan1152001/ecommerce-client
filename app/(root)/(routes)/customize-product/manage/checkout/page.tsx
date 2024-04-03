@@ -18,6 +18,8 @@ import { DiaglogMetamask } from "@/components/dialog-metamask";
 import ContactForm from "@/components/checkout/form/contact-form";
 import DeliveryAddressForm from "@/components/checkout/form/delivery-address-form";
 import MethodPaymentForm from "@/components/checkout/form/method-payment-form";
+import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
+import SlideInModal from "@/components/slide-in-modal";
 
 // @validation
 import { formSchema } from "@/validation/form-checkout";
@@ -33,39 +35,32 @@ import {
 import {
   PAYMENT_MOMO_BANKING,
   PAYMENT_ATM_BANKING,
-  PAYMENT_COD,
   PAYMENT_METAMASK
 } from "@/constants";
 
 // @utility
 import { getUserInfo, getUserToken } from "@/utility/common";
 
-// @selector-cart
-import { getCartSelector } from '@/redux/cart/selector';
-
 // @api
-import { postCreateOrder } from "@/lib/api/order";
-import { deleteAllProductsInCart, removeProductInCart } from "@/redux/cart/service";
 import { getDetailCustomizedProductClient } from "@/lib/api/customized-product";
 import { createPaymentWithMOMO } from "@/lib/api/payment";
-
+import {
+  createOrderCustomizedProductClient
+} from "@/lib/api/order-customized-product";
 // @svg
 import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 
-// @action-cart
-
 // @types
-import { CustomizedProductType } from "@/types";
+import {
+  CreateOrderCustomizedProductType,
+  CustomizedProductType
+} from "@/types";
 
 const CheckoutCustomizedProduct = () => {
   const router = useRouter()
   const params = useSearchParams()
-  const dispatch = useDispatch()
 
   const isAuthenticated = !!getUserToken()
-
-  const carts = useSelector(getCartSelector);
-  // console.log("carts", carts);
 
   const [listProvinces, setListProvinces] = React.useState<{
     id: string,
@@ -231,42 +226,29 @@ const CheckoutCustomizedProduct = () => {
     }
   }
 
-  const handleDeleteAllProductsInCart = async (type: number, orderId: string) => {
-    try {
-      const res: {
-        retCode: number,
-        retText: string,
-        retData: {
-          userId: string
-        }
-      } = await deleteAllProductsInCart(carts.userId)
-      if (res.retCode === 0) {
-        if (type === 1) {
-          setTimeout(() => {
-            router.push("/")
-          }, 500)
-        } else if (type === 3) {
-          createPaymentMomo(orderId)
-        } else if (type === 4) {
-          setOrderId(orderId)
-          onOpenChange()
-        } else {
-          setTimeout(() => {
-            router.push(`/checkout/order-detail?orderId=${orderId}`)
-          }, 500)
-        }
-      }
-    } catch (err) {
-      console.log("FETCH FAIL", err)
+  const handleLogicAfterCreateOrderSuccessfully = (type: number, orderId: string) => {
+    if (type === 1) {
+      setTimeout(() => {
+        router.push("/")
+      }, 500)
+    } else if (type === 3) {
+      createPaymentMomo(orderId)
+    } else if (type === 4) {
+      setOrderId(orderId)
+      onOpenChange()
+    } else {
+      setTimeout(() => {
+        router.push(`/checkout/order-detail?orderId=${orderId}`)
+      }, 500)
     }
   }
 
   const createPaymentMomo = async (orderId: string) => {
     try {
       const req = {
-        amount: JSON.stringify(carts.totalPrice),
+        amount: JSON.stringify(detailCustomized.totalPrice),
         orderId: orderId,
-        orderInfo: carts.items.map(item => item.product.name).join(", ")
+        orderInfo: detailCustomized.name
       }
       const res: {
         retCode: number,
@@ -300,19 +282,95 @@ const CheckoutCustomizedProduct = () => {
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // console.log("values", values)
-    const req = {
-      userId: getUserInfo().id,
-      statusOrder: 0,
-      paymentMethod: methodPayment,
-      orderAddress: {
-        ...values,
-        fullAddress: `${values.address} ${listWards.find((item) => item.id === values.wardId)?.name} ${listDistricts.find((item) => item.id === values.districtId)?.name} ${listProvinces.find((item) => item.id === values.provinceId)?.name}`
-      },
-      customizedProductId: detailCustomized._id,
-      customizedProduct: detailCustomized._id
+    try {
+      const req = {
+        userId: getUserInfo().id,
+        statusOrder: 0,
+        paymentMethod: methodPayment,
+        orderAddress: {
+          ...values,
+          fullAddress: `${values.address} ${listWards.find((item) => item.id === values.wardId)?.name} ${listDistricts.find((item) => item.id === values.districtId)?.name} ${listProvinces.find((item) => item.id === values.provinceId)?.name}`
+        },
+        customizedProductId: detailCustomized._id,
+        customizedProduct: detailCustomized._id
+      }
+      // console.log("req", req);
+      const res: {
+        retCode: number,
+        retText: string,
+        retData: CreateOrderCustomizedProductType
+      } = await createOrderCustomizedProductClient(req)
+      if (res.retCode === 0) {
+        DiaglogPopup({
+          icon: <IconSuccess />,
+          title: "ORDER CUSTOMIZED PRODUCT CREATION SUCCESSFULLY",
+          description: "Your order has been successfully created",
+          textButtonOk: renderTextButton(methodPayment),
+          textButtonCancel: "Review order",
+          isBtnCancel: methodPayment === PAYMENT_ATM_BANKING
+            || methodPayment === PAYMENT_MOMO_BANKING
+            || methodPayment === PAYMENT_METAMASK
+            ? false : true,
+          closeOnClickOverlay: false,
+          className: "max-[1024px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+            if (methodPayment === PAYMENT_METAMASK) {
+              // setTotalPriceMetamask(detailCustomized.totalPrice)
+              handleLogicAfterCreateOrderSuccessfully(4, res.retData._id)
+            } else if (methodPayment === PAYMENT_MOMO_BANKING) {
+              handleLogicAfterCreateOrderSuccessfully(
+                methodPayment === PAYMENT_ATM_BANKING
+                  ? 2
+                  : methodPayment === PAYMENT_MOMO_BANKING ? 3 : 1
+                , res.retData._id
+              )
+              // type = 1 back to home page
+            } else {
+
+            }
+          },
+          onCancle: () => {
+            SlideInModal.hide()
+            handleLogicAfterCreateOrderSuccessfully(2, res.retData._id)
+            // type = 2 push to order detail page
+          }
+        })
+      } else {
+        DiaglogPopup({
+          icon: <IconFail />,
+          title: "CREATE ORDER CUSTOMIZED PRODUCT FAILED",
+          description: "Your order has failed to be created",
+          textButtonOk: "Close",
+          textButtonCancel: "",
+          isBtnCancel: false,
+          closeOnClickOverlay: false,
+          className: "max-[1024px]:w-[380px]",
+          onSubmit: () => {
+            SlideInModal.hide()
+          },
+          onCancle: () => { }
+        })
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "SYSTEM ERROR",
+        description: "Please try again later",
+        textButtonOk: "Close",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[1024px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+        },
+        onCancle: () => { }
+      })
+    } finally {
+
     }
-    console.log("req", req);
   }
 
   if (!isAuthenticated) {
@@ -322,12 +380,14 @@ const CheckoutCustomizedProduct = () => {
 
   return (
     <div className='bg-[#F5F5F5] py-6 max-[1024px]:py-0'>
-      <DiaglogMetamask
-        orderId={orderId}
-        totalPrice={carts.totalPrice}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      />
+      {!!detailCustomized.totalPrice && (
+        <DiaglogMetamask
+          orderId={orderId}
+          totalPrice={detailCustomized.totalPrice}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+        />
+      )}
 
       <div className=" pb-5 max-[1024px]:hidden">
         <Container>

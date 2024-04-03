@@ -21,6 +21,12 @@ export const GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/detail-
 export const UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/update-customized-product-client"
 export const DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/delete-customized-product"
 
+/* ORDER CUSTOMIZED PRODUCT API */
+export const CREATE_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/create"
+export const GET_LIST_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/getListClient"
+export const GET_DETAIL_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/get-detail-order-client"
+export const UPDATE_DETAIL_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/update-detail-order-client"
+
 /* AUTHENTICATION API */
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
 export const AUTHENTICATE_API_SIGNUP = '/auth/signup'

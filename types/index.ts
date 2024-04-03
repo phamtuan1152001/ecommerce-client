@@ -1,3 +1,43 @@
+export interface CreateOrderCustomizedProductType {
+  orderAddress: {
+    fullName: string,
+    phone: string,
+    email: string,
+    address: string,
+    provinceId: string,
+    districtId: string,
+    wardId: string,
+    fullAddress: string
+  },
+  _id: string,
+  userId: string,
+  statusOrder: number,
+  paymentMethod: string,
+  customizedProductId: string,
+  customizedProduct: string,
+  createdAt: string,
+  updatedAt: string,
+  __v: number
+}
+
+export interface CreateOrderCustomizedProductPayload {
+  userId: string,
+  statusOrder: number,
+  paymentMethod: string,
+  orderAddress: {
+    email: string,
+    fullName: string,
+    phone: string,
+    provinceId: string,
+    districtId: string,
+    wardId: string,
+    address: string,
+    fullAddress: string
+  },
+  customizedProductId: string,
+  customizedProduct: string
+}
+
 export interface GetListCustomizedProductPayload {
   page: number,
   size: number,
