@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import moment from "moment";
 import { useRouter } from "next/navigation"
+import Link from 'next/link';
 
 // @utility
 import { getPaginationItems } from '@/utility/pagination';
+import { toastNotiSuccess } from '@/utility/toast';
 
 // @components
 import BreadcrumbComponent from "@/components/bread-crumd"
@@ -13,7 +15,6 @@ import { Container } from "@/components/ui/container"
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -21,19 +22,36 @@ import {
 } from "@/components/ui/table"
 import Spinner from '@/components/spin';
 import CustomPagination from '@/components/CustomPagination';
+import { Button } from '@/components/ui/button';
+import EditCustomizedProduct from '@/components/pop-up/edit-customized-product';
 
 // @common
-import { formatToCurrencyVND, getUserToken, scrollToTop, getUserInfo, renderText } from '@/utility/common';
+import {
+  formatToCurrencyVND,
+  getUserToken,
+  scrollToTop,
+  getUserInfo,
+  renderText
+} from '@/utility/common';
 
 // @constants
-import { PAGE_LIMIT, PAGE_NUMBER, SUCCESS, MAX_LENGTH, LANGUAGE_VI, INITIAL_DATA_ORDERS, PAYMENT_ATM_BANKING, PAYMENT_MOMO_BANKING, PAYMENT_COD, PAYMENT_METAMASK } from "@/constants"
+import { PAGE_LIMIT, PAGE_NUMBER, MAX_LENGTH } from "@/constants"
 
 // @svg
 import { IconBackArrow } from '@/public/assets/svg'
-import { GetListCustomizedProductPayload, CustomizedProductTypeResponse, CustomizedProductType } from '@/types';
-import { getListCustomizedProductClient, updateStatusProductClient } from '@/lib/api/customized-product';
-import EditCustomizedProduct from '@/components/pop-up/edit-customized-product';
-import { toastNotiSuccess } from '@/utility/toast';
+
+// @types
+import {
+  GetListCustomizedProductPayload,
+  CustomizedProductTypeResponse,
+  CustomizedProductType
+} from '@/types';
+
+// @services
+import {
+  getListCustomizedProductClient,
+  updateStatusProductClient
+} from '@/lib/api/customized-product';
 
 const ManageCustomizedProduct = () => {
   const router = useRouter()
@@ -188,6 +206,7 @@ const ManageCustomizedProduct = () => {
           ]} />
         </Container>
       </div>
+
       <Container className="max-[1024px]:px-0">
         {/* Header Back Icon for mobile */}
         <div className='flex flex-row justify-between items-center min-[1280px]:hidden bg-white px-3 pt-2'>
@@ -208,11 +227,12 @@ const ManageCustomizedProduct = () => {
                     <TableHead className="font-bold text-sm">No</TableHead>
                     <TableHead className="font-bold text-sm">Code</TableHead>
                     <TableHead className="font-bold text-sm">Name</TableHead>
-                    <TableHead className="font-bold text-sm">Total price</TableHead>
+                    <TableHead className="font-bold text-sm">Total</TableHead>
                     <TableHead className="font-bold text-sm">Status admin</TableHead>
                     <TableHead className="font-bold text-sm">Status client</TableHead>
                     <TableHead className="font-bold text-sm">Created</TableHead>
                     <TableHead className="font-bold text-sm">Action</TableHead>
+                    <TableHead className="font-bold text-sm">Option</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="relative">
@@ -231,8 +251,8 @@ const ManageCustomizedProduct = () => {
                                 {item?.code}
                               </span>
                             </TableCell>
-                            <TableCell className="w-[400px]">
-                              <h3 className="text-sm">
+                            <TableCell className="max-w-[200px] ">
+                              <h3 className="text-sm line-clamp-1">
                                 {item?.name}
                               </h3>
                             </TableCell>
@@ -263,12 +283,24 @@ const ManageCustomizedProduct = () => {
                                 Edit
                               </span>
                             </TableCell>
+                            <TableCell className="">
+                              <Button
+                                className='text-base capitalize font-normal hover:bg-white hover:text-black hover:border hover:border-[#000000]'
+                                onClick={() => {
+                                  router.push(
+                                    `/customize-product/manage/checkout?customizedProductId=${item._id}`
+                                  )
+                                }}
+                              >
+                                order
+                              </Button>
+                            </TableCell>
                           </TableRow>
                         )
                       })
                       : (
                         <div className="flex flex-row justify-start items-center p-4">
-                          Không có dữ liệu
+                          No data available
                         </div>
                       )}
                   </Spinner>

@@ -100,6 +100,7 @@ export interface CategoryType {
 }
 
 export interface UserInfoType {
+  email: string,
   username: string,
   statusActive: number,
   phone: string,

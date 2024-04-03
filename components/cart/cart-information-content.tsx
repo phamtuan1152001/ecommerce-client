@@ -13,7 +13,7 @@ export const CartInformationContent = () => {
   return (
     <Box className='px-0 space-y-4'>
       <div className='flex items-center justify-between text-base text-black'>
-        <span>Provisional</span>
+        <span>Provisional price:</span>
         <span>{formatToCurrencyVND(carts.totalPrice)}</span>
       </div>
 
@@ -28,7 +28,7 @@ export const CartInformationContent = () => {
       </div> */}
 
       <div className='flex items-center justify-between text-base text-black'>
-        <span>Total order</span>
+        <span>Total order:</span>
         <span className='text-lg font-bold'>
           {formatToCurrencyVND(carts.totalPrice)}
         </span>
