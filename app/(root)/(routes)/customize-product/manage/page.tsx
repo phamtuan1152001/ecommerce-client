@@ -31,8 +31,9 @@ import { PAGE_LIMIT, PAGE_NUMBER, SUCCESS, MAX_LENGTH, LANGUAGE_VI, INITIAL_DATA
 // @svg
 import { IconBackArrow } from '@/public/assets/svg'
 import { GetListCustomizedProductPayload, CustomizedProductTypeResponse, CustomizedProductType } from '@/types';
-import { getListCustomizedProductClient } from '@/lib/api/customized-product';
+import { getListCustomizedProductClient, updateStatusProductClient } from '@/lib/api/customized-product';
 import EditCustomizedProduct from '@/components/pop-up/edit-customized-product';
+import { toastNotiSuccess } from '@/utility/toast';
 
 const ManageCustomizedProduct = () => {
   const router = useRouter()
@@ -148,8 +149,27 @@ const ManageCustomizedProduct = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleSubmit = (values: CustomizedProductType) => {
-    console.log("values", values)
+  const handleSubmit = async (values: any) => {
+    // console.log("values", values)
+    try {
+      setLoading(true)
+      const res = await updateStatusProductClient(values)
+      if (res?.retCode === 0) {
+        toastNotiSuccess(res?.retText)
+        handleOpen()
+        const req = {
+          page: currentPage,
+          size: PAGE_LIMIT,
+          userId: getUserInfo()?.id,
+          search: ""
+        }
+        fetchGetListCustomizedProductClient(req)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

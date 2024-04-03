@@ -30,7 +30,7 @@ interface EditCustomizedProductProps {
   data: CustomizedProductType
   isOpen: boolean,
   handleOpen: () => void,
-  onSubmit: (values: CustomizedProductType) => void
+  onSubmit: (values: any) => void
 }
 
 const EditCustomizedProduct = ({
@@ -109,7 +109,7 @@ const EditCustomizedProduct = ({
         )
     }
   }
-
+  // console.log("detailCustomized", detailCustomized)
   return (
     <Dialog open={isOpen} onOpenChange={handleOpen}>
       <DialogContent className="sm:max-w-[825px]">
@@ -167,6 +167,7 @@ const EditCustomizedProduct = ({
                       Regular price:
                     </h2>
                     <Input
+                      disabled
                       autoFocus={false}
                       value={regularPrice}
                       placeholder={`Enter your product regular price`}
@@ -247,43 +248,43 @@ const EditCustomizedProduct = ({
                   </Button>
                   <Button
                     className="bg-[#333333] text-white text-base h-[35px] px-4 capitalize"
-                  // disabled={
-                  //   detailCustomized?.statusProductAdmin === 1 || detailCustomized?.statusProductAdmin === 2
-                  //     ? true
-                  //     : false
-                  // }
-                  // onClick={() => {
-                  //   const submitData = {
-                  //     clientId: detailCustomized?.userId,
-                  //     ...detailCustomized,
-                  //     regularPrice: regularPrice,
-                  //     totalPrice: totalPrice,
-                  //     statusProductAdmin: 2,
-                  //     userId: JSON.parse(localStorage.getItem("USER_INFO")).id,
-                  //   }
-                  //   onSubmit(submitData)
-                  // }}
+                    disabled={
+                      detailCustomized?.statusProductAdmin === 2
+                        ? true
+                        : detailCustomized?.statusProductClient !== 0
+                          ? true
+                          : false
+                    }
+                    onClick={() => {
+                      const submitData = {
+                        ...detailCustomized,
+                        regularPrice: regularPrice,
+                        totalPrice: totalPrice,
+                        statusProductClient: 2
+                      }
+                      onSubmit(submitData)
+                    }}
                   >
                     Cancel customized product
                   </Button>
                   <Button
                     className="bg-[#333333] text-white text-base h-[35px] px-4 capitalize"
-                  // disabled={
-                  //   detailCustomized?.statusProductAdmin === 0
-                  //     ? false
-                  //     : true
-                  // }
-                  // onClick={() => {
-                  //   const submitData = {
-                  //     clientId: detailCustomized?.userId,
-                  //     ...detailCustomized,
-                  //     regularPrice: regularPrice,
-                  //     totalPrice: totalPrice,
-                  //     statusProductAdmin: 1,
-                  //     userId: JSON.parse(localStorage.getItem("USER_INFO")).id,
-                  //   }
-                  //   onSubmit(submitData)
-                  // }}
+                    disabled={
+                      detailCustomized?.statusProductAdmin === 2
+                        ? true
+                        : detailCustomized?.statusProductClient !== 0
+                          ? true
+                          : false
+                    }
+                    onClick={() => {
+                      const submitData = {
+                        ...detailCustomized,
+                        regularPrice: regularPrice,
+                        totalPrice: totalPrice,
+                        statusProductClient: 1
+                      }
+                      onSubmit(submitData)
+                    }}
                   >
                     Confirm customized product
                   </Button>
