@@ -30,14 +30,16 @@ interface EditCustomizedProductProps {
   data: CustomizedProductType
   isOpen: boolean,
   handleOpen: () => void,
-  onSubmit: (values: any) => void
+  onSubmit: (values: any) => void,
+  onChangeData: () => void
 }
 
 const EditCustomizedProduct = ({
   data,
   isOpen,
   handleOpen,
-  onSubmit
+  onSubmit,
+  onChangeData
 }: EditCustomizedProductProps) => {
   // console.log("data", data);
 
@@ -58,6 +60,9 @@ const EditCustomizedProduct = ({
   useEffect(() => {
     if (!!data?._id) {
       fetchGetDetailCustomizedProduct()
+    }
+    return () => {
+      onChangeData()
     }
   }, [data?._id])
 
@@ -201,7 +206,7 @@ const EditCustomizedProduct = ({
                   <h2 className="text-sm font-normal">
                     Format price:
                     <span className="ml-2 font-bold">
-                      {formatNumber(regularPrice.toString())} VND
+                      {formatNumber(totalPrice.toString())} VND
                     </span>
                   </h2>
                 </div>

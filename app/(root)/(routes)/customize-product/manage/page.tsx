@@ -190,6 +190,7 @@ const ManageCustomizedProduct = () => {
       setLoading(false)
     }
   }
+  // console.log("record", record);
 
   return (
     <div className="bg-[#F5F5F5] py-6 max-[1024px]:py-0">
@@ -287,7 +288,7 @@ const ManageCustomizedProduct = () => {
                             <TableCell className="">
                               <Button
                                 disabled={
-                                  item.statusProductAdmin === 2
+                                  item.statusProductAdmin === 2 || item.statusProductAdmin === 0 || item.statusProductClient === 0 || item.statusProductClient === 2
                                     ? true
                                     : item.statusOrder ? true : false
                                 }
@@ -342,6 +343,22 @@ const ManageCustomizedProduct = () => {
         isOpen={isOpen}
         handleOpen={handleOpen}
         onSubmit={handleSubmit}
+        onChangeData={() => setRecord({
+          _id: "",
+          userId: "",
+          code: "",
+          name: "",
+          quantity: 0,
+          size: "",
+          imageUrl: "",
+          imagePsd: "",
+          statusProductAdmin: 0,
+          statusProductClient: 0,
+          regularPrice: 0,
+          totalPrice: 0,
+          createdAt: "",
+          statusOrder: false
+        })}
       />
     </div>
   )

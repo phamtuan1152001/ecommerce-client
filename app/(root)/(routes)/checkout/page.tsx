@@ -46,7 +46,7 @@ import {
 import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK } from "@/constants";
 
 // @utility
-import { getUserToken } from "@/utility/common";
+import { getUserToken, getUserInfo } from "@/utility/common";
 import { toastNotiFail } from "@/utility/toast";
 
 // @selector-cart
@@ -96,9 +96,9 @@ const CheckOut = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      fullName: "",
-      phone: "",
+      email: getUserInfo().email,
+      fullName: getUserInfo().fullName,
+      phone: getUserInfo().phone,
       address: "",
       provinceId: "",
       districtId: "",

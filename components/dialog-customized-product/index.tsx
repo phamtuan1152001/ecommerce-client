@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -39,10 +39,10 @@ import { formatNumber, getUserInfo } from "@/utility/common"
 
 // @services
 import { convertImageToPsd, uploadImgProduct } from "@/lib/api/common"
-import { createCustomizedProduct } from "@/lib/api/customized-product"
+import { createCustomizedProduct, getListCustomizedProductClient } from "@/lib/api/customized-product"
 
 // @constants
-import { SIZE_LIST, SUCCESS } from "@/constants"
+import { PAGE_LIMIT, PAGE_NUMBER, SIZE_LIST, SUCCESS } from "@/constants"
 
 // @types
 import { CustomizedProductTypePayload, CustomizedProductTypeResponse } from "@/types"
@@ -69,12 +69,39 @@ const DialogCustomizedProduct = ({
   const form = useForm<z.infer<typeof formCustomizedProductSchema>>({
     resolver: zodResolver(formCustomizedProductSchema),
     defaultValues: {
-      code: `ECOM-U1`,
+      code: undefined,
       name: undefined,
       quantity: undefined,
       size: "1"
     },
   })
+
+  useEffect(() => {
+    const req = {
+      page: PAGE_NUMBER,
+      size: PAGE_LIMIT,
+      userId: "",
+      search: ""
+    }
+    getListCustomized(req)
+  }, [])
+
+  const getListCustomized = async (payload: any) => {
+    try {
+      const res = await getListCustomizedProductClient(payload)
+      if (res?.retCode === 0) {
+        onInitData(res?.retData?.totalItems)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL", err)
+    }
+  }
+
+  const onInitData = (data: any) => {
+    if (data > 0) {
+      form.setValue("code", `ECOM-U${data + 1}`)
+    }
+  }
 
   function onSubmit(values: z.infer<typeof formCustomizedProductSchema>) {
     // console.log(values)
@@ -168,14 +195,14 @@ const DialogCustomizedProduct = ({
           icon: <IconSuccess />,
           title: "CREATE CUSTOMIZED PRODUCT SUCCESSFULLY",
           description: "Your customized product has been successfully created",
-          textButtonOk: "Come back to Homepage",
+          textButtonOk: "Come back to manage customiezd product",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
           className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
-            router.push("/")
+            router.push("/customize-product/manage")
           },
           onCancle: () => { }
         })
