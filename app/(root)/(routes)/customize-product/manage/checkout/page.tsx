@@ -42,7 +42,7 @@ import {
 import { getUserInfo, getUserToken } from "@/utility/common";
 
 // @api
-import { getDetailCustomizedProductClient } from "@/lib/api/customized-product";
+import { getDetailCustomizedProductClient, updateStatusOrderCustomizedProduct } from "@/lib/api/customized-product";
 import { createPaymentWithMOMO, createPaymentWithMOMOOrderCustomizedProduct } from "@/lib/api/payment";
 import {
   createOrderCustomizedProductClient
@@ -53,7 +53,8 @@ import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 // @types
 import {
   CreateOrderCustomizedProductType,
-  CustomizedProductType
+  CustomizedProductType,
+  CustomizedProductTypeResponse
 } from "@/types";
 
 const CheckoutCustomizedProduct = () => {
@@ -121,7 +122,8 @@ const CheckoutCustomizedProduct = () => {
     statusProductClient: 0,
     regularPrice: 0,
     totalPrice: 0,
-    createdAt: ""
+    createdAt: "",
+    statusOrder: false
   })
 
   const fetchGetDetailCustomizedProduct = async () => {
@@ -287,6 +289,19 @@ const CheckoutCustomizedProduct = () => {
     setIsOpen(!isOpen)
   }
 
+  const fetchUpdateStatusOrderOfCustomizedProduct = async (
+    code: string
+  ) => {
+    try {
+      const req = {
+        code: code
+      }
+      return await updateStatusOrderCustomizedProduct(req)
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const req = {
@@ -307,6 +322,9 @@ const CheckoutCustomizedProduct = () => {
         retData: CreateOrderCustomizedProductType
       } = await createOrderCustomizedProductClient(req)
       if (res.retCode === 0) {
+        fetchUpdateStatusOrderOfCustomizedProduct(
+          detailCustomized.code
+        )
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ORDER CUSTOMIZED PRODUCT CREATION SUCCESSFULLY",

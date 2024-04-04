@@ -58,7 +58,8 @@ export interface CustomizedProductTypeResponse {
   statusProductClient: number,
   regularPrice: number,
   totalPrice: number,
-  createdAt: string
+  createdAt: string,
+  statusOrder: boolean
 }
 
 export interface CustomizedProductTypePayload {
@@ -72,7 +73,8 @@ export interface CustomizedProductTypePayload {
   statusProductAdmin: number,
   statusProductClient: number,
   regularPrice: number,
-  totalPrice: number
+  totalPrice: number,
+  statusOrder: boolean
 }
 
 export interface CustomizedProductType {
@@ -88,7 +90,8 @@ export interface CustomizedProductType {
   statusProductClient: number | undefined,
   regularPrice: number,
   totalPrice: number,
-  createdAt: string
+  createdAt: string,
+  statusOrder: boolean
 }
 
 export type DecalTypeKey = 'logo' | 'full';

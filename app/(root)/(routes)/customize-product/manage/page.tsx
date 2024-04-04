@@ -71,7 +71,8 @@ const ManageCustomizedProduct = () => {
     statusProductClient: 0,
     regularPrice: 0,
     totalPrice: 0,
-    createdAt: ""
+    createdAt: "",
+    statusOrder: false
   })
   const [
     listCustomizedProduct,
@@ -232,7 +233,7 @@ const ManageCustomizedProduct = () => {
                     <TableHead className="font-bold text-sm">Status client</TableHead>
                     <TableHead className="font-bold text-sm">Created</TableHead>
                     <TableHead className="font-bold text-sm">Action</TableHead>
-                    <TableHead className="font-bold text-sm">Option</TableHead>
+                    <TableHead className="font-bold text-sm">Order</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="relative">
@@ -285,6 +286,11 @@ const ManageCustomizedProduct = () => {
                             </TableCell>
                             <TableCell className="">
                               <Button
+                                disabled={
+                                  item.statusProductAdmin === 2
+                                    ? true
+                                    : item.statusOrder ? true : false
+                                }
                                 className='text-base capitalize font-normal hover:bg-white hover:text-black hover:border hover:border-[#000000]'
                                 onClick={() => {
                                   router.push(
@@ -292,7 +298,7 @@ const ManageCustomizedProduct = () => {
                                   )
                                 }}
                               >
-                                order
+                                Create
                               </Button>
                             </TableCell>
                           </TableRow>

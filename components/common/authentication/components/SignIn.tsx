@@ -45,11 +45,11 @@ import { UserInfoType } from "@/types";
 const formSchema = z.object({
   username: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' }),
+    .min(1, { message: 'Please enter this field!' }),
   // .email({ message: 'Không đúng định dạng email.' }),
   password: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' }),
+    .min(1, { message: 'Please enter this field!' }),
   savepassword: z
     .boolean().default(false).optional(),
   // phone: z
@@ -100,9 +100,9 @@ const SignIn = ({ setOpen }: Props) => {
         }));
         DiaglogPopup({
           icon: <IconSuccess />,
-          title: "ĐĂNG NHẬP THÀNH CÔNG",
-          description: "Chúc mừng bạn đã đăng nhập thành công",
-          textButtonOk: "Tiếp tục mua sắm",
+          title: "LOGIN SUCCESSFULLY",
+          description: "Congratulation, you have been login successfully",
+          textButtonOk: "Continue for shopping",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
@@ -118,9 +118,9 @@ const SignIn = ({ setOpen }: Props) => {
       } else {
         DiaglogPopup({
           icon: <IconFail />,
-          title: "ĐĂNG NHẬP THẤT BẠI",
+          title: "LOGIN UNSUCCESSFULLY",
           description: res.retText,
-          textButtonOk: "Thử lại",
+          textButtonOk: "Try again",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
@@ -135,9 +135,9 @@ const SignIn = ({ setOpen }: Props) => {
       console.log("FETCH FAIL!", err);
       DiaglogPopup({
         icon: <IconFail />,
-        title: "LỖI HỆ THỐNG",
+        title: "SYSTEM ERROR",
         description: (err as any).retText,
-        textButtonOk: "Đóng",
+        textButtonOk: "Try again later",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
@@ -162,12 +162,12 @@ const SignIn = ({ setOpen }: Props) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Tên tài khoản
+                      Username
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                        placeholder='Nhập tài khoản'
+                        placeholder='Enter your username'
                         {...field}
                       />
                     </FormControl>
@@ -176,27 +176,6 @@ const SignIn = ({ setOpen }: Props) => {
                 )}
               />
             </div>
-            {/* <div className=" w-full">
-                <FormField
-                  control={form.control}
-                  name='phone'
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                        Điện thoại
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                          placeholder='Nhập số điện thoại'
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />         
-              </div> */}
             <div className=" w-full">
               <FormField
                 control={form.control}
@@ -204,13 +183,13 @@ const SignIn = ({ setOpen }: Props) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Mật khẩu
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
                         type="password"
-                        placeholder='Nhập mật khẩu'
+                        placeholder='Enter your password'
                         {...field}
                       />
                     </FormControl>
@@ -220,7 +199,7 @@ const SignIn = ({ setOpen }: Props) => {
               />
             </div>
           </div>
-          <div className=" mt-2 flex items-center gap-x-1.5 ">
+          {/* <div className=" mt-2 flex items-center gap-x-1.5 ">
             <FormField
               control={form.control}
               name="savepassword"
@@ -237,10 +216,10 @@ const SignIn = ({ setOpen }: Props) => {
               )}
             />
             <p>Nhớ mật khẩu</p>
-          </div>
+          </div> */}
           <div className=" mt-8 flex flex-col">
             <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Sign In</Button>
-            <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button>
+            {/* <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button> */}
           </div>
         </form>
       </Form>

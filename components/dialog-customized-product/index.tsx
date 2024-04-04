@@ -155,7 +155,8 @@ const DialogCustomizedProduct = ({
         imageUrl: urlImage,
         imagePsd: psdImage,
         statusProductAdmin: 0,
-        statusProductClient: 0
+        statusProductClient: 0,
+        statusOrder: false
       }
       const res: {
         retCode: number,

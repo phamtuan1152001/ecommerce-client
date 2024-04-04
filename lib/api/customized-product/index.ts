@@ -4,7 +4,8 @@ import {
   GET_LIST_CUSTOMIZED_PRODUCT_CLIENT,
   GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
   UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
-  DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT
+  DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
+  UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT
 } from "@/constants";
 import {
   CustomizedProductType,
@@ -52,7 +53,7 @@ export const updateStatusProductClient = async (
   return data
 }
 
-export const deleteCustomizedProductClient = async(
+export const deleteCustomizedProductClient = async (
   payload: {
     customizedProductId: string
   }
@@ -61,5 +62,15 @@ export const deleteCustomizedProductClient = async(
     DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT
     + `/${payload.customizedProductId}`
   )
+  return data
+}
+
+export const updateStatusOrderCustomizedProduct = async (payload: {
+  code: string
+}) => {
+  console.log("code", payload.code)
+  const { data } = await apiMethod.put(UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT, {
+    code: payload.code
+  })
   return data
 }

@@ -26,23 +26,28 @@ import { POST_SUCCESS, SUCCESS } from "@/constants";
 // @svg
 import { IconFail, IconSuccess } from "@/public/assets/svg";
 import SlideInModal from "@/components/slide-in-modal";
+import { phoneRegex } from "@/utility/common";
 
 const formSchema = z.object({
   fullname: z
-    .string(),
+    .string()
+    .min(1, { message: 'Please enter this field!' }),
   email: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' })
-    .email({ message: 'Không đúng định dạng email.' }),
+    .min(1, { message: 'Please enter this field!' })
+    .email({ message: 'Please enter a correct format of email!' }),
   phone: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' }),
+    .min(1, { message: 'Please enter this field!' })
+    .refine((data) => phoneRegex.test(data), {
+      message: "Please, enter a correct format of phone number"
+    }),
   usename: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' }),
+    .min(1, { message: 'Please enter this field!' }),
   password: z
     .string()
-    .min(1, { message: 'Trường này là bắt buộc.' }),
+    .min(1, { message: 'Please enter this field!' }),
 });
 
 const SignUp = () => {
@@ -81,9 +86,9 @@ const SignUp = () => {
       if (res?.retCode === 0) {
         DiaglogPopup({
           icon: <IconSuccess />,
-          title: "ĐĂNG KÝ THÀNH CÔNG",
-          description: "Chúc mừng bạn đã đăng ký tài khoản mới thành công",
-          textButtonOk: "Về trang chủ",
+          title: "REGISTER SUCCESSFULLY",
+          description: "Congratulation, you have been registed successfully",
+          textButtonOk: "Back to home",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
@@ -96,9 +101,9 @@ const SignUp = () => {
       } else {
         DiaglogPopup({
           icon: <IconFail />,
-          title: "ĐĂNG KÝ THẤT BẠI",
-          description: "Vui lòng thử lại sau",
-          textButtonOk: "Thử lại",
+          title: "REGISTER UNSUCCESSFULLY",
+          description: "Please, try again later",
+          textButtonOk: "Try again",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
@@ -113,9 +118,9 @@ const SignUp = () => {
       console.log("FETCH FAIL!", err);
       DiaglogPopup({
         icon: <IconFail />,
-        title: "LỖI HỆ THỐNG",
+        title: "SYSTEM ERROR",
         description: (err as any).retText,
-        textButtonOk: "Đóng",
+        textButtonOk: "Close",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,
@@ -140,12 +145,12 @@ const SignUp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Họ và tên
+                      Fullname
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                        placeholder='Nhập Họ và tên'
+                        placeholder='Enter your fullname'
                         {...field}
                       />
                     </FormControl>
@@ -166,7 +171,7 @@ const SignUp = () => {
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                        placeholder='Nhập email'
+                        placeholder='Enter your email'
                         {...field}
                       />
                     </FormControl>
@@ -182,12 +187,12 @@ const SignUp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Điện thoại
+                      Phone
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                        placeholder='Nhập số điện thoại'
+                        placeholder='Enter your phone'
                         {...field}
                       />
                     </FormControl>
@@ -203,12 +208,12 @@ const SignUp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Tên tài khoản
+                      Username
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
-                        placeholder='Nhập tên tài khoản'
+                        placeholder='Enter your username'
                         {...field}
                       />
                     </FormControl>
@@ -224,13 +229,13 @@ const SignUp = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className=' text-sm font-bold text-[#333333] after:content-["*"] after:text-[#FF4842] after:ml-0.5'>
-                      Mật khẩu
+                      Password
                     </FormLabel>
                     <FormControl>
                       <Input
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
                         type="password"
-                        placeholder='Nhập mật khẩu'
+                        placeholder='Enter your password'
                         {...field}
                       />
                     </FormControl>
@@ -241,7 +246,7 @@ const SignUp = () => {
             </div>
           </div>
           <div className=" mt-8 ">
-            <Button className=" w-full py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Tạo tài khoản</Button>
+            <Button className=" w-full py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Create account</Button>
           </div>
         </form>
       </Form>
