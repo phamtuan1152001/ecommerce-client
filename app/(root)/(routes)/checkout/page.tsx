@@ -411,6 +411,7 @@ const CheckOut = () => {
         totalPrice={carts.totalPrice}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        redirectSuccess={`/thank?orderId=${orderId}`}
       />
 
       <div className=" pb-5 max-[1024px]:hidden">

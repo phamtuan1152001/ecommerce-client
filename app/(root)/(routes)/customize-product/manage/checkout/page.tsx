@@ -43,7 +43,7 @@ import { getUserInfo, getUserToken } from "@/utility/common";
 
 // @api
 import { getDetailCustomizedProductClient } from "@/lib/api/customized-product";
-import { createPaymentWithMOMO } from "@/lib/api/payment";
+import { createPaymentWithMOMO, createPaymentWithMOMOOrderCustomizedProduct } from "@/lib/api/payment";
 import {
   createOrderCustomizedProductClient
 } from "@/lib/api/order-customized-product";
@@ -231,6 +231,10 @@ const CheckoutCustomizedProduct = () => {
       setTimeout(() => {
         router.push("/")
       }, 500)
+    } else if (type === 2) {
+      router.push(
+        `/customize-product/manage/order-detail?orderId=${orderId}`
+      )
     } else if (type === 3) {
       createPaymentMomo(orderId)
     } else if (type === 4) {
@@ -238,7 +242,9 @@ const CheckoutCustomizedProduct = () => {
       onOpenChange()
     } else {
       setTimeout(() => {
-        router.push(`/checkout/order-detail?orderId=${orderId}`)
+        router.push(
+          `/customize-product/manage/order-detail?orderId=${orderId}`
+        )
       }, 500)
     }
   }
@@ -254,7 +260,7 @@ const CheckoutCustomizedProduct = () => {
         retCode: number,
         retText: string,
         retData: string
-      } = await createPaymentWithMOMO(req)
+      } = await createPaymentWithMOMOOrderCustomizedProduct(req)
       if (res.retCode === 0) {
         router.push(res?.retData)
       }
@@ -327,7 +333,7 @@ const CheckoutCustomizedProduct = () => {
               )
               // type = 1 back to home page
             } else {
-
+              handleLogicAfterCreateOrderSuccessfully(2, res.retData._id)
             }
           },
           onCancle: () => {
@@ -386,6 +392,7 @@ const CheckoutCustomizedProduct = () => {
           totalPrice={detailCustomized.totalPrice}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
+          redirectSuccess={`/customize-product/manage/thank?orderId=${orderId}`}
         />
       )}
 

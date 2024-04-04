@@ -36,9 +36,21 @@ export const getListOrderCustomizedProductClient = async (
 
 export const getDetailOrderCustomizedProductClient = async (
   payload: {
-    orderCustomizedProductId: string
+    orderCustomizedProductId: string | null
   }
 ) => {
   const { data } = await apiMethod.get(GET_DETAIL_ORDER_CUSTOMIZED_PRODUCT_CLIENT + `/${payload.orderCustomizedProductId}`)
+  return data
+}
+
+export const updateStatusDetailOrderCustomizedProduct = async (
+  payload: any
+) => {
+  const { data } = await apiMethod.put(
+    UPDATE_DETAIL_ORDER_CUSTOMIZED_PRODUCT_CLIENT + `/${payload?._id}`,
+    {
+      ...payload
+    }
+  )
   return data
 }

@@ -42,7 +42,8 @@ interface DiaglogMetamaskProps {
   isOpen: boolean,
   totalPrice: number,
   orderId: string,
-  onOpenChange: () => void
+  onOpenChange: () => void,
+  redirectSuccess: string
 }
 
 const formSchema = z.object({
@@ -56,7 +57,8 @@ export function DiaglogMetamask({
   isOpen,
   orderId,
   totalPrice,
-  onOpenChange
+  onOpenChange,
+  redirectSuccess
 }: DiaglogMetamaskProps) {
   const [error, setError] = useState<string>("");
 
@@ -114,7 +116,7 @@ export function DiaglogMetamask({
               className: "max-[1024px]:w-[380px]",
               onSubmit: () => {
                 SlideInModal.hide()
-                router.push(`/thank?orderId=${orderId}`)
+                router.push(redirectSuccess)
               },
               onCancle: () => { }
             })

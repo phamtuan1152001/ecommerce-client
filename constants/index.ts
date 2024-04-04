@@ -47,6 +47,7 @@ export const GET_LIST_ORDERS = "/order/get-list-order-client"
 
 /* PAYMENT API */
 export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"
+export const CREATE_PAYMENT_MOMO_ORDER_CUSTOMIZED_PRODUCT = "/payment/momo-payment-order-customized-product"
 
 /* CONSTANTS DATA */
 export const SUCCESS = 200;

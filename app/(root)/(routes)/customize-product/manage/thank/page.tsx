@@ -19,40 +19,47 @@ import { renderText } from "@/utility/common"
 
 //@api
 import { getOrderDetail, updateOrderDetail } from "@/lib/api/order"
+import {
+  getDetailOrderCustomizedProductClient,
+  updateStatusDetailOrderCustomizedProduct
+} from "@/lib/api/order-customized-product"
 import { formatToCurrencyVND, getUserToken } from "@/utility/common"
 
-const ThankPage = () => {
+const ThankOrderCustomizedProduct = () => {
   const param = useSearchParams()
   const orderId = param.get("orderId")
   // console.log("orderId", orderId);
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [detailOrder, setDetailOrder] = useState<any>()
+  const [detailOrderCustomizedProduct, setDetailOrder] = useState<any>()
   const isAuthenticated = !!getUserToken()
 
   useEffect(() => {
     if (isAuthenticated) {
       if (!!orderId) {
-        fetchOrderDetail(orderId)
+        fetchOrderDetailCustomizedProduct(orderId)
       }
     } else {
       window.location.href = "/"
     }
   }, [orderId])
 
-  const fetchOrderDetail = async (code: string | null) => {
+  const fetchOrderDetailCustomizedProduct = async (code: string | null) => {
     try {
       setLoading(true)
+      const req = {
+        orderCustomizedProductId: code
+      }
       const res: {
         retCode: number,
         retText: string,
         retData: any
-      } = await getOrderDetail(code)
+      } = await getDetailOrderCustomizedProductClient(req)
       // console.log("res", res);
       if (res.retCode === 0) {
         setDetailOrder(res.retData)
         if (res.retData.statusOrder === 0) {
-          fetchUpdateDetailOrder(res.retData)
+          fetchUpdateDetailOrderStatusCustomizedProduct(res.retData)
         }
       }
     } catch (err) {
@@ -62,20 +69,20 @@ const ThankPage = () => {
     }
   }
 
-  const fetchUpdateDetailOrder = async (detailOrder: any) => {
+  const fetchUpdateDetailOrderStatusCustomizedProduct = async (detailOrderCustomizedProduct: any) => {
     try {
       const req = {
-        ...detailOrder,
+        ...detailOrderCustomizedProduct,
         statusOrder: 1
       }
-      return await updateOrderDetail(req)
+      return await updateStatusDetailOrderCustomizedProduct(req)
       // console.log("res", res);
     } catch (err) {
       console.log("FETCHING FAIL!", err);
     }
   }
 
-  // console.log("param", detailOrder)
+  // console.log("param", detailOrderCustomizedProduct)
 
   if (!isAuthenticated) {
     return null
@@ -87,18 +94,23 @@ const ThankPage = () => {
         <Container>
           <BreadcrumbComponent breadcrumbs={[
             {
-              title: "Cart",
-              to: "/"
+              title: "Customized product",
+              to: "/customize-product"
             },
             {
-              title: "Payment",
-              to: `/checkout`
+              title: "Mange order customized product",
+              to: "/customize-product/manage"
             },
             {
-              title: "Review order",
-              to: `/checkout/${orderId}`
+              title: "Checkout order customized product",
+              to: `/customize-product/manage/checkout?customizedProductId=${detailOrderCustomizedProduct?.customizedProductId}`
+            },
+            {
+              title: "Review order customized product",
+              to: `/customize-product/manage/order-detail?orderId=${orderId}`
             }
-          ]} />
+          ]}
+          />
         </Container>
       </div>
 
@@ -118,44 +130,40 @@ const ThankPage = () => {
                   <h3 className="text-xs font-semibold text-[#000000]">Total order</h3>
                 </div>
                 <div className="flex flex-col justify-between items-start gap-y-3">
-                  {detailOrder?.cartDetail?.items?.map((item: any, index: number) => {
-                    return (
-                      <React.Fragment key={`${item?.id}-${index}`}>
-                        <div className="flex flex-row justify-between items-start w-full">
-                          <div className="flex flex-col justify-start gap-y-2">
-                            <h3 className="text-base font-bold text-[#333333]">
-                              {item?.product?.name}
-                            </h3>
-                            <p className="text-sm font-normal text-[#676767]">
-                              Quantity: {String(item?.quantity).padStart(2, "0")}
-                            </p>
-                          </div>
-                          <h4 className="text-base font-bold text-[#FA9E14]">
-                            {formatToCurrencyVND(parseInt(item?.total))}
-                          </h4>
-                        </div>
-                      </React.Fragment>
-                    )
-                  })}
+                  <React.Fragment>
+                    <div className="flex flex-row justify-between items-start w-full">
+                      <div className="flex flex-col justify-start gap-y-2">
+                        <h3 className="text-base font-bold text-[#333333]">
+                          {detailOrderCustomizedProduct?.customizedProduct?.name}
+                        </h3>
+                        <p className="text-sm font-normal text-[#676767]">
+                          Quantity: {String(detailOrderCustomizedProduct?.customizedProduct?.quantity).padStart(2, "0")}
+                        </p>
+                      </div>
+                      <h4 className="text-base font-bold text-[#FA9E14]">
+                        {formatToCurrencyVND(parseInt(detailOrderCustomizedProduct?.customizedProduct?.regularPrice))}
+                      </h4>
+                    </div>
+                  </React.Fragment>
                 </div>
               </div>
               <div className="flex flex-col gap-y-4 py-6 border-b-2 border-[#DFE3E8]">
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods</h3>
                   <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
-                    {renderText(detailOrder?.paymentMethod)}
+                    {renderText(detailOrderCustomizedProduct?.paymentMethod)}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Tạm tính</h3>
                   <h3 className="text-base font-bold text-[#000000]">
-                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                    {formatToCurrencyVND(detailOrderCustomizedProduct?.customizedProduct?.totalPrice)}
                   </h3>
                 </div>
                 {/* <div className="flex flex-row justify-between items-center">
                     <h3 className="text-base font-normal text-[#637381]">Giảm giá</h3>
                     <h3 className="text-base font-bold text-[#000000]">
-                      {formatToCurrencyVND(parseInt(detailOrder?.totalDiscountAmount))}
+                      {formatToCurrencyVND(parseInt(detailOrderCustomizedProduct?.totalDiscountAmount))}
                     </h3>
                   </div>
                   <div className="flex flex-row justify-between items-center">
@@ -167,7 +175,7 @@ const ThankPage = () => {
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Total order</h3>
                   <h3 className="text-base font-bold text-[#000000]">
-                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                    {formatToCurrencyVND(detailOrderCustomizedProduct?.customizedProduct?.totalPrice)}
                   </h3>
                 </div>
               </div>
@@ -184,26 +192,26 @@ const ThankPage = () => {
               <div className="flex flex-col gap-y-4 pt-4">
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
-                  <h3 className="text-base font-bold text-[#000000]">{detailOrder?._id}</h3>
+                  <h3 className="text-base font-bold text-[#000000]">{detailOrderCustomizedProduct?._id}</h3>
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Date of purchase:</h3>
                   <h3 className="text-base font-bold text-[#000000]">
-                    {moment(detailOrder?.updatedAt)?.isValid()
-                      ? moment(detailOrder?.updatedAt).format("DD/MM/YYYY HH:mm")
+                    {moment(detailOrderCustomizedProduct?.updatedAt)?.isValid()
+                      ? moment(detailOrderCustomizedProduct?.updatedAt).format("DD/MM/YYYY HH:mm")
                       : "--"}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Total order</h3>
                   <h3 className="text-base font-bold text-[#000000]">
-                    {formatToCurrencyVND(detailOrder?.cartDetail?.totalPrice)}
+                    {formatToCurrencyVND(detailOrderCustomizedProduct?.customizedProduct?.totalPrice)}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Payment methods:</h3>
                   <h3 className="text-base font-bold text-[#000000] max-[1024px]:text-right">
-                    {renderText(detailOrder?.paymentMethod)}
+                    {renderText(detailOrderCustomizedProduct?.paymentMethod)}
                   </h3>
                 </div>
               </div>
@@ -215,4 +223,4 @@ const ThankPage = () => {
   )
 }
 
-export default ThankPage
+export default ThankOrderCustomizedProduct
