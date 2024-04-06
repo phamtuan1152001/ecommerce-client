@@ -17,7 +17,14 @@ import { download } from '../../../../assets/index'
 
 // @components
 import CanvasModel from "@/canvas"
-import { AIPicker, FilePicker, ColorPicker, Tab, CustomButton } from "../../../../components/index"
+import {
+  AIPicker,
+  FilePicker,
+  ColorPicker,
+  Tab,
+  CustomButton,
+  UploadAIImage
+} from "../../../../components/index"
 import { Container } from "@/components/ui/container"
 
 // @service
@@ -64,6 +71,8 @@ const Customizer = () => {
           generatingImg={generatingImg}
           handleSubmit={handleSubmit}
         />
+      case "uploadaiimage":
+        return <UploadAIImage />
       default:
         return null
     }
@@ -157,7 +166,11 @@ const Customizer = () => {
                       keyId={`${tab.name}-${index}`}
                       tab={tab}
                       handleClick={() => {
-                        setActiveEditorTab(tab.name)
+                        if (!!activeEditotTab) {
+                          setActiveEditorTab("")
+                        } else {
+                          setActiveEditorTab(tab.name)
+                        }
                       }}
                     />
                   </React.Fragment>
