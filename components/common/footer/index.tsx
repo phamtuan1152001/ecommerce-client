@@ -13,7 +13,7 @@ export const Footer = () => {
         <div>
           {!!FOOTER_MENU['info'] && (
             <div className='space-y-6'>
-              {FOOTER_MENU['info']['logo'] && (
+              {/* {FOOTER_MENU['info']['logo'] && (
                 <Link href='/' scroll={true}>
                   <div className='w-[103px] h-[74px] relative'>
                     <Image
@@ -25,7 +25,7 @@ export const Footer = () => {
                     />
                   </div>
                 </Link>
-              )}
+              )} */}
 
               {FOOTER_MENU['info']['children'].length > 0 && (
                 <ul className='space-y-4'>

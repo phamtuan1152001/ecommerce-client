@@ -24,10 +24,10 @@ export const PAYMENT_METHODS = [
 
 export const FOOTER_MENU = {
   info: {
-    logo: {
-      imgUrl: '/assets/images/logo.png',
-      alt: 'Shop PTuan',
-    },
+    // logo: {
+    //   imgUrl: '/assets/images/logo.png',
+    //   alt: 'Shop PTuan',
+    // },
     children: [
       {
         label: '126/9 Le Bach, Phu Tho Hoa Ward, Tan Phu District, Ho Chi Minh City',
