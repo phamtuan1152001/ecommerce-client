@@ -202,6 +202,7 @@ const DialogCustomizedProduct = ({
           className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
+            handleOpen()
             router.push("/customize-product/manage")
           },
           onCancle: () => { }

@@ -254,7 +254,7 @@ const EditCustomizedProduct = ({
                   <Button
                     className="bg-[#333333] text-white text-base h-[35px] px-4 capitalize"
                     disabled={
-                      detailCustomized?.statusProductAdmin === 2
+                      detailCustomized?.statusProductAdmin === 2 || detailCustomized?.statusProductAdmin === 0
                         ? true
                         : detailCustomized?.statusProductClient !== 0
                           ? true
@@ -275,7 +275,7 @@ const EditCustomizedProduct = ({
                   <Button
                     className="bg-[#333333] text-white text-base h-[35px] px-4 capitalize"
                     disabled={
-                      detailCustomized?.statusProductAdmin === 2
+                      detailCustomized?.statusProductAdmin === 2 || detailCustomized?.statusProductAdmin === 0
                         ? true
                         : detailCustomized?.statusProductClient !== 0
                           ? true

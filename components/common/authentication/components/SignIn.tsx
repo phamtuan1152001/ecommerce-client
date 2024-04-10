@@ -136,7 +136,7 @@ const SignIn = ({ setOpen }: Props) => {
       DiaglogPopup({
         icon: <IconFail />,
         title: "SYSTEM ERROR",
-        description: (err as any).retText,
+        description: (err as any).message,
         textButtonOk: "Try again later",
         textButtonCancel: "",
         isBtnCancel: false,
