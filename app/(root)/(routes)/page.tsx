@@ -86,13 +86,13 @@ export default async function Home() {
 
       <FeaturedCategories listCategories={listCategories.retData} />
 
-      {/* {listPurchasedProducts.retData.rankProducts.length > 0 && (
+      {listPurchasedProducts.retData.rankProducts.length > 0 && (
         <SellProduts
           title={"Most purchased products"}
           listItems={listPurchasedProducts.retData.rankProducts}
           type={ACTION_USER.BUY}
         />
-      )} */}
+      )}
 
       <ProductsByCategory listCategories={listCategories.retData} />
 

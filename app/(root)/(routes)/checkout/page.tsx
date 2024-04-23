@@ -28,6 +28,7 @@ import SelectionComponent from "@/components/form/selection-component";
 import BreadcrumbComponent from "@/components/bread-crumd";
 import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 import SlideInModal from "@/components/slide-in-modal";
+import { DiaglogMetamask } from "@/components/dialog-metamask";
 
 // @icon
 import { PiHandbagThin } from 'react-icons/pi';
@@ -43,7 +44,7 @@ import {
 } from "@/lib/api/common";
 
 // @constants
-import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK } from "@/constants";
+import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK, ACTION_USER } from "@/constants";
 
 // @utility
 import { getUserToken, getUserInfo } from "@/utility/common";
@@ -52,17 +53,17 @@ import { toastNotiFail } from "@/utility/toast";
 // @selector-cart
 import { getCartSelector } from '@/redux/cart/selector';
 
-// @api
+// @services
 import { postCreateOrder } from "@/lib/api/order";
 import { deleteAllProductsInCart, removeProductInCart } from "@/redux/cart/service";
+import { createRankingProducts } from "@/lib/api/product";
+import { createPaymentWithMOMO } from "@/lib/api/payment";
 
 // @svg
 import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 
 // @action-cart
 import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
-import { createPaymentWithMOMO } from "@/lib/api/payment";
-import { DiaglogMetamask } from "@/components/dialog-metamask";
 
 const CheckOut = () => {
   const router = useRouter()
@@ -267,6 +268,46 @@ const CheckOut = () => {
     setIsOpen(!isOpen)
   }
 
+  const handleCreateBuyRankingProducts = async (orderProducts: any) => {
+    try {
+      const list = orderProducts?.map(async (item: any) => {
+        const req: {
+          productId: string,
+          product: string,
+          actionBuy: number,
+          countBuy: number,
+          actionReview: number,
+          countReview: number,
+          // "actionRate": 0,
+          // "countRate": 0,
+          actionIntroduce: number,
+          countIntroduce: number,
+          actionSave: number,
+          countSave: number,
+          type: number
+        } = {
+          productId: item?.productId,
+          product: item?.productId,
+          actionBuy: 0,
+          countBuy: 0,
+          actionReview: 1,
+          countReview: 0,
+          // "actionRate": 0,
+          // "countRate": 0,
+          actionIntroduce: 2,
+          countIntroduce: 0,
+          actionSave: 3,
+          countSave: 0,
+          type: ACTION_USER.BUY // Chi can thay doi field theo type
+        }
+        return await createRankingProducts(req)
+      })
+      return await Promise.all(list)
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
@@ -327,10 +368,11 @@ const CheckOut = () => {
             fullAddress: string,
           }
           cartId: string,
-          cartDetail: string
+          cartDetail: any
         }
       } = await postCreateOrder(req)
       if (res.retCode === 0) {
+        handleCreateBuyRankingProducts(res?.retData?.cartDetail?.items)
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ORDER CREATION SUCCESSFULLY",
