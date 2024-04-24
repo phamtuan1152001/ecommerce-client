@@ -21,14 +21,26 @@ const DialogAuth = () => {
   // const [open, setOpen] = useState(false)
   const [tab, setTab] = useState(1)
 
+  const [email, setEmail] = useState<string>("")
+  const [userId, setUserId] = useState<string>("")
+
   const renderContent = (tab: number) => {
     switch (tab) {
       case 2:
         return <ForgotPassword idTab={tab} setOpen={setTab} />
       case 3:
-        return <OtpConfirm idTab={tab} setOpen={setTab} />
+        return <OtpConfirm
+          idTab={tab}
+          setOpen={setTab}
+          email={email}
+          userId={userId}
+        />
       default:
-        return <AuthTabs setOpen={setTab} />
+        return <AuthTabs
+          setOpen={setTab}
+          onChangeEmail={(v) => setEmail(v)}
+          onChangeUserId={(v) => setUserId(v)}
+        />
     }
   }
 

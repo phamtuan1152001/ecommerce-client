@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,30 +18,41 @@ import {
 // @components
 import HeaderTitle from "./components/HeaderTitle";
 import OptFieldInput from "./components/OtpInput";
-import ErrorBox from "./components/ErrorBox";
-import BoxConfirm from "./components/BoxConfirm";
+// import ErrorBox from "./components/ErrorBox";
+// import BoxConfirm from "./components/BoxConfirm";
+import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
+import SlideInModal from "@/components/slide-in-modal";
 
 // @hooks
 import { useCountDown } from "../../../hooks/useCountDown"
 
+// @services
+import { activeAccount } from "@/lib/api/authenticate";
+
+// @constants
+import { IconFail, IconSuccess } from "@/public/assets/svg";
+
 const formSchema = z.object({
   otp: z.string()
-    .min(4, {
-      message: "Mã OTP phải có ít nhất 2 kí tự!",
+    .min(6, {
+      message: "Mã OTP phải có ít nhất 6 kí tự!",
     })
 })
 
 interface Props {
-  // setOpen: (a:boolean) => void
   setOpen: any,
-  idTab: number
+  idTab: number,
+  email: string,
+  userId: string
 }
 
-const OtpConfirm = ({ idTab, setOpen }: Props) => {
-  const [isError, setIsError] = React.useState(false)
+const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
+  // const [isError, setIsError] = React.useState(false)
   const [isStart, setIsStart] = React.useState(!false)
   const [isRefresh, setIsRefresh] = React.useState(false)
-  const [isOpen, setIsOpen] = React.useState(false)
+  // const [isOpen, setIsOpen] = React.useState(false)
+
+  const [loading, setLoading] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +63,7 @@ const OtpConfirm = ({ idTab, setOpen }: Props) => {
 
   const countDown = useCountDown({
     isStart,
-    initValue: 1000 * 60 * 5,
+    initValue: 1000 * 60 * 3,
     isRefresh
   });
 
@@ -85,22 +96,65 @@ const OtpConfirm = ({ idTab, setOpen }: Props) => {
     setIsStart(true);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // console.log({ ...values, userId })
+    try {
+      setLoading(true)
+      const req = {
+        code: parseInt(values.otp),
+        userId
+      }
+      const res = await activeAccount(req)
+      if (res?.retCode === 0) {
+        DiaglogPopup({
+          icon: <IconSuccess />,
+          title: "ACTIVE ACCOUNT SUCCESSFULLY",
+          description: "Congratulation, you have been active account successfully",
+          textButtonOk: "Back to login",
+          textButtonCancel: "",
+          isBtnCancel: false,
+          closeOnClickOverlay: false,
+          className: "max-[1024px]:w-[380px]",
+          onSubmit: () => {
+            setOpen(1)
+            SlideInModal.hide()
+          },
+          onCancle: () => { }
+        })
+      }
+    } catch (err) {
+      // console.log("FETCHING FAIL!", err)
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "ACTIVE FAIL",
+        description: (err as any).message,
+        textButtonOk: "Try again",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[1024px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+        },
+        onCancle: () => { }
+      })
+    } finally {
+      setLoading(false)
+    }
     // test
-    setTimeout(() => {
-      setIsError(true)
-    }, 1000)
-    setTimeout(() => {
-      setIsOpen(true)
-    }, 2000)
+    // setTimeout(() => {
+    //   setIsError(true)
+    // }, 1000)
+    // setTimeout(() => {
+    //   setIsOpen(true)
+    // }, 2000)
   }
 
   return (
     <React.Fragment>
       <HeaderTitle
         title="MÃ XÁC THỰC"
-        description="Hãy kiểm tra email của bạn. Chúng tôi gửi mã xác nhận đến email linh123@gmail.com"
+        description={`Please check your email. We had sent confirmation code to email ${email}`}
         idTab={idTab}
         setOpen={setOpen}
       />
@@ -125,7 +179,7 @@ const OtpConfirm = ({ idTab, setOpen }: Props) => {
                 )
               }}
             />
-            <Button type="submit" className="font-semibold text-base h-12 w-full text-white">Xác nhận</Button>
+            <Button type="submit" className="font-semibold text-base h-12 w-full text-white" disabled={loading}>Xác nhận</Button>
           </form>
         </Form>
       </div>
@@ -147,7 +201,7 @@ const OtpConfirm = ({ idTab, setOpen }: Props) => {
         </h4>
       </div>
 
-      <ErrorBox isError={isError} onClose={() => setIsError(false)} />
+      {/* <ErrorBox isError={isError} onClose={() => setIsError(false)} /> */}
 
       {/* <BoxConfirm
         isOpen={isOpen}

@@ -58,10 +58,12 @@ const formSchema = z.object({
 });
 
 interface Props {
-  setOpen: any
+  setOpen: any,
+  onChange: (v: string) => void,
+  onHandleChangeUserId: (v: string) => void
 }
 
-const SignIn = ({ setOpen }: Props) => {
+const SignIn = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
   const dispatch = useDispatch();
   const router = useRouter()
 
@@ -87,7 +89,7 @@ const SignIn = ({ setOpen }: Props) => {
         retText: string,
         retData: UserInfoType
       } = await loginUser(req)
-      console.log("res", res)
+      // console.log("res", res)
       if (res?.retCode === 0) {
         const user_info = {
           savepassword,
@@ -120,24 +122,27 @@ const SignIn = ({ setOpen }: Props) => {
           icon: <IconFail />,
           title: "LOGIN UNSUCCESSFULLY",
           description: res.retText,
-          textButtonOk: "Try again",
+          textButtonOk: "Active account",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
           className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
             SlideInModal.hide()
+            setOpen(3)
+            onChange(res?.retData.email)
+            onHandleChangeUserId((res as any).retData.userId)
           },
           onCancle: () => { }
         })
       }
     } catch (err) {
-      console.log("FETCH FAIL!", err);
+      // console.log("FETCH FAIL!", err);
       DiaglogPopup({
         icon: <IconFail />,
         title: "SYSTEM ERROR",
-        description: (err as any).message,
-        textButtonOk: "Try again later",
+        description: (err as any).retText,
+        textButtonOk: "Try again",
         textButtonCancel: "",
         isBtnCancel: false,
         closeOnClickOverlay: false,

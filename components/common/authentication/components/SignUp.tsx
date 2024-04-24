@@ -50,7 +50,13 @@ const formSchema = z.object({
     .min(1, { message: 'Please enter this field!' }),
 });
 
-const SignUp = () => {
+interface Props {
+  setOpen: any,
+  onChange: (v: string) => void,
+  onHandleChangeUserId: (v: string) => void
+}
+
+const SignUp = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,6 +71,7 @@ const SignUp = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { fullname, email, phone, usename, password } = values || {}
+    onChange(email)
     try {
       const req = {
         fullName: fullname,
@@ -72,7 +79,7 @@ const SignUp = () => {
         phone: phone,
         username: usename,
         password: password,
-        statusActive: 1,
+        statusActive: 0,
         roles: ["user"]
       }
       const res: {
@@ -88,13 +95,16 @@ const SignUp = () => {
           icon: <IconSuccess />,
           title: "REGISTER SUCCESSFULLY",
           description: "Congratulation, you have been registed successfully",
-          textButtonOk: "Back to home",
+          textButtonOk: "Active account",
           textButtonCancel: "",
           isBtnCancel: false,
           closeOnClickOverlay: false,
           className: "max-[1024px]:w-[380px]",
           onSubmit: () => {
-            window.location.reload()
+            // window.location.reload()
+            onHandleChangeUserId(res?.retData?.userId)
+            setOpen(3)
+            SlideInModal.hide()
           },
           onCancle: () => { }
         })

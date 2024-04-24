@@ -14,10 +14,12 @@ import { DialogClose } from "@/components/ui/dialog";
 
 interface Props {
 	// setOpen: (a:boolean) => void
-	setOpen: any
+	setOpen: any,
+	onChangeEmail: (v: string) => void,
+	onChangeUserId: (v: string) => void
 }
 
-const AuthTabs = ({ setOpen }: Props) => {
+const AuthTabs = ({ setOpen, onChangeEmail, onChangeUserId }: Props) => {
 	const dispatch = useDispatch()
 
 	const isOpen = useSelector(getIsOpenDialog);
@@ -68,11 +70,19 @@ const AuthTabs = ({ setOpen }: Props) => {
 						</TabsList>
 						<div className=' py-6 mt-2'>
 							<TabsContent value='signin'>
-								<SignIn setOpen={setOpen} />
+								<SignIn
+									setOpen={setOpen}
+									onChange={(v) => onChangeEmail(v)}
+									onHandleChangeUserId={(v) => onChangeUserId(v)}
+								/>
 							</TabsContent>
 
 							<TabsContent value='signup'>
-								<SignUp />
+								<SignUp
+									setOpen={setOpen}
+									onChange={(v) => onChangeEmail(v)}
+									onHandleChangeUserId={(v) => onChangeUserId(v)}
+								/>
 							</TabsContent>
 						</div>
 					</Tabs>

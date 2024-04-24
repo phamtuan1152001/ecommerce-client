@@ -8,7 +8,7 @@ interface OtpFieldInput {
   onChange: any,
 }
 
-const OptFieldInput = ({value, onChange, ...rest}:OtpFieldInput) => {
+const OptFieldInput = ({ value, onChange, ...rest }: OtpFieldInput) => {
   const [otp, setOtp] = useState('');
 
   React.useEffect(() => {
@@ -21,7 +21,7 @@ const OptFieldInput = ({value, onChange, ...rest}:OtpFieldInput) => {
     <OtpInput
       value={otp}
       onChange={(v) => setOtp(v)}
-      numInputs={4}
+      numInputs={6}
       shouldAutoFocus={true}
       renderInput={(props) => <input {...props} />}
       containerStyle={{
@@ -29,15 +29,15 @@ const OptFieldInput = ({value, onChange, ...rest}:OtpFieldInput) => {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        gap: 24,
+        gap: 8,
         width: "100%"
       }}
       inputStyle={{
         background: "#F5F5F5",
-        width: 64,
-        height: 64,
-        borderRadius: 16,
-        fontSize: 18,
+        width: 45,
+        height: 45,
+        borderRadius: 8,
+        fontSize: 22,
         fontStyle: "normal",
         fontWeight: 700,
         lineHeight: 24,
