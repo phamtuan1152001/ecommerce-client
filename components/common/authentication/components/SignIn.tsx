@@ -204,27 +204,11 @@ const SignIn = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
               />
             </div>
           </div>
-          {/* <div className=" mt-2 flex items-center gap-x-1.5 ">
-            <FormField
-              control={form.control}
-              name="savepassword"
-              render={({ field }) => (
-                <FormItem className=" flex items-center">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      className=" h-[18px] w-[18px] rounded-[6px] border-[#BFBFBF]"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <p>Nhớ mật khẩu</p>
-          </div> */}
           <div className=" mt-8 flex flex-col">
             <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Sign In</Button>
-            {/* <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white">Quên mật khẩu</Button> */}
+            <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white hover:underline hover:underline-offset-4">
+              Forgot password
+            </Button>
           </div>
         </form>
       </Form>

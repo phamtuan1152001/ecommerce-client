@@ -11,7 +11,7 @@ interface StringProps {
   idTab: number
 }
 
-const HeaderTitle: FC<StringProps> = ({title, description, setOpen, idTab}): JSX.Element => {  
+const HeaderTitle: FC<StringProps> = ({ title, description, setOpen, idTab }): JSX.Element => {
   return (
     <div className="flex flex-col justify-start gap-8 mb-8">
       <div className="flex flex-row justify-start items-center gap-6 relative">
@@ -26,7 +26,7 @@ const HeaderTitle: FC<StringProps> = ({title, description, setOpen, idTab}): JSX
             }} />
           </div>
         </div>
-        <h3 className="text-center text-lg font-bold w-full text-textColor-title">
+        <h3 className="text-center text-lg font-bold w-full text-textColor-title uppercase">
           {title}
         </h3>
       </div>

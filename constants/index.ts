@@ -32,6 +32,8 @@ export const UPDATE_DETAIL_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-
 export const AUTHENTICATE_API_SIGNIN = '/auth/signin'
 export const AUTHENTICATE_API_SIGNUP = '/auth/signup'
 export const AUTHENTICATE_API_ACTIVEACCOUNT = "/auth/confirmCode"
+export const SEND_CODE = "/auth/send-code-forgotpassword"
+export const RESET_PASSWORD = "/auth/reset-password"
 
 /* CART API */
 export const ADD_ITEM_TO_CART = "/cart/create-cart"

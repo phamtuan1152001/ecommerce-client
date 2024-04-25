@@ -12,6 +12,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 
@@ -27,15 +28,20 @@ import SlideInModal from "@/components/slide-in-modal";
 import { useCountDown } from "../../../hooks/useCountDown"
 
 // @services
-import { activeAccount } from "@/lib/api/authenticate";
+import { activeAccount, resetPassword, sendCode } from "@/lib/api/authenticate";
 
 // @constants
 import { IconFail, IconSuccess } from "@/public/assets/svg";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   otp: z.string()
     .min(6, {
       message: "OTP code must have at least 6 characters!",
+    }),
+  newPassword: z.string()
+    .min(6, {
+      message: "Mã OTP phải có ít nhất 6 kí tự!",
     })
 })
 
@@ -46,11 +52,9 @@ interface Props {
   userId: string
 }
 
-const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
-  // const [isError, setIsError] = React.useState(false)
+const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
   const [isStart, setIsStart] = React.useState(!false)
   const [isRefresh, setIsRefresh] = React.useState(false)
-  // const [isOpen, setIsOpen] = React.useState(false)
 
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -58,6 +62,7 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       otp: "",
+      newPassword: ""
     },
   })
 
@@ -96,20 +101,41 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
     setIsStart(true);
   };
 
+  const fetchResendCode = async () => {
+    try {
+      const req = {
+        email
+      }
+      const res: {
+        "retCode": number,
+        "retText": string,
+        "retData": {
+          "userId": string
+        }
+      } = await sendCode(req)
+      if (res.retCode === 0) {
+        setOpen(4)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // console.log({ ...values, userId })
     try {
       setLoading(true)
       const req = {
+        userId: userId,
         code: parseInt(values.otp),
-        userId
+        newPassword: values.newPassword
       }
-      const res = await activeAccount(req)
+      const res = await resetPassword(req)
       if (res?.retCode === 0) {
         DiaglogPopup({
           icon: <IconSuccess />,
-          title: "ACTIVE ACCOUNT SUCCESSFULLY",
-          description: "Congratulation, you have been active account successfully",
+          title: "RESET PASSWORD SUCCESSFULLY",
+          description: "Congratulation, you have reset your password successfully",
           textButtonOk: "Back to login",
           textButtonCancel: "",
           isBtnCancel: false,
@@ -126,7 +152,7 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
       // console.log("FETCHING FAIL!", err)
       DiaglogPopup({
         icon: <IconFail />,
-        title: "ACTIVE FAIL",
+        title: "RESET PASSWORD FAIL",
         description: (err as any).message,
         textButtonOk: "Try again",
         textButtonCancel: "",
@@ -141,13 +167,6 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
     } finally {
       setLoading(false)
     }
-    // test
-    // setTimeout(() => {
-    //   setIsError(true)
-    // }, 1000)
-    // setTimeout(() => {
-    //   setIsOpen(true)
-    // }, 2000)
   }
 
   return (
@@ -171,6 +190,11 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
               render={({ field }) => {
                 return (
                   <FormItem>
+                    <FormLabel
+                      className={"text-sm font-bold text-textColor-title required-label"}
+                    >
+                      Code OTP
+                    </FormLabel>
                     <FormControl>
                       <OptFieldInput {...field} />
                     </FormControl>
@@ -179,38 +203,60 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
                 )
               }}
             />
-            <Button type="submit" className="font-semibold text-base h-12 w-full text-white" disabled={loading}>Xác nhận</Button>
+            <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel
+                      className={"text-sm font-bold text-textColor-title required-label"}
+                    >
+                      New password
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your new password"
+                        className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
+            />
+            <Button type="submit" className="font-semibold text-base h-12 w-full text-white" disabled={loading}>Submit</Button>
           </form>
         </Form>
       </div>
 
       <div className="mt-8">
-        <h4 className="text-center text-base font-normal text-textColor-description">
-          Gửi mã xác thực sẽ kết thúc sau {getTimeMinutes(countDown)} phút.
+        <h4 className="text-center text-sm font-normal text-textColor-description">
+          The authentication code will finish later {getTimeMinutes(countDown)} minutes.
         </h4>
-        <h4 className="text-center text-base font-normal text-textColor-description">
-          Bạn chưa nhận được mã xác thực?
-          <span className="ml-2 cursor-pointer font-bold">Gửi lại mã</span>
+        <h4 className="text-center text-sm font-normal text-textColor-description">
+          Haven't received the verification code yet?
+          <span
+            className="ml-2 cursor-pointer font-bold hover:underline hover:underline-offset-4"
+            onClick={() => {
+              setIsRefresh(true)
+              fetchResendCode()
+            }}
+          >
+            Resend code
+          </span>
         </h4>
       </div>
 
       <div className="mt-8 mb-6">
-        <h4 className="text-center text-base font-normal text-textColor-description">
-          Quay trở lại trang?
+        <h4 className="text-center text-base font-normal text-textColor-description" onClick={() => setOpen(1)}>
+          Return to page?
           <span className="ml-2 text-textColor-login cursor-pointer">Sign In</span>
         </h4>
       </div>
-
-      {/* <ErrorBox isError={isError} onClose={() => setIsError(false)} /> */}
-
-      {/* <BoxConfirm
-        isOpen={isOpen}
-        onOpenChange={() => setIsOpen(!isOpen)}
-        title=""
-        description=""
-      /> */}
     </React.Fragment>
   )
 }
 
-export default OtpConfirm
+export default OtpConfirmResetPassword

@@ -16,6 +16,7 @@ import LogoImage from "../../public/assets/images/login/LogoLogin.png"
 import ForgotPassword from "../common/authentication/ForgotPassword";
 import OtpConfirm from "../common/authentication/OtpConfirm";
 import AuthTabs from "../common/authentication/AuthTabs";
+import OtpConfirmResetPassword from "../common/authentication/OtpConfirmResetPassword";
 
 const DialogAuth = () => {
   // const [open, setOpen] = useState(false)
@@ -27,9 +28,21 @@ const DialogAuth = () => {
   const renderContent = (tab: number) => {
     switch (tab) {
       case 2:
-        return <ForgotPassword idTab={tab} setOpen={setTab} />
+        return <ForgotPassword
+          idTab={tab}
+          setOpen={setTab}
+          onChangeEmail={(v) => setEmail(v)}
+          onChangeUserId={(v) => setUserId(v)}
+        />
       case 3:
         return <OtpConfirm
+          idTab={tab}
+          setOpen={setTab}
+          email={email}
+          userId={userId}
+        />
+      case 4:
+        return <OtpConfirmResetPassword
           idTab={tab}
           setOpen={setTab}
           email={email}
