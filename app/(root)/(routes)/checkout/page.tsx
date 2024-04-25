@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/navigation";
+import { connect } from "socket.io-client";
 
 // @container
 import { Container } from '@/components/ui/container';
@@ -45,6 +46,8 @@ import {
 
 // @constants
 import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK, ACTION_USER } from "@/constants";
+import { BASE_URL_API_DEV } from "@/constants";
+const host = BASE_URL_API_DEV;
 
 // @utility
 import { getUserToken, getUserInfo } from "@/utility/common";
@@ -68,6 +71,7 @@ import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
 const CheckOut = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+  const socket = connect(host)
 
   const isAuthenticated = !!getUserToken()
 
@@ -112,6 +116,26 @@ const CheckOut = () => {
   React.useEffect(() => {
     if (isAuthenticated) {
       fetchGetListProvinces()
+      /* Setup-socket */
+      // const socket = connect(host)
+
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+
+      // socket.on('admin', (data) => {
+      //   console.log("data", data)
+      // })
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected from server');
+      });
+
+
+      return () => {
+        socket.disconnect()
+      };
+      /* End */
     } else {
       window.location.href = "/"
     }
@@ -372,6 +396,7 @@ const CheckOut = () => {
         }
       } = await postCreateOrder(req)
       if (res.retCode === 0) {
+        socket.emit("createOrder", res.retData)
         handleCreateBuyRankingProducts(res?.retData?.cartDetail?.items)
         DiaglogPopup({
           icon: <IconSuccess />,

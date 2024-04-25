@@ -25,14 +25,14 @@ const ProviderComponents = ({ children }: any) => {
         accessToken
       }
       fetchVerifyToken(payload)
-      const req: {
-        userId: string | undefined,
-        accessToken: string | undefined
-      } = {
-        userId: !!getUserInfo()?.id ? getUserInfo()?.id : "",
-        accessToken
-      }
-      fetchTrackingVisistor(req)
+      // const req: {
+      //   userId: string | undefined,
+      //   accessToken: string | undefined
+      // } = {
+      //   userId: !!getUserInfo()?.id ? getUserInfo()?.id : "",
+      //   accessToken
+      // }
+      // fetchTrackingVisistor(req)
     }
   }, [accessToken])
 

@@ -61,6 +61,7 @@
     "reselect": "^5.0.1",
     "sharp": "^0.33.2",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.7.5",
     "sonner": "^1.2.4",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
