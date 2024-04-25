@@ -35,7 +35,7 @@ const AuthTabs = ({ setOpen, onChangeEmail, onChangeUserId }: Props) => {
 	return (
 
 		<div className=' basis-1/2'>
-			<Box className="py-0 px-12 h-full rounded-r-[8px] max-[1024px]:p-0">
+			<Box className="py-0 px-0 h-full rounded-r-[8px] max-[1024px]:p-0">
 				<div className="flex flex-row justify-end items-center">
 					{/* <Button className="bg-inherit p-1" onClick={() => handleOpenDialog()}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

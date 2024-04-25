@@ -19,8 +19,6 @@ import {
 // @components
 import HeaderTitle from "./components/HeaderTitle";
 import OptFieldInput from "./components/OtpInput";
-// import ErrorBox from "./components/ErrorBox";
-// import BoxConfirm from "./components/BoxConfirm";
 import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 import SlideInModal from "@/components/slide-in-modal";
 
@@ -28,11 +26,12 @@ import SlideInModal from "@/components/slide-in-modal";
 import { useCountDown } from "../../../hooks/useCountDown"
 
 // @services
-import { activeAccount, resetPassword, sendCode } from "@/lib/api/authenticate";
+import { resetPassword, sendCode } from "@/lib/api/authenticate";
 
 // @constants
 import { IconFail, IconSuccess } from "@/public/assets/svg";
 import { Input } from "@/components/ui/input";
+import { toastNotiSuccess } from "@/utility/toast";
 
 const formSchema = z.object({
   otp: z.string()
@@ -114,7 +113,7 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
         }
       } = await sendCode(req)
       if (res.retCode === 0) {
-        setOpen(4)
+        toastNotiSuccess(`Code was sent to ${email}`)
       }
     } catch (err) {
       console.log("FETCHING FAIL!", err)
@@ -172,7 +171,7 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
   return (
     <React.Fragment>
       <HeaderTitle
-        title="VERIFICATION CODES"
+        title="VERIFICATION CODE"
         description={`Please check your email. We had sent confirmation code to email ${email}`}
         idTab={idTab}
         setOpen={setOpen}
@@ -218,6 +217,7 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
                       <Input
                         placeholder="Enter your new password"
                         className=' rounded-full py-2 px-4 border-none focus-visible:ring-transparent bg-[#F5F5F5] placeholder:text-sm placeholder:text-[#637381]'
+                        type="password"
                         {...field}
                       />
                     </FormControl>
@@ -238,10 +238,12 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
         <h4 className="text-center text-sm font-normal text-textColor-description">
           Haven't received the verification code yet?
           <span
-            className="ml-2 cursor-pointer font-bold hover:underline hover:underline-offset-4"
+            className={`ml-2 cursor-pointer font-bold hover:underline hover:underline-offset-4 ${countDown ? "cursor-not-allowed" : ""}`}
             onClick={() => {
               setIsRefresh(true)
-              fetchResendCode()
+              if (!countDown) {
+                fetchResendCode()
+              }
             }}
           >
             Resend code
@@ -250,9 +252,9 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
       </div>
 
       <div className="mt-8 mb-6">
-        <h4 className="text-center text-base font-normal text-textColor-description" onClick={() => setOpen(1)}>
+        <h4 className="text-center text-base font-normal text-textColor-description">
           Return to page?
-          <span className="ml-2 text-textColor-login cursor-pointer">Sign In</span>
+          <span className="ml-2 text-textColor-login cursor-pointer hover:underline hover:underline-offset-4" onClick={() => setOpen(1)}>Sign In</span>
         </h4>
       </div>
     </React.Fragment>

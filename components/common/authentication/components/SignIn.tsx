@@ -8,14 +8,12 @@ import { useRouter } from 'next/navigation';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 
@@ -32,9 +30,6 @@ import { closeDialog } from "@/redux/openDiaglog/action";
 import { loginUser } from "@/lib/api/authenticate";
 import apiMethod from "@/utility/ApiMethod";
 
-// @constants
-import { SUCCESS } from "@/constants";
-
 // @svg
 import { IconFail, IconSuccess } from "@/public/assets/svg";
 import SlideInModal from "@/components/slide-in-modal";
@@ -46,15 +41,11 @@ const formSchema = z.object({
   username: z
     .string()
     .min(1, { message: 'Please enter this field!' }),
-  // .email({ message: 'Không đúng định dạng email.' }),
   password: z
     .string()
     .min(1, { message: 'Please enter this field!' }),
   savepassword: z
     .boolean().default(false).optional(),
-  // phone: z
-  //   .string()
-  //   .min(1, { message: 'Trường này là bắt buộc.' }),
 });
 
 interface Props {
@@ -140,7 +131,7 @@ const SignIn = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
       // console.log("FETCH FAIL!", err);
       DiaglogPopup({
         icon: <IconFail />,
-        title: "SYSTEM ERROR",
+        title: "LOGIN UNSUCCESSFULLY",
         description: (err as any).retText,
         textButtonOk: "Try again",
         textButtonCancel: "",
@@ -204,9 +195,10 @@ const SignIn = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
               />
             </div>
           </div>
-          <div className=" mt-8 flex flex-col">
+          <div className=" mt-8 flex flex-col gap-y-4">
             <Button className=" py-6 px-6 text-base rounded-[8px] bg-[#333333] text-[#FFFFFF]">Sign In</Button>
-            <Button onClick={() => setOpen(2)} className=" mt-6 py-6 px-6 text-base rounded-[8px] bg-white text-black hover:bg-white hover:underline hover:underline-offset-4">
+            <h3 className="text-center font-normal text-base">Do you forgot your password?</h3>
+            <Button onClick={() => setOpen(2)} className="p-0 text-base rounded-[8px] bg-white text-black hover:bg-white hover:underline hover:underline-offset-4">
               Forgot password
             </Button>
           </div>

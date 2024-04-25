@@ -16,11 +16,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
-
-// @components
+import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 import HeaderTitle from "./components/HeaderTitle";
+
+// @services
 import { sendCode } from "@/lib/api/authenticate";
+
+// @constants
+import { IconFail } from "@/public/assets/svg";
+import SlideInModal from "@/components/slide-in-modal";
 
 const phoneRegex = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/;
 
@@ -29,10 +33,10 @@ const formSchema = z.object({
     required_error: "Email is required",
   })
     .min(2, {
-      message: "Email hoặc số điện thoại phải có ít nhất 2 kí tự!",
+      message: "Email or phone number must have at least 2 characters!",
     })
     .email({
-      message: "Xin vui lòng nhập đúng định dạng email!"
+      message: "Please enter the correct email format!"
     })
 })
 
@@ -75,6 +79,20 @@ const ForgotPassword = ({ idTab, setOpen, onChangeEmail, onChangeUserId }: Props
       }
     } catch (err) {
       console.log("FETCHING FAIL!", err)
+      DiaglogPopup({
+        icon: <IconFail />,
+        title: "SEND CODE UNSECCESSFULLY",
+        description: (err as any).retText,
+        textButtonOk: "Try again",
+        textButtonCancel: "",
+        isBtnCancel: false,
+        closeOnClickOverlay: false,
+        className: "max-[1024px]:w-[380px]",
+        onSubmit: () => {
+          SlideInModal.hide()
+        },
+        onCancle: () => { }
+      })
     } finally {
       setLoading(false)
     }

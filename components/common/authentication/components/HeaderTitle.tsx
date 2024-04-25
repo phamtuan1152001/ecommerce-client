@@ -15,7 +15,7 @@ const HeaderTitle: FC<StringProps> = ({ title, description, setOpen, idTab }): J
   return (
     <div className="flex flex-col justify-start gap-8 mb-8">
       <div className="flex flex-row justify-start items-center gap-6 relative">
-        <div className="absolute cursor-pointer">
+        {/* <div className="absolute cursor-pointer">
           <div className="flex flex-col justify-center items-center">
             <IconBack onClick={() => {
               if (idTab === 2) {
@@ -25,7 +25,7 @@ const HeaderTitle: FC<StringProps> = ({ title, description, setOpen, idTab }): J
               }
             }} />
           </div>
-        </div>
+        </div> */}
         <h3 className="text-center text-lg font-bold w-full text-textColor-title uppercase">
           {title}
         </h3>

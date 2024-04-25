@@ -18,8 +18,6 @@ import {
 // @components
 import HeaderTitle from "./components/HeaderTitle";
 import OptFieldInput from "./components/OtpInput";
-// import ErrorBox from "./components/ErrorBox";
-// import BoxConfirm from "./components/BoxConfirm";
 import { DiaglogPopup } from "@/components/pop-up/dialog-popup";
 import SlideInModal from "@/components/slide-in-modal";
 
@@ -27,10 +25,11 @@ import SlideInModal from "@/components/slide-in-modal";
 import { useCountDown } from "../../../hooks/useCountDown"
 
 // @services
-import { activeAccount } from "@/lib/api/authenticate";
+import { activeAccount, sendCode } from "@/lib/api/authenticate";
 
 // @constants
 import { IconFail, IconSuccess } from "@/public/assets/svg";
+import { toastNotiSuccess } from "@/utility/toast";
 
 const formSchema = z.object({
   otp: z.string()
@@ -47,10 +46,8 @@ interface Props {
 }
 
 const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
-  // const [isError, setIsError] = React.useState(false)
   const [isStart, setIsStart] = React.useState(!false)
   const [isRefresh, setIsRefresh] = React.useState(false)
-  // const [isOpen, setIsOpen] = React.useState(false)
 
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -141,19 +138,32 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
     } finally {
       setLoading(false)
     }
-    // test
-    // setTimeout(() => {
-    //   setIsError(true)
-    // }, 1000)
-    // setTimeout(() => {
-    //   setIsOpen(true)
-    // }, 2000)
+  }
+
+  const fetchResendCode = async () => {
+    try {
+      const req = {
+        email
+      }
+      const res: {
+        "retCode": number,
+        "retText": string,
+        "retData": {
+          "userId": string
+        }
+      } = await sendCode(req)
+      if (res.retCode === 0) {
+        toastNotiSuccess(`Code was sent to ${email}`)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
   }
 
   return (
     <React.Fragment>
       <HeaderTitle
-        title="VERIFICATION CODES"
+        title="VERIFICATION CODE"
         description={`Please check your email. We had sent confirmation code to email ${email}`}
         idTab={idTab}
         setOpen={setOpen}
@@ -179,36 +189,37 @@ const OtpConfirm = ({ idTab, setOpen, email, userId }: Props) => {
                 )
               }}
             />
-            <Button type="submit" className="font-semibold text-base h-12 w-full text-white" disabled={loading}>Xác nhận</Button>
+            <Button type="submit" className="font-semibold text-base h-12 w-full text-white" disabled={loading}>Submit</Button>
           </form>
         </Form>
       </div>
 
       <div className="mt-8">
-        <h4 className="text-center text-base font-normal text-textColor-description">
-          Gửi mã xác thực sẽ kết thúc sau {getTimeMinutes(countDown)} phút.
+        <h4 className="text-center text-sm font-normal text-textColor-description">
+          Sending the authentication code will finish later {getTimeMinutes(countDown)} minutes.
         </h4>
-        <h4 className="text-center text-base font-normal text-textColor-description">
-          Bạn chưa nhận được mã xác thực?
-          <span className="ml-2 cursor-pointer font-bold">Gửi lại mã</span>
+        <h4 className="text-center text-sm font-normal text-textColor-description">
+          Haven't received the verification code yet?
+          <span
+            className={`ml-2 cursor-pointer font-bold hover:underline hover:underline-offset-4 ${countDown ? "cursor-not-allowed" : ""}`}
+            onClick={() => {
+              setIsRefresh(true)
+              if (!countDown) {
+                fetchResendCode()
+              }
+            }}
+          >
+            Resend code
+          </span>
         </h4>
       </div>
 
       <div className="mt-8 mb-6">
         <h4 className="text-center text-base font-normal text-textColor-description">
-          Quay trở lại trang?
-          <span className="ml-2 text-textColor-login cursor-pointer">Sign In</span>
+          Return to page?
+          <span className="ml-2 text-textColor-login cursor-pointer hover:underline hover:underline-offset-4" onClick={() => setOpen(1)}>Sign In</span>
         </h4>
       </div>
-
-      {/* <ErrorBox isError={isError} onClose={() => setIsError(false)} /> */}
-
-      {/* <BoxConfirm
-        isOpen={isOpen}
-        onOpenChange={() => setIsOpen(!isOpen)}
-        title=""
-        description=""
-      /> */}
     </React.Fragment>
   )
 }
