@@ -26,7 +26,7 @@ import SlideInModal from "@/components/slide-in-modal";
 import { useCountDown } from "../../../hooks/useCountDown"
 
 // @services
-import { resetPassword, sendCode } from "@/lib/api/authenticate";
+import { resetPassword, sendCode, deleteCodeActive } from "@/lib/api/authenticate";
 
 // @constants
 import { IconFail, IconSuccess } from "@/public/assets/svg";
@@ -74,6 +74,7 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
   React.useEffect(() => {
     if (!countDown) {
       setIsStart(false);
+      fetchDeleteCodeActive()
     } else {
       onStartCount()
     }
@@ -99,6 +100,17 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
   const onStartCount = () => {
     setIsStart(true);
   };
+
+  const fetchDeleteCodeActive = async () => {
+    try {
+      const req = {
+        userId
+      }
+      return await deleteCodeActive(req)
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
 
   const fetchResendCode = async () => {
     try {
@@ -240,8 +252,8 @@ const OtpConfirmResetPassword = ({ idTab, setOpen, email, userId }: Props) => {
           <span
             className={`ml-2 cursor-pointer font-bold hover:underline hover:underline-offset-4 ${countDown ? "cursor-not-allowed" : ""}`}
             onClick={() => {
-              setIsRefresh(true)
               if (!countDown) {
+                setIsRefresh(true)
                 fetchResendCode()
               }
             }}

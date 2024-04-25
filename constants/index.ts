@@ -34,6 +34,7 @@ export const AUTHENTICATE_API_SIGNUP = '/auth/signup'
 export const AUTHENTICATE_API_ACTIVEACCOUNT = "/auth/confirmCode"
 export const SEND_CODE = "/auth/send-code"
 export const RESET_PASSWORD = "/auth/reset-password"
+export const DELETE_CODE_ACTIVE = "/auth/delete-code"
 
 /* CART API */
 export const ADD_ITEM_TO_CART = "/cart/create-cart"

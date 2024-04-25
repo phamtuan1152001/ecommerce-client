@@ -1,5 +1,5 @@
 import apiMethod from "@/utility/ApiMethod";
-import { AUTHENTICATE_API_SIGNIN, AUTHENTICATE_API_SIGNUP, AUTHENTICATE_API_ACTIVEACCOUNT, SEND_CODE, RESET_PASSWORD } from "@/constants";
+import { AUTHENTICATE_API_SIGNIN, AUTHENTICATE_API_SIGNUP, AUTHENTICATE_API_ACTIVEACCOUNT, SEND_CODE, RESET_PASSWORD, DELETE_CODE_ACTIVE } from "@/constants";
 
 export const loginUser = async (payload: {
   username: string,
@@ -43,5 +43,12 @@ export const resetPassword = async (payload: {
   newPassword: string
 }) => {
   const { data } = await apiMethod.post(RESET_PASSWORD, payload)
+  return data
+}
+
+export const deleteCodeActive = async (payload: {
+  userId: string
+}) => {
+  const { data } = await apiMethod.post(DELETE_CODE_ACTIVE, payload)
   return data
 }
