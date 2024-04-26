@@ -49,6 +49,7 @@ export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
 export const UPDATE_ORDER_DETAIL = "/order/update-detail-order-client"
 export const GET_LIST_ORDERS = "/order/get-list-order-client"
+export const CREATE_NOTIFICATION_CLIENT = "/notification/createClient"
 
 /* PAYMENT API */
 export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"

@@ -57,7 +57,7 @@ import { toastNotiFail } from "@/utility/toast";
 import { getCartSelector } from '@/redux/cart/selector';
 
 // @services
-import { postCreateOrder } from "@/lib/api/order";
+import { createNotification, postCreateOrder } from "@/lib/api/order";
 import { deleteAllProductsInCart, removeProductInCart } from "@/redux/cart/service";
 import { createRankingProducts } from "@/lib/api/product";
 import { createPaymentWithMOMO } from "@/lib/api/payment";
@@ -332,6 +332,23 @@ const CheckOut = () => {
     }
   }
 
+  const fetchCreateNotification = async (id: string, payment: number) => {
+    try {
+      const req = {
+        userId: getUserInfo()?.id,
+        typeOrder: 1,
+        idOrder: id,
+        typePayment: payment // 0 - pending (moi tao don hang), 1 - (thanh toan don hang thanh cong), 2 - (huy thanh toan don hang)
+      }
+      const res = await createNotification(req)
+      if (res?.retCode === 0) {
+        socket.emit("createOrder", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
@@ -396,7 +413,7 @@ const CheckOut = () => {
         }
       } = await postCreateOrder(req)
       if (res.retCode === 0) {
-        socket.emit("createOrder", res.retData)
+        fetchCreateNotification(res.retData._id, 0)
         handleCreateBuyRankingProducts(res?.retData?.cartDetail?.items)
         DiaglogPopup({
           icon: <IconSuccess />,
