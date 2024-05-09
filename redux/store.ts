@@ -3,15 +3,16 @@ import { createStore, applyMiddleware, Middleware, Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { PersistPartial } from "redux-persist/es/persistReducer";
 
 import rootReducer from "./rootReducers";
 import { rootSaga } from "./rootSaga";
 import { CartActions, CartState } from "./cart/types";
 import { DialogActions, DialogState } from "./openDiaglog/types";
-import { PersistPartial } from "redux-persist/es/persistReducer";
+import { NotificationAction, NotificationState } from "./notification/types"; 
 
 // Combine actions
-type CombinedActions = CartActions | DialogActions;
+type CombinedActions = CartActions | DialogActions | NotificationAction;
 
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const middleware: Middleware<unknown, any, any> = sagaMiddleware as Middleware<u
 const store: Store<{
   cart: CartState;
   openDiaglog: DialogState;
+  notification: NotificationState
 } & PersistPartial, CombinedActions, {}> = createStore(persistedReducer, applyMiddleware(middleware));
 const persist = persistStore(store as Store);
 
