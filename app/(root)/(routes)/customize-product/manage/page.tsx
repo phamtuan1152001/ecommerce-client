@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
+
+/* @ts-ignore */
 import moment from "moment";
 import { useRouter } from "next/navigation"
 import Link from 'next/link';
