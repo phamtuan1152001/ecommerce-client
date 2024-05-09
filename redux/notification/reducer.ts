@@ -20,7 +20,7 @@ const initialState: NotificationState = {
 }
 
 export default (state = initialState, action: NotificationAction) => {
-  // console.log("test", {state, action})
+  // console.log("test", action)
 
   switch (action.type) {
     case Actions.SET_SUCCESS_NOTIFICATION:
@@ -46,6 +46,6 @@ export default (state = initialState, action: NotificationAction) => {
         notification: action.payload.notification
       };
     default:
-      return initialState
+      return state
   }
 }

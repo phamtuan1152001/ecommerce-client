@@ -22,7 +22,6 @@ function* fetchGetListNotificationClient(payload: {
   type: string,
   payload: IGetNotificationPayload
 }) {  
-  // console.log("fetch-get-list", payload)
   try {
     yield put(
       Actions.setLoadingGetListNotification({
@@ -30,7 +29,7 @@ function* fetchGetListNotificationClient(payload: {
       })
     );
     const response: INotificationResponse = yield call(getListNotificationService, payload.payload);    
-    console.log("response", response)
+    // console.log("response", response)
     if (response.retCode === RETCODE_SUCCESS) {
       yield put(
         Actions.setSuccessGetListNotification({

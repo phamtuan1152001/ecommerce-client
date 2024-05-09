@@ -76,14 +76,6 @@ export const TopBar = () => {
         <div className='relative flex items-center justify-between h-[70px]'>
           <div
             className='px-4 py-2.5 text-white rounded-3xl bg-[#3F3F3F] inline-block'
-            onClick={() => {
-              const req = {
-                page: 1,
-                size: 12,
-                userId: "662a14badf00bfcc0b09d69a"
-              }
-              dispatch(getListNotification(req))
-            }}
           >
             Hotline:{' '}
             <span className='inline-block font-bold'>0909 082 912</span>
