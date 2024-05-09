@@ -4,6 +4,9 @@ import React, { useEffect } from "react"
 import { Provider } from "react-redux";
 import store, { persist } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { connect } from "socket.io-client"
+import { BASE_URL_API_DEV } from "@/constants";
+const host = BASE_URL_API_DEV;
 
 // @common
 import { getUserInfo, getUserToken, logOut } from "@/utility/common";
@@ -16,6 +19,7 @@ import { trackingVisistor, verifyToken } from "@/lib/api";
 
 const ProviderComponents = ({ children }: any) => {
   const accessToken = getUserToken()
+  const socket = connect(host)
 
   useEffect(() => {
     const isAuthenticated = accessToken ? true : false;
@@ -33,6 +37,22 @@ const ProviderComponents = ({ children }: any) => {
       //   accessToken
       // }
       // fetchTrackingVisistor(req)
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+
+      socket.on('getNewNotificationsInClient', (data) => {
+        console.log("data", data)
+      })
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected from server');
+      });
+
+
+      return () => {
+        socket.disconnect()
+      };
     }
   }, [accessToken])
 
