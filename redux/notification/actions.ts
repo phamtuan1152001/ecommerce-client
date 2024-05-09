@@ -23,6 +23,12 @@ export const setNotification = (payload: ISetNotificationPayload) => {
   }
 }
 
+export const resetNotification = () => {
+  return {
+    type: Actions.RESET_NOTIFICATION
+  }
+}
+
 export const setSuccessGetListNotification = (payload: ISetSuccessGetListNotificationPayload) => {
   return {
     type: Actions.SET_SUCCESS_NOTIFICATION,

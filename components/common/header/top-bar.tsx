@@ -37,7 +37,7 @@ import { slitName, logOut, getUserInfo } from '@/utility/common';
 // @selector-open-dialog
 import { getIsOpenDialog } from '@/redux/openDiaglog/selector';
 import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
-import { getListNotification } from "@/redux/notification/actions";
+import { getListNotification, resetNotification } from "@/redux/notification/actions";
 import { getFailNotificationSelector, getListNotificationSelector, getLoadingNotificationSelector, getSuccessNotificationSelector } from "@/redux/notification/selector";
 
 export const TopBar = () => {
@@ -52,10 +52,11 @@ export const TopBar = () => {
   const failNoti = useSelector(getFailNotificationSelector)
   const loadNoti = useSelector(getLoadingNotificationSelector)
 
-  // console.log("data", { listNoti, succNoti, failNoti, loadNoti })
+  console.log("data", { listNoti, succNoti, failNoti, loadNoti })
 
   const handleLogOut = () => {
     dispatch(resetCart());
+    dispatch(resetNotification())
     setTimeout(() => {
       logOut()
     }, 500)
