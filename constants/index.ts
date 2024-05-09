@@ -1,3 +1,5 @@
+
+/* @ts-ignore */
 import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 
 export const BASE_URL_API_DEV = "http://localhost:3002"
@@ -195,3 +197,8 @@ export const INITIAL_DATA_ORDERS = [{
       }]
     }
 }]
+
+export const TYPE_SEEN = {
+  SEEN: "seen",
+  NOTE_SEEN: "not-seen"
+}

@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from "react"
 import { useParams, useSearchParams } from "next/navigation"
+{/* @ts-ignore  */ }
 import moment from "moment"
 import Image from 'next/image'
 
 //@svg 
 import { CartIcon } from "@/components/icons/CartIcon"
 import { PaymentSuccessStatus, PaymentFailIcon } from "@/public/assets/svg"
+{/* @ts-ignore  */ }
 import PaymentPendingIcon from "../../../../../public/assets/images/pending-icon.png"
 
 //@components

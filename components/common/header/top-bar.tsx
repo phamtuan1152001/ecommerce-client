@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { CartButton } from '@/components/cart/cart-button';
+import Notification from "@/components/notification";
 import {
   Dialog,
   DialogTrigger,
@@ -37,8 +38,7 @@ import { slitName, logOut, getUserInfo } from '@/utility/common';
 // @selector-open-dialog
 import { getIsOpenDialog } from '@/redux/openDiaglog/selector';
 import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
-import { getListNotification, resetNotification } from "@/redux/notification/actions";
-import { getFailNotificationSelector, getListNotificationSelector, getLoadingNotificationSelector, getSuccessNotificationSelector } from "@/redux/notification/selector";
+import { resetNotification } from "@/redux/notification/actions";
 
 export const TopBar = () => {
   const dispatch = useDispatch()
@@ -46,13 +46,6 @@ export const TopBar = () => {
 
   const userInfo = getUserInfo()
   const isOpen = useSelector(getIsOpenDialog);
-
-  const listNoti = useSelector(getListNotificationSelector)
-  const succNoti = useSelector(getSuccessNotificationSelector)
-  const failNoti = useSelector(getFailNotificationSelector)
-  const loadNoti = useSelector(getLoadingNotificationSelector)
-
-  console.log("data", { listNoti, succNoti, failNoti, loadNoti })
 
   const handleLogOut = () => {
     dispatch(resetCart());
@@ -155,6 +148,7 @@ export const TopBar = () => {
                     <DialogAuth />
                   </Dialog>
                 )}
+              <Notification />
               <CartButton />
             </div>
           </div>

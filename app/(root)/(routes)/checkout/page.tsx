@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+{/* @ts-ignore  */ }
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import Link from 'next/link';
