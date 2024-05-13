@@ -23,6 +23,7 @@ export const GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/detail-
 export const UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/update-customized-product-client"
 export const DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/delete-customized-product"
 export const UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT = "/customized-product/update-status-order"
+export const PUSH_NOTI_CUSTOMIZED_PRODUCT_CREATION_CLIENT = "/notification/push-noti-customized-product"
 
 /* ORDER CUSTOMIZED PRODUCT API */
 export const CREATE_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/create"

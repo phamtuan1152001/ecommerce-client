@@ -5,7 +5,8 @@ import {
   GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
   UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
   DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT,
-  UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT
+  UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT,
+  PUSH_NOTI_CUSTOMIZED_PRODUCT_CREATION_CLIENT
 } from "@/constants";
 import {
   CustomizedProductType,
@@ -72,5 +73,13 @@ export const updateStatusOrderCustomizedProduct = async (payload: {
   const { data } = await apiMethod.put(UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT, {
     code: payload.code
   })
+  return data
+}
+
+export const pushNotiCustomizedProductToAdmin = async (payload: {
+  userId: string,
+  code: string
+}) => {
+  const { data } = await apiMethod.post(PUSH_NOTI_CUSTOMIZED_PRODUCT_CREATION_CLIENT, payload)
   return data
 }
