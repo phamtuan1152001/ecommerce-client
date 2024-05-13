@@ -46,8 +46,24 @@ const App = ({ children }: any) => {
         console.log('Connected to server');
       });
 
+      /* Will receive after admin review customized product successfully or cancel */
+      socket.on('notiForReviewCustomizedProduct', (data) => {
+        // console.log("notiForReviewCustomizedProduct", data)
+        toast.message(data?.title, {
+          description: data?.description,
+          duration: 10000
+        })
+        const req = {
+          page: PAGE_NUMBER,
+          size: PAGE_LIMIT,
+          userId: getUserInfo().id
+        }
+        dispatch(getListNotification(req))
+      })
+
+      /* Will receive after admin confirm payment successfully or cancel */
       socket.on('getNewNotificationsInClient', (data) => {
-        console.log("data", data)
+        // console.log("data", data)
         toast.message(data?.title, {
           description: data?.description,
           duration: 10000
