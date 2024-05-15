@@ -119,7 +119,7 @@ const Notification = () => {
             Read all
           </h3>
         </div>
-        <div className='flex flex-col justify-start gap-y-4'>
+        <div className='flex flex-col justify-start gap-y-4 max-h-[750px] overflow-auto'>
           {!!getUserToken()
             ? notification?.retData.notifications?.length > 0
               ? (
