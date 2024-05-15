@@ -1,8 +1,13 @@
 import axios from 'axios'
 import { BASE_URL_API_DEV } from "../constants/index"
 
+import { getUserToken } from './common'
+
 const apiMethod = axios.create({
   baseURL: BASE_URL_API_DEV,
+  headers: {
+    "Authorization": !!getUserToken() ? getUserToken() : ""
+  }
 })
 
 apiMethod.interceptors.response.use(

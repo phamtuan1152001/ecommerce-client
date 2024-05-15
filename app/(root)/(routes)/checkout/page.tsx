@@ -414,7 +414,9 @@ const CheckOut = () => {
         }
       } = await postCreateOrder(req)
       if (res.retCode === 0) {
-        fetchCreateNotification(res.retData._id, 0)
+        if (methodPayment === PAYMENT_COD || methodPayment === PAYMENT_ATM_BANKING) {
+          fetchCreateNotification(res.retData._id, 0)
+        }
         handleCreateBuyRankingProducts(res?.retData?.cartDetail?.items)
         DiaglogPopup({
           icon: <IconSuccess />,

@@ -37,7 +37,8 @@ import {
   PAYMENT_MOMO_BANKING,
   PAYMENT_ATM_BANKING,
   PAYMENT_METAMASK,
-  BASE_URL_API_DEV
+  BASE_URL_API_DEV,
+  PAYMENT_COD
 } from "@/constants";
 const host = BASE_URL_API_DEV;
 
@@ -347,7 +348,9 @@ const CheckoutCustomizedProduct = () => {
         fetchUpdateStatusOrderOfCustomizedProduct(
           detailCustomized.code
         )
-        fetchCreateNotification(res.retData._id, 0)
+        if (methodPayment === PAYMENT_COD || methodPayment === PAYMENT_ATM_BANKING) {
+          fetchCreateNotification(res.retData._id, 0)
+        }
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ORDER CUSTOMIZED PRODUCT CREATION SUCCESSFULLY",
