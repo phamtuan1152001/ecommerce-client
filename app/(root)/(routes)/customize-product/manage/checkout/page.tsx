@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from "next/navigation";
+import { connect } from "socket.io-client";
 
 // @container
 import { Container } from '@/components/ui/container';
@@ -35,8 +36,10 @@ import {
 import {
   PAYMENT_MOMO_BANKING,
   PAYMENT_ATM_BANKING,
-  PAYMENT_METAMASK
+  PAYMENT_METAMASK,
+  BASE_URL_API_DEV
 } from "@/constants";
+const host = BASE_URL_API_DEV;
 
 // @utility
 import { getUserInfo, getUserToken } from "@/utility/common";
@@ -56,10 +59,12 @@ import {
   CustomizedProductType,
   CustomizedProductTypeResponse
 } from "@/types";
+import { createNotification } from "@/lib/api/order";
 
 const CheckoutCustomizedProduct = () => {
   const router = useRouter()
   const params = useSearchParams()
+  const socket = connect(host)
 
   const isAuthenticated = !!getUserToken()
 
@@ -302,6 +307,23 @@ const CheckoutCustomizedProduct = () => {
     }
   }
 
+  const fetchCreateNotification = async (id: string, payment: number) => {
+    try {
+      const req = {
+        userId: getUserInfo()?.id,
+        typeOrder: 2,
+        idOrder: id,
+        typePayment: payment // 0 - pending (moi tao don hang), 1 - (thanh toan don hang thanh cong), 2 - (huy thanh toan don hang)
+      }
+      const res = await createNotification(req)
+      if (res?.retCode === 0) {
+        socket.emit("createOrder", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const req = {
@@ -325,6 +347,7 @@ const CheckoutCustomizedProduct = () => {
         fetchUpdateStatusOrderOfCustomizedProduct(
           detailCustomized.code
         )
+        fetchCreateNotification(res.retData._id, 0)
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "ORDER CUSTOMIZED PRODUCT CREATION SUCCESSFULLY",

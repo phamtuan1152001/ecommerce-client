@@ -24,7 +24,7 @@ import { getUserToken, formatToCurrencyVND, renderText } from "@/utility/common"
 const OrderDetail = () => {
   const param = useSearchParams()
   const orderId = param.get("orderId")
-  console.log("orderId", orderId);
+  // console.log("orderId", orderId);
 
   const [loading, setLoading] = useState<boolean>(false)
   const [
@@ -32,7 +32,8 @@ const OrderDetail = () => {
     setDetailOrderCustomizedProduct
   ] = useState<any>()
   const isAuthenticated = !!getUserToken()
-  console.log("detailOrderCustomizedProduct", detailOrderCustomizedProduct);
+  // console.log("detailOrderCustomizedProduct", detailOrderCustomizedProduct);
+
   useEffect(() => {
     if (isAuthenticated) {
       if (!!orderId) {

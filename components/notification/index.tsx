@@ -27,7 +27,7 @@ import { PAGE_LIMIT, PAGE_NUMBER, RETCODE_SUCCESS, TYPE_SEEN } from "@/constants
 import { updateStatusNotiClient } from "@/redux/notification/service";
 
 // @common
-import { getUserInfo } from "@/utility/common";
+import { getUserInfo, getUserToken } from "@/utility/common";
 
 // @action-notification
 import { getListNotification } from "@/redux/notification/actions";
@@ -58,8 +58,10 @@ const Notification = () => {
         dispatch(getListNotification(req))
         if (typeOrder === 1) {
           router.push(`/checkout/order-detail?orderId=${idOrder}`)
-        } else {
+        } else if (typeOrder === 2) {
           router.push(`/customize-product/manage/order-detail?orderId=${idOrder}`)
+        } else {
+          router.push(`/customize-product/manage`)
         }
       }
     } catch (err) {
@@ -86,33 +88,51 @@ const Notification = () => {
       <PopoverContent className="w-full">
         <h1 className="text-xl font-bold mb-2">Notification:</h1>
         <div className='flex flex-col justify-start gap-y-4'>
-          {notification?.retData.notifications?.map((item, index) => {
-            return (
-              <div
-                key={`${item?._id}-${index}`}
-                className={cn(
-                  "flex flex-col justify-start gap-1 p-3 rounded-lg",
-                  item?.status === TYPE_SEEN.NOTE_SEEN ? "bg-gray-100" : ""
-                )}
-              >
-                <h1 className='text-base font-bold line-clamp-1'>{item?.title}</h1>
-                <p className='text-sm font-semibold line-clamp-1'>{item?.description}</p>
-                <div className='flex flex-row justify-between items-start'>
-                  <p className='text-xs font-normal text-slate-500 line-clamp-1'>
-                    Date created: {moment(item?.createdAt).format("DD/MM/YYY HH:mm")}
-                  </p>
+          {!!getUserToken()
+            ? notification?.retData.notifications?.length > 0
+              ? (
+                notification?.retData.notifications?.map((item, index) => {
+                  return (
+                    <div
+                      key={`${item?._id}-${index}`}
+                      className={cn(
+                        "flex flex-col justify-start gap-1 p-3 rounded-lg",
+                        item?.status === TYPE_SEEN.NOTE_SEEN ? "bg-gray-100" : ""
+                      )}
+                    >
+                      <h1 className='text-base font-bold line-clamp-1'>{item?.title}</h1>
+                      <p className='text-sm font-semibold line-clamp-1'>{item?.description}</p>
+                      <div className='flex flex-row justify-between items-start'>
+                        <p className='text-xs font-normal text-slate-500 line-clamp-1'>
+                          Date created: {moment(item?.createdAt).format("DD/MM/YYY HH:mm")}
+                        </p>
 
-                  <Button
-                    className={"bg-[#333333] text-white text-base h-[35px] px-4 hover:bg-white hover:border hover:text-[#333333]"}
-                    onClick={() => onUpdateStatusNoti(item?.typeOrder, item?.idOrder, item?._id)}
-                    disabled={loading}
-                  >
-                    Review
-                  </Button>
+                        <Button
+                          className={"bg-[#333333] text-white text-base h-[35px] px-4 hover:bg-white hover:border hover:text-[#333333]"}
+                          onClick={() => onUpdateStatusNoti(item?.typeOrder, item?.idOrder, item?._id)}
+                          disabled={loading}
+                        >
+                          Review
+                        </Button>
+                      </div>
+                    </div>
+                  )
+                })
+              )
+              : (
+                <div className="flex flex-row justify-center items-center">
+                  <h1 className="text-base font-bold">
+                    There is no notification here!
+                  </h1>
                 </div>
+              )
+            : (
+              <div className="flex flex-row justify-center items-center">
+                <h1 className="text-base font-bold">
+                  Please, loggin to see your notification!
+                </h1>
               </div>
-            )
-          })}
+            )}
         </div>
       </PopoverContent>
     </Popover>
