@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { PAGE_LIMIT, PAGE_NUMBER, RETCODE_SUCCESS, TYPE_SEEN } from "@/constants";
 
 // @service
-import { updateStatusNotiClient } from "@/redux/notification/service";
+import { readAllNotification, updateStatusNotiClient } from "@/redux/notification/service";
 
 // @common
 import { getUserInfo, getUserToken } from "@/utility/common";
@@ -71,6 +71,30 @@ const Notification = () => {
     }
   }
 
+  const handleReadAll = async () => {
+    // console.log("read-all")
+    try {
+      setLoading(true)
+      const req = {
+        userId: getUserInfo().id,
+        userType: "client"
+      }
+      const res = await readAllNotification(req)
+      if ((res as any).retCode === RETCODE_SUCCESS) {
+        const req = {
+          page: PAGE_NUMBER,
+          size: PAGE_LIMIT,
+          userId: getUserInfo().id
+        }
+        dispatch(getListNotification(req))
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -86,7 +110,15 @@ const Notification = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full">
-        <h1 className="text-xl font-bold mb-2">Notification:</h1>
+        <div className="flex flex-row justify-between items-center mb-2">
+          <h1 className="text-xl font-bold">Notification:</h1>
+          <h3
+            className="text-base font-normal hover:underline hover:underline-offset-4 cursor-pointer"
+            onClick={() => handleReadAll()}
+          >
+            Read all
+          </h3>
+        </div>
         <div className='flex flex-col justify-start gap-y-4'>
           {!!getUserToken()
             ? notification?.retData.notifications?.length > 0

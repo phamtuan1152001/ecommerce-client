@@ -11,3 +11,4 @@ export const SET_LOADING_NOTIFICATION = "SET_LOADING_NOTIFICATION"
 // API
 export const GET_LIST_NOTIFICATION_API_CLIENT = "/notification/get-notifications-client"
 export const UPDATE_NOTIFICATION_STATUS_API = "/notification/update-notification-status-client"
+export const READ_ALL_NOTIFICATION = "/notification/read-all-notification"
