@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import moment from "moment";
 import { useRouter } from "next/navigation"
 import Link from 'next/link';
+import { connect } from "socket.io-client"
 
 // @utility
 import { getPaginationItems } from '@/utility/pagination';
@@ -37,7 +38,8 @@ import {
 } from '@/utility/common';
 
 // @constants
-import { PAGE_LIMIT, PAGE_NUMBER, MAX_LENGTH } from "@/constants"
+import { PAGE_LIMIT, PAGE_NUMBER, MAX_LENGTH, RETCODE_SUCCESS, BASE_URL_API_DEV } from "@/constants"
+const host = BASE_URL_API_DEV;
 
 // @svg
 import { IconBackArrow } from '@/public/assets/svg'
@@ -52,11 +54,13 @@ import {
 // @services
 import {
   getListCustomizedProductClient,
+  pushNotiClientAcceptAdminOfferCustomizedProduct,
   updateStatusProductClient
 } from '@/lib/api/customized-product';
 
 const ManageCustomizedProduct = () => {
   const router = useRouter()
+  const socket = connect(host)
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -170,6 +174,25 @@ const ManageCustomizedProduct = () => {
     setIsOpen(!isOpen)
   }
 
+  const fetchPushNotiClientAcceptAdminOfferCustomizedProduct = async (payload: any) => {
+    // console.log("payload", payload)
+    try {
+      const { userId, code, statusProductClient, ...rest } = payload
+      const req = {
+        userId,
+        code,
+        typeConfirmClient: statusProductClient
+      }
+      const res = await pushNotiClientAcceptAdminOfferCustomizedProduct(req)
+      // console.log("res", res)
+      if ((res as any).retCode === RETCODE_SUCCESS) {
+        socket.emit("clientAcceptAdminOfferCustomizedProduct", (res as any).retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const handleSubmit = async (values: any) => {
     // console.log("values", values)
     try {
@@ -178,6 +201,7 @@ const ManageCustomizedProduct = () => {
       if (res?.retCode === 0) {
         toastNotiSuccess(res?.retText)
         handleOpen()
+        fetchPushNotiClientAcceptAdminOfferCustomizedProduct(values)
         const req = {
           page: currentPage,
           size: PAGE_LIMIT,
