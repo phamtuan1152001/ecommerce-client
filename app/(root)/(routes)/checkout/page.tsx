@@ -2,12 +2,14 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+{/* @ts-ignore  */ }
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import Link from 'next/link';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/navigation";
+import { connect } from "socket.io-client";
 
 // @container
 import { Container } from '@/components/ui/container';
@@ -45,6 +47,8 @@ import {
 
 // @constants
 import { PAYMENT_MOMO_BANKING, PAYMENT_ATM_BANKING, PAYMENT_COD, SUCCESS, PAYMENT_METAMASK, ACTION_USER } from "@/constants";
+import { BASE_URL_API_DEV } from "@/constants";
+const host = BASE_URL_API_DEV;
 
 // @utility
 import { getUserToken, getUserInfo } from "@/utility/common";
@@ -54,7 +58,7 @@ import { toastNotiFail } from "@/utility/toast";
 import { getCartSelector } from '@/redux/cart/selector';
 
 // @services
-import { postCreateOrder } from "@/lib/api/order";
+import { createNotification, postCreateOrder } from "@/lib/api/order";
 import { deleteAllProductsInCart, removeProductInCart } from "@/redux/cart/service";
 import { createRankingProducts } from "@/lib/api/product";
 import { createPaymentWithMOMO } from "@/lib/api/payment";
@@ -68,6 +72,7 @@ import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
 const CheckOut = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+  const socket = connect(host)
 
   const isAuthenticated = !!getUserToken()
 
@@ -112,6 +117,26 @@ const CheckOut = () => {
   React.useEffect(() => {
     if (isAuthenticated) {
       fetchGetListProvinces()
+      /* Setup-socket */
+      // const socket = connect(host)
+
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+
+      // socket.on('admin', (data) => {
+      //   console.log("data", data)
+      // })
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected from server');
+      });
+
+
+      return () => {
+        socket.disconnect()
+      };
+      /* End */
     } else {
       window.location.href = "/"
     }
@@ -308,6 +333,23 @@ const CheckOut = () => {
     }
   }
 
+  const fetchCreateNotification = async (id: string, payment: number) => {
+    try {
+      const req = {
+        userId: getUserInfo()?.id,
+        typeOrder: 1,
+        idOrder: id,
+        typePayment: payment // 0 - pending (moi tao don hang), 1 - (thanh toan don hang thanh cong), 2 - (huy thanh toan don hang)
+      }
+      const res = await createNotification(req)
+      if (res?.retCode === 0) {
+        socket.emit("createOrder", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const {
       address,
@@ -372,6 +414,9 @@ const CheckOut = () => {
         }
       } = await postCreateOrder(req)
       if (res.retCode === 0) {
+        if (methodPayment === PAYMENT_COD || methodPayment === PAYMENT_ATM_BANKING) {
+          fetchCreateNotification(res.retData._id, 0)
+        }
         handleCreateBuyRankingProducts(res?.retData?.cartDetail?.items)
         DiaglogPopup({
           icon: <IconSuccess />,

@@ -3,7 +3,8 @@ import {
   CREATE_ORDER_CLIENT,
   GET_ORDER_DETAIL,
   UPDATE_ORDER_DETAIL,
-  GET_LIST_ORDERS
+  GET_LIST_ORDERS,
+  CREATE_NOTIFICATION_CLIENT
 } from "@/constants";
 import apiMethod from "@/utility/ApiMethod";
 
@@ -63,6 +64,18 @@ export const getListOrders = async (payload: {
   userId: string
 }) => {
   const { data } = await apiMethod.post(GET_LIST_ORDERS, {
+    ...payload
+  })
+  return data
+}
+
+export const createNotification = async (payload: {
+  userId: string,
+  typeOrder: number,
+  idOrder: string,
+  typePayment: number
+}) => {
+  const { data } = await apiMethod.post(CREATE_NOTIFICATION_CLIENT, {
     ...payload
   })
   return data

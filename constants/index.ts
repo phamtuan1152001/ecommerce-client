@@ -1,3 +1,5 @@
+
+/* @ts-ignore */
 import NO_IMG from "@/public/assets/images/empty-data/no-data-image.jpg"
 
 export const BASE_URL_API_DEV = "http://localhost:3002"
@@ -21,6 +23,8 @@ export const GET_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/detail-
 export const UPDATE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/update-customized-product-client"
 export const DELETE_DETAIL_CUSTOMIZED_PRODUCT_CLIENT = "/customized-product/delete-customized-product"
 export const UPDATE_STATUS_ORDER_OF_CUSTOMIZED_PRODUCT = "/customized-product/update-status-order"
+export const PUSH_NOTI_CUSTOMIZED_PRODUCT_CREATION_CLIENT = "/notification/push-noti-customized-product"
+export const PUSH_NOTI_CLIENT_ACCEPT_ADMIN_OFFER_CUSTOMIZED_PRODUCT = "/notification/push-noti-client-confirm-admin-offer-customized-product"
 
 /* ORDER CUSTOMIZED PRODUCT API */
 export const CREATE_ORDER_CUSTOMIZED_PRODUCT_CLIENT = "/order-customized-product/create"
@@ -49,6 +53,7 @@ export const CREATE_ORDER_CLIENT = "/order/create-order"
 export const GET_ORDER_DETAIL = "/order/get-detail-order-client"
 export const UPDATE_ORDER_DETAIL = "/order/update-detail-order-client"
 export const GET_LIST_ORDERS = "/order/get-list-order-client"
+export const CREATE_NOTIFICATION_CLIENT = "/notification/createClient"
 
 /* PAYMENT API */
 export const CREATE_PAYMENT_MOMO = "/payment/momo-payment"
@@ -194,3 +199,8 @@ export const INITIAL_DATA_ORDERS = [{
       }]
     }
 }]
+
+export const TYPE_SEEN = {
+  SEEN: "seen",
+  NOTE_SEEN: "not-seen"
+}

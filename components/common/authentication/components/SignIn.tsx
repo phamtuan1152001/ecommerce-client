@@ -1,6 +1,8 @@
 'use client'
 
 import React from "react";
+
+// @ts-ignore  
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useRouter } from 'next/navigation';
@@ -26,6 +28,9 @@ import { fetchCartRequest } from "@/redux/cart/actions";
 // @action-open-dialog
 import { closeDialog } from "@/redux/openDiaglog/action";
 
+// @action-notification
+import { getListNotification } from "@/redux/notification/actions";
+
 // @api
 import { loginUser } from "@/lib/api/authenticate";
 import apiMethod from "@/utility/ApiMethod";
@@ -36,6 +41,9 @@ import SlideInModal from "@/components/slide-in-modal";
 
 // @type
 import { UserInfoType } from "@/types";
+
+// @constants
+import { PAGE_LIMIT, PAGE_NUMBER } from "@/constants";
 
 const formSchema = z.object({
   username: z
@@ -88,9 +96,19 @@ const SignIn = ({ setOpen, onChange, onHandleChangeUserId }: Props) => {
         }
         localStorage.setItem("USER_INFO", JSON.stringify(user_info))
         apiMethod.defaults.headers.common["Authorization"] = res.retData.accessToken;
+        /* Get list cart redux */
         dispatch(fetchCartRequest({
           userId: res.retData.id
         }));
+        /* End */
+        /* Get list notification */
+        const req = {
+          page: PAGE_NUMBER,
+          size: PAGE_LIMIT,
+          userId: res.retData.id
+        }
+        dispatch(getListNotification(req))
+        /* End */
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "LOGIN SUCCESSFULLY",

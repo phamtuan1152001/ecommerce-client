@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useParams, useSearchParams } from "next/navigation"
 import moment from "moment"
 import Image from 'next/image'
+import { connect } from "socket.io-client";
 
 //@svg 
 import { CartIcon } from "@/components/icons/CartIcon"
@@ -15,10 +16,12 @@ import BreadcrumbComponent from "@/components/bread-crumd"
 import Spinner from "@/components/spin"
 
 //@constants
-import { renderText } from "@/utility/common"
+import { getUserInfo, renderText } from "@/utility/common"
+import { RETCODE_SUCCESS, BASE_URL_API_DEV } from "@/constants"
+const host = BASE_URL_API_DEV;
 
 //@api
-import { getOrderDetail, updateOrderDetail } from "@/lib/api/order"
+import { createNotification } from "@/lib/api/order"
 import {
   getDetailOrderCustomizedProductClient,
   updateStatusDetailOrderCustomizedProduct
@@ -27,6 +30,8 @@ import { formatToCurrencyVND, getUserToken } from "@/utility/common"
 
 const ThankOrderCustomizedProduct = () => {
   const param = useSearchParams()
+  const socket = connect(host)
+
   const orderId = param.get("orderId")
   // console.log("orderId", orderId);
 
@@ -69,13 +74,33 @@ const ThankOrderCustomizedProduct = () => {
     }
   }
 
+  const fetchCreateNotification = async (id: string, payment: number) => {
+    try {
+      const req = {
+        userId: getUserInfo()?.id,
+        typeOrder: 2,
+        idOrder: id,
+        typePayment: payment // 0 - pending (moi tao don hang), 1 - (thanh toan don hang thanh cong), 2 - (huy thanh toan don hang)
+      }
+      const res = await createNotification(req)
+      if (res?.retCode === 0) {
+        socket.emit("createOrder", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const fetchUpdateDetailOrderStatusCustomizedProduct = async (detailOrderCustomizedProduct: any) => {
     try {
       const req = {
         ...detailOrderCustomizedProduct,
         statusOrder: 1
       }
-      return await updateStatusDetailOrderCustomizedProduct(req)
+      const res = await updateStatusDetailOrderCustomizedProduct(req)
+      if (res?.retCode === RETCODE_SUCCESS) {
+        fetchCreateNotification(detailOrderCustomizedProduct?._id, 1)
+      }
       // console.log("res", res);
     } catch (err) {
       console.log("FETCHING FAIL!", err);

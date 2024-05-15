@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link';
 import Image from 'next/image';
 import { BiUserCircle, BiShoppingBag } from 'react-icons/bi';
+
+// @ts-ignore  
 import { LogOut, Receipt, Book, BookUser } from 'lucide-react';
 import { useRouter } from "next/navigation";
 
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { CartButton } from '@/components/cart/cart-button';
+import Notification from "@/components/notification";
 import {
   Dialog,
   DialogTrigger,
@@ -35,6 +38,7 @@ import { slitName, logOut, getUserInfo } from '@/utility/common';
 // @selector-open-dialog
 import { getIsOpenDialog } from '@/redux/openDiaglog/selector';
 import { closeDialog, openDiaglog } from '@/redux/openDiaglog/action';
+import { resetNotification } from "@/redux/notification/actions";
 
 export const TopBar = () => {
   const dispatch = useDispatch()
@@ -45,6 +49,7 @@ export const TopBar = () => {
 
   const handleLogOut = () => {
     dispatch(resetCart());
+    dispatch(resetNotification())
     setTimeout(() => {
       logOut()
     }, 500)
@@ -62,7 +67,9 @@ export const TopBar = () => {
     <div className='bg-[#202020]'>
       <Container>
         <div className='relative flex items-center justify-between h-[70px]'>
-          <div className='px-4 py-2.5 text-white rounded-3xl bg-[#3F3F3F] inline-block'>
+          <div
+            className='px-4 py-2.5 text-white rounded-3xl bg-[#3F3F3F] inline-block'
+          >
             Hotline:{' '}
             <span className='inline-block font-bold'>0909 082 912</span>
           </div>
@@ -141,6 +148,7 @@ export const TopBar = () => {
                     <DialogAuth />
                   </Dialog>
                 )}
+              <Notification />
               <CartButton />
             </div>
           </div>

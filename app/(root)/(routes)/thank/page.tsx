@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useParams, useSearchParams } from "next/navigation"
 import moment from "moment"
 import Image from 'next/image'
+import { connect } from "socket.io-client";
 
 //@svg 
 import { CartIcon } from "@/components/icons/CartIcon"
@@ -15,14 +16,20 @@ import BreadcrumbComponent from "@/components/bread-crumd"
 import Spinner from "@/components/spin"
 
 //@constants
-import { renderText } from "@/utility/common"
+import { getUserInfo, renderText } from "@/utility/common"
+import { BASE_URL_API_DEV, RETCODE_SUCCESS } from "@/constants";
+const host = BASE_URL_API_DEV;
 
 //@api
-import { getOrderDetail, updateOrderDetail } from "@/lib/api/order"
+import { createNotification, getOrderDetail, updateOrderDetail } from "@/lib/api/order"
+
+//@utility
 import { formatToCurrencyVND, getUserToken } from "@/utility/common"
 
 const ThankPage = () => {
   const param = useSearchParams()
+  const socket = connect(host)
+
   const orderId = param.get("orderId")
   // console.log("orderId", orderId);
 
@@ -62,13 +69,33 @@ const ThankPage = () => {
     }
   }
 
+  const fetchCreateNotification = async (id: string, payment: number) => {
+    try {
+      const req = {
+        userId: getUserInfo()?.id,
+        typeOrder: 1,
+        idOrder: id,
+        typePayment: payment // 0 - pending (moi tao don hang), 1 - (thanh toan don hang thanh cong), 2 - (huy thanh toan don hang)
+      }
+      const res = await createNotification(req)
+      if (res?.retCode === 0) {
+        socket.emit("createOrder", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+
   const fetchUpdateDetailOrder = async (detailOrder: any) => {
     try {
       const req = {
         ...detailOrder,
         statusOrder: 1
       }
-      return await updateOrderDetail(req)
+      const res = await updateOrderDetail(req)
+      if (res?.retCode === RETCODE_SUCCESS) {
+        fetchCreateNotification(detailOrder?._id, 1)
+      }
       // console.log("res", res);
     } catch (err) {
       console.log("FETCHING FAIL!", err);

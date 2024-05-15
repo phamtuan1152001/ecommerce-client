@@ -4,6 +4,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
+import { connect } from "socket.io-client";
 
 // @validation
 import { formCustomizedProductSchema } from "@/validation/form-customized-product"
@@ -39,10 +40,11 @@ import { formatNumber, getUserInfo } from "@/utility/common"
 
 // @services
 import { convertImageToPsd, uploadImgProduct } from "@/lib/api/common"
-import { createCustomizedProduct, getListCustomizedProductClient } from "@/lib/api/customized-product"
+import { createCustomizedProduct, getListCustomizedProductClient, pushNotiCustomizedProductToAdmin } from "@/lib/api/customized-product"
 
 // @constants
-import { PAGE_LIMIT, PAGE_NUMBER, SIZE_LIST, SUCCESS } from "@/constants"
+import { PAGE_LIMIT, PAGE_NUMBER, RETCODE_SUCCESS, SIZE_LIST, SUCCESS, BASE_URL_API_DEV } from "@/constants"
+const host = BASE_URL_API_DEV;
 
 // @types
 import { CustomizedProductTypePayload, CustomizedProductTypeResponse } from "@/types"
@@ -62,6 +64,7 @@ const DialogCustomizedProduct = ({
   canvasBase64
 }: DialogCustomizedProductProps) => {
   const router = useRouter()
+  const socket = connect(host)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingConvert, setLoadingConvert] = useState<boolean>(false)
@@ -84,6 +87,24 @@ const DialogCustomizedProduct = ({
       search: ""
     }
     getListCustomized(req)
+    /* Socket */
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    // socket.on('admin', (data) => {
+    //   console.log("data", data)
+    // })
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+
+
+    return () => {
+      socket.disconnect()
+    };
+    /*  */
   }, [])
 
   const getListCustomized = async (payload: any) => {
@@ -102,6 +123,23 @@ const DialogCustomizedProduct = ({
       form.setValue("code", `ECOM-U${data + 1}`)
     }
   }
+
+  /* Notification */
+  const fetchPushNotiCustomizedProductCreationClient = async (code: string) => {
+    try {
+      const req = {
+        userId: getUserInfo().id,
+        code
+      }
+      const res = await pushNotiCustomizedProductToAdmin(req)
+      if (res?.retCode === RETCODE_SUCCESS) {
+        socket.emit("createCustomizedProductClient", res?.retData)
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
+  /*  */
 
   function onSubmit(values: z.infer<typeof formCustomizedProductSchema>) {
     // console.log(values)
@@ -191,6 +229,7 @@ const DialogCustomizedProduct = ({
         retData: CustomizedProductTypeResponse
       } = await createCustomizedProduct(req)
       if (res.retCode === 0) {
+        fetchPushNotiCustomizedProductCreationClient(res?.retData?.code)
         DiaglogPopup({
           icon: <IconSuccess />,
           title: "CREATE CUSTOMIZED PRODUCT SUCCESSFULLY",

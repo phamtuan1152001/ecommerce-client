@@ -3,6 +3,8 @@
 import React from 'react'
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+
+/* @ts-ignore */
 import moment from "moment";
 
 // @utility

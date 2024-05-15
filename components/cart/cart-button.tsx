@@ -115,6 +115,7 @@ export const CartButton = () => {
       </SheetTrigger>
 
       {/* <SheetOverlay /> */}
+      {/* @ts-ignore  */}
       <SheetContent className='sm:max-w-xl p-0 flex flex-col gap-0 w-full'>
         {/* <SheetClose>
           <X className='h-6 w-6 max-[1024px]:h-5 max-[1024px]:w-5' />
