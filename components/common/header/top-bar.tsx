@@ -71,7 +71,7 @@ export const TopBar = () => {
             className='px-4 py-2.5 text-white rounded-3xl bg-[#3F3F3F] inline-block'
           >
             Hotline:{' '}
-            <span className='inline-block font-bold'>0909 082 912</span>
+            <span className='inline-block font-bold'>0898871665</span>
           </div>
 
           <div style={{

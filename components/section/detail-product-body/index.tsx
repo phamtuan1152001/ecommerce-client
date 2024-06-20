@@ -222,7 +222,7 @@ export default function DetailProductBody({
                     }}
                   >
                     <BsHeart className='w-6 h-6 mr-2' />
-                    333 lượt thích
+                    Like
                   </Button>
                 </div>
               </div>

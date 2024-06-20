@@ -122,7 +122,7 @@ export const CartButton = () => {
         </SheetClose> */}
         <SheetHeader className='p-6 border-b border-b-[#DFE3E8] max-[1024px]:px-3'>
           <SheetTitle className='text-2xl font-bold text-[#333] max-[1024px]:text-left max-[1024px]:text-lg'>
-            Giỏ hàng ({carts?.items?.length})
+            Cart ({carts?.items?.length})
           </SheetTitle>
         </SheetHeader>
 
@@ -196,7 +196,7 @@ export const CartButton = () => {
 
         <SheetFooter className='mt-auto p-6 bg-[#F5F5F5] grid grid-cols-3 max-[1024px]:p-3 max-[1024px]:grid-cols-1'>
           <div className='flex-1 text-[#181818] max-[1024px]:w-full max-[1024px]:grid max-[1024px]:grid-cols-2'>
-            <p className='text-base font-semibold'>Tạm tính</p>
+            <p className='text-base font-semibold'>Sub total</p>
             <p className='text-lg font-bold'>
               {formatToCurrencyVND(carts?.totalPrice)}
             </p>
@@ -208,13 +208,13 @@ export const CartButton = () => {
                 className='text-base font-semibold h-12 w-full'
                 onClick={() => handleClose()}
               >
-                Tiếp tục mua sắm
+                Continue for shopping
               </Button>
               <Button
                 className='text-base font-semibold bg-[#00508F] h-12 w-full'
                 onClick={() => router.push("/checkout")}
               >
-                Thanh toán
+                Payment
               </Button>
             </div>
           </div>
