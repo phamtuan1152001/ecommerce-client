@@ -87,6 +87,7 @@ export const TopBar = () => {
                 alt='image'
                 width={100}
                 height={100}
+                className="rounded-full"
               />
             </Link>
           </div>

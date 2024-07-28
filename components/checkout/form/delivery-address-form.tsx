@@ -1,5 +1,6 @@
 // @components
 import SelectionComponent from '@/components/form/selection-component';
+import Spinner from '@/components/spin';
 import {
   Form,
   FormControl,
@@ -14,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { PiHandbagThin } from 'react-icons/pi';
 
 interface DeliveryAddressFormProps {
+  loadingStreet: boolean,
   form: any,
   listProvinces: {
     id: string,
@@ -35,6 +37,7 @@ interface DeliveryAddressFormProps {
 }
 
 const DeliveryAddressForm = ({
+  loadingStreet,
   form,
   listProvinces,
   listDistricts,
@@ -89,7 +92,79 @@ const DeliveryAddressForm = ({
             )}
           />
         </div>
-        <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1'>
+        <div className='relative'>
+          <Spinner spinning={loadingStreet}>
+            <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1'>
+              <FormField
+                control={form.control}
+                name='provinceId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className=' text-sm font-bold text-[#333333]'>
+                      Province/City
+                    </FormLabel>
+                    <SelectionComponent
+                      datas={listProvinces}
+                      placeholder="Select Province/City"
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value)
+                        const data = form.getValues()
+                        onGetListDistrictsAsProvincesId(
+                          data.provinceId
+                        )
+                      }}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='districtId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className=' text-sm font-bold text-[#333333]'>
+                      District
+                    </FormLabel>
+                    <SelectionComponent
+                      datas={listDistricts}
+                      placeholder="Select District"
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value)
+                        const data = form.getValues()
+                        onGetListWardsAsDistrictId(
+                          data.districtId
+                        )
+                      }}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='wardId'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className=' text-sm font-bold text-[#333333]'>
+                      Wards
+                    </FormLabel>
+                    <SelectionComponent
+                      datas={listWards}
+                      placeholder="Select Ward/Commune"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </Spinner>
+        </div>
+        {/* <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1'>
           <FormField
             control={form.control}
             name='provinceId'
@@ -156,7 +231,7 @@ const DeliveryAddressForm = ({
               </FormItem>
             )}
           />
-        </div>
+        </div> */}
         <div className='flex'>
           <div className=' flex-1'>
             <FormField

@@ -316,16 +316,22 @@ const ManageCustomizedProduct = () => {
                                 disabled={
                                   item.statusProductAdmin === 2 || item.statusProductAdmin === 0 || item.statusProductClient === 0 || item.statusProductClient === 2
                                     ? true
-                                    : item.statusOrder ? true : false
+                                    : item.statusOrder ? false : false
                                 }
                                 className='text-base capitalize font-normal hover:bg-white hover:text-black hover:border hover:border-[#000000]'
                                 onClick={() => {
-                                  router.push(
-                                    `/customize-product/manage/checkout?customizedProductId=${item._id}`
-                                  )
+                                  if (!!item.statusOrder) {
+                                    router.push(
+                                      `/customize-product/manage/order-detail?orderId=${item._id}`
+                                    )
+                                  } else {
+                                    router.push(
+                                      `/customize-product/manage/checkout?customizedProductId=${item._id}`
+                                    )
+                                  }
                                 }}
                               >
-                                Create
+                                {!!item.statusOrder ? "View order" : "Create"}
                               </Button>
                             </TableCell>
                           </TableRow>

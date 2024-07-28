@@ -19,20 +19,59 @@ export const uploadImgProduct = (payload: {
   });
 };
 
-export const getListProvinces =async () => {
-  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province")
-  return data
-}
+// export const getListProvinces =async () => {
+//   const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province")
+//   return data
+// }
+export const getListProvinces = async () => {
+  try {
+    const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(URL_DEV_VNAPPMOB + "/province")}`);
 
+    // Extract JSON data from the response
+    const data = JSON.parse(response.data.contents);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};
+
+// export const getListDistrictsAsProvincesId = async (provinceId: string) => {
+//   const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/district/${provinceId}`)
+//   return data
+// }
 export const getListDistrictsAsProvincesId = async (provinceId: string) => {
-  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/district/${provinceId}`)
-  return data
-}
+  try {
+    const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(URL_DEV_VNAPPMOB + "/province" + `/district/${provinceId}`)}`);
 
+    // Extract JSON data from the response
+    const data = JSON.parse(response.data.contents);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};
+
+// export const getListWardsAsDistrictId = async (districtId: string) => {
+//   const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/ward/${districtId}`)
+//   return data
+// }
 export const getListWardsAsDistrictId = async (districtId: string) => {
-  const { data } = await axios.get(URL_DEV_VNAPPMOB + "/province" + `/ward/${districtId}`)
-  return data
-}
+  try {
+    const response = await axios.get(`https://api.allorigins.win/get?url=${encodeURIComponent(URL_DEV_VNAPPMOB + "/province" + `/ward/${districtId}`)}`);
+
+    // Extract JSON data from the response
+    const data = JSON.parse(response.data.contents);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};
 
 export const getUsdToVndExchangeRate = async () => {
     try {

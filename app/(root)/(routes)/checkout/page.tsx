@@ -68,6 +68,7 @@ import { IconSuccess, IconFail, IconBackArrow } from "@/public/assets/svg";
 
 // @action-cart
 import { fetchCartRequest, resetCart } from "@/redux/cart/actions";
+import Spinner from "@/components/spin";
 
 const CheckOut = () => {
   const router = useRouter()
@@ -78,6 +79,8 @@ const CheckOut = () => {
 
   const carts = useSelector(getCartSelector);
   // console.log("carts", carts);
+
+  const [loadingStreet, setLoadingStreet] = React.useState<boolean>(false)
 
   const [listProvinces, setListProvinces] = React.useState<{
     id: string,
@@ -144,6 +147,7 @@ const CheckOut = () => {
 
   const fetchGetListProvinces = async () => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           province_id: string,
@@ -163,11 +167,14 @@ const CheckOut = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
   const fetchGetListDistrictsAsProvincesId = async (id: string) => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           district_id: string,
@@ -191,11 +198,14 @@ const CheckOut = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
   const fetchGetListWardsAsDistrictId = async (id: string) => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           district_id: string,
@@ -218,6 +228,8 @@ const CheckOut = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
@@ -363,6 +375,12 @@ const CheckOut = () => {
       // saveInfo
     } = values || {}
 
+    const defaultId = {
+      provinceId: !!provinceId ? provinceId : "79",
+      districtId: !!districtId ? districtId : "766",
+      wardId: !!wardId ? wardId : "26971"
+    }
+
     const req = {
       userId: carts.userId,
       statusOrder: 0,
@@ -372,10 +390,10 @@ const CheckOut = () => {
         phone: phone,
         email: email,
         address: address,
-        provinceId: provinceId,
-        districtId: districtId,
-        wardId: wardId,
-        fullAddress: `${address} ${listWards.find((item) => item.id === wardId)?.name} ${listDistricts.find((item) => item.id === districtId)?.name} ${listProvinces.find((item) => item.id === provinceId)?.name}`
+        provinceId: defaultId.provinceId,
+        districtId: defaultId.districtId,
+        wardId: defaultId.wardId,
+        fullAddress: listProvinces?.length > 0 ? `${address} ${listWards.find((item) => item.id === wardId)?.name} ${listDistricts.find((item) => item.id === districtId)?.name} ${listProvinces.find((item) => item.id === provinceId)?.name}` : '169 XUAN HONG phường 12 quận Tân Bình thành phố Hồ Chí Minh'
       },
       cartId: carts._id,
       cartDetail: {
@@ -606,7 +624,79 @@ const CheckOut = () => {
                           )}
                         />
                       </div>
-                      <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1'>
+                      <div className="relative">
+                        <Spinner spinning={loadingStreet}>
+                          <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1 relative'>
+                            <FormField
+                              control={form.control}
+                              name='provinceId'
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className=' text-sm font-bold text-[#333333]'>
+                                    Province/City
+                                  </FormLabel>
+                                  <SelectionComponent
+                                    datas={listProvinces}
+                                    placeholder="Select Province/City"
+                                    value={field.value}
+                                    onChange={(value) => {
+                                      field.onChange(value)
+                                      const data = form.getValues()
+                                      fetchGetListDistrictsAsProvincesId(
+                                        data.provinceId
+                                      )
+                                    }}
+                                  />
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name='districtId'
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className=' text-sm font-bold text-[#333333]'>
+                                    District
+                                  </FormLabel>
+                                  <SelectionComponent
+                                    datas={listDistricts}
+                                    placeholder="Select District"
+                                    value={field.value}
+                                    onChange={(value) => {
+                                      field.onChange(value)
+                                      const data = form.getValues()
+                                      fetchGetListWardsAsDistrictId(
+                                        data.districtId
+                                      )
+                                    }}
+                                  />
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name='wardId'
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className=' text-sm font-bold text-[#333333]'>
+                                    Wards
+                                  </FormLabel>
+                                  <SelectionComponent
+                                    datas={listWards}
+                                    placeholder="Select Ward/Commune"
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                  />
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </Spinner>
+                      </div>
+                      {/* <div className='grid grid-cols-3 gap-4 max-[1024px]:grid-cols-1 relative'>      
                         <FormField
                           control={form.control}
                           name='provinceId'
@@ -673,7 +763,7 @@ const CheckOut = () => {
                             </FormItem>
                           )}
                         />
-                      </div>
+                      </div> */}
                       <div className='flex'>
                         <div className=' flex-1'>
                           <FormField
@@ -757,7 +847,7 @@ const CheckOut = () => {
                             </div>
                           </Label>
                         </div>
-                        <div className='w-full flex items-center gap-x-4'>
+                        {/* <div className='w-full flex items-center gap-x-4'>
                           <RadioGroupItem value={PAYMENT_ATM_BANKING} id='r2' onClick={() => setMethodPayment(PAYMENT_ATM_BANKING)} />
                           <Label
                             htmlFor='r2'
@@ -778,7 +868,7 @@ const CheckOut = () => {
                               </p>
                             </div>
                           </Label>
-                        </div>
+                        </div> */}
                         <div className='w-full flex items-center gap-x-4'>
                           <RadioGroupItem value={PAYMENT_MOMO_BANKING} id='r3' onClick={() => setMethodPayment(PAYMENT_MOMO_BANKING)} />
                           <Label

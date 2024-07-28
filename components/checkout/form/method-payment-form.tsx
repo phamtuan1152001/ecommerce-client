@@ -60,7 +60,7 @@ const MethodPaymentForm = ({
               </div>
             </Label>
           </div>
-          <div className='w-full flex items-center gap-x-4'>
+          {/* <div className='w-full flex items-center gap-x-4'>
             <RadioGroupItem
               value={PAYMENT_ATM_BANKING}
               id='r2'
@@ -85,7 +85,7 @@ const MethodPaymentForm = ({
                 </p>
               </div>
             </Label>
-          </div>
+          </div> */}
           <div className='w-full flex items-center gap-x-4'>
             <RadioGroupItem
               value={PAYMENT_MOMO_BANKING}

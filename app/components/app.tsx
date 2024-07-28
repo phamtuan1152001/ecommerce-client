@@ -51,7 +51,7 @@ const App = ({ children }: any) => {
         // console.log("notiForReviewCustomizedProduct", data)
         toast.message(data?.title, {
           description: data?.description,
-          duration: 10000
+          duration: 2000
         })
         const req = {
           page: PAGE_NUMBER,
@@ -66,7 +66,7 @@ const App = ({ children }: any) => {
         // console.log("data", data)
         toast.message(data?.title, {
           description: data?.description,
-          duration: 10000
+          duration: 2000
         })
         const req = {
           page: PAGE_NUMBER,

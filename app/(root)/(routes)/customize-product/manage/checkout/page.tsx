@@ -69,6 +69,8 @@ const CheckoutCustomizedProduct = () => {
 
   const isAuthenticated = !!getUserToken()
 
+  const [loadingStreet, setLoadingStreet] = React.useState<boolean>(false)
+
   const [listProvinces, setListProvinces] = React.useState<{
     id: string,
     name: string,
@@ -157,6 +159,7 @@ const CheckoutCustomizedProduct = () => {
 
   const fetchGetListProvinces = async () => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           province_id: string,
@@ -176,11 +179,14 @@ const CheckoutCustomizedProduct = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
   const fetchGetListDistrictsAsProvincesId = async (id: string) => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           district_id: string,
@@ -204,11 +210,14 @@ const CheckoutCustomizedProduct = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
   const fetchGetListWardsAsDistrictId = async (id: string) => {
     try {
+      setLoadingStreet(true)
       const res: {
         results: {
           district_id: string,
@@ -231,6 +240,8 @@ const CheckoutCustomizedProduct = () => {
       }
     } catch (err) {
       console.log("FETCH FAIL!", err);
+    } finally {
+      setLoadingStreet(false)
     }
   }
 
@@ -326,14 +337,24 @@ const CheckoutCustomizedProduct = () => {
   }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { provinceId, districtId, wardId } = values || {}
     try {
+      const defaultId = {
+        provinceId: !!provinceId ? provinceId : "79",
+        districtId: !!districtId ? districtId : "766",
+        wardId: !!wardId ? wardId : "26971"
+      }
+
       const req = {
         userId: getUserInfo().id,
         statusOrder: 0,
         paymentMethod: methodPayment,
         orderAddress: {
           ...values,
-          fullAddress: `${values.address} ${listWards.find((item) => item.id === values.wardId)?.name} ${listDistricts.find((item) => item.id === values.districtId)?.name} ${listProvinces.find((item) => item.id === values.provinceId)?.name}`
+          provinceId: defaultId.provinceId,
+          districtId: defaultId.districtId,
+          wardId: defaultId.wardId,
+          fullAddress: listProvinces?.length > 0 ? `${values.address} ${listWards.find((item) => item.id === values.wardId)?.name} ${listDistricts.find((item) => item.id === values.districtId)?.name} ${listProvinces.find((item) => item.id === values.provinceId)?.name}` : '169 XUAN HONG phường 12 quận Tân Bình thành phố Hồ Chí Minh'
         },
         customizedProductId: detailCustomized._id,
         customizedProduct: detailCustomized._id
@@ -471,6 +492,7 @@ const CheckoutCustomizedProduct = () => {
                   <ContactForm form={form} />
 
                   <DeliveryAddressForm
+                    loadingStreet={loadingStreet}
                     form={form}
                     listProvinces={listProvinces}
                     listDistricts={listDistricts}

@@ -8,7 +8,7 @@ import { connect } from "socket.io-client";
 
 //@svg 
 import { CartIcon } from "@/components/icons/CartIcon"
-import { PaymentSuccessStatus } from "@/public/assets/svg"
+import { PaymentFailIcon, PaymentSuccessStatus } from "@/public/assets/svg"
 
 //@components
 import { Container } from "@/components/ui/container"
@@ -31,6 +31,7 @@ const ThankPage = () => {
   const socket = connect(host)
 
   const orderId = param.get("orderId")
+  const resultCode: any = param.get('resultCode');
   // console.log("orderId", orderId);
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -38,12 +39,16 @@ const ThankPage = () => {
   const isAuthenticated = !!getUserToken()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (!!orderId) {
-        fetchOrderDetail(orderId)
-      }
+    if (parseInt(resultCode) === 1006) {
+      fetchOrderDetail(orderId)
     } else {
-      window.location.href = "/"
+      if (isAuthenticated) {
+        if (!!orderId) {
+          fetchOrderDetail(orderId)
+        }
+      } else {
+        window.location.href = "/"
+      }
     }
   }, [orderId])
 
@@ -90,7 +95,7 @@ const ThankPage = () => {
     try {
       const req = {
         ...detailOrder,
-        statusOrder: 1
+        statusOrder: parseInt(resultCode) === 1006 ? 2 : 1
       }
       const res = await updateOrderDetail(req)
       if (res?.retCode === RETCODE_SUCCESS) {
@@ -200,14 +205,27 @@ const ThankPage = () => {
               </div>
             </div>
             <div className="p-[24px] bg-white h-fit rounded-[12px]">
-              <div className="flex flex-col justify-center items-center gap-y-4">
-                <div className="flex flex-col justify-center items-center">
-                  <PaymentSuccessStatus />
-                </div>
-                <h2 className="text-lg font-bold text-[#4EC389] text-center">
-                  Thank you. Your order has been paid successfully
-                </h2>
-              </div>
+              {parseInt(resultCode) === 1006
+                ? (
+                  <div className="flex flex-col justify-center items-center gap-y-4">
+                    <div className="flex flex-col justify-center items-center">
+                      <PaymentFailIcon />
+                    </div>
+                    <h2 className="text-lg font-bold text-red-500">
+                      This payment has been canceled
+                    </h2>
+                  </div>
+                )
+                : (
+                  <div className="flex flex-col justify-center items-center gap-y-4">
+                    <div className="flex flex-col justify-center items-center">
+                      <PaymentSuccessStatus />
+                    </div>
+                    <h2 className="text-lg font-bold text-[#4EC389] text-center">
+                      Thank you. Your order has been paid successfully
+                    </h2>
+                  </div>
+                )}
               <div className="flex flex-col gap-y-4 pt-4">
                 <div className="flex flex-row justify-between items-center">
                   <h3 className="text-base font-normal text-[#637381]">Code order:</h3>
