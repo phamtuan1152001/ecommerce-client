@@ -66,12 +66,12 @@ export const ProductCard = ({ product, slugName, type, countBuy, countReview, co
   }
 
   return (
-    <div key={product._id} className='relative mx-2 bg-white rounded-[4px]' onClick={() => handleDetecActionUser(product._id)}>
-      <Link href={`/${product.categories.slug}/` + product.slug} scroll={true}>
+    <div key={product?._id} className='relative mx-2 bg-white rounded-[4px]' onClick={() => handleDetecActionUser(product?._id)}>
+      <Link href={`/${product?.categories?.slug}/` + product?.slug} scroll={true}>
         <div className='aspect-square relative'>
           <Image
-            src={product.images.find((item) => item.uid === product.defaultImageId)?.url || NO_DATA_IMAGE}
-            alt={product.slug}
+            src={product?.images.find((item) => item.uid === product.defaultImageId)?.url || NO_DATA_IMAGE}
+            alt={product?.slug}
             fill
             className='object-cover rounded-[4px]'
             sizes="(max-width: 768px)"
@@ -81,32 +81,32 @@ export const ProductCard = ({ product, slugName, type, countBuy, countReview, co
 
         <div className='p-2 space-y-2 text-center'>
           <h3 className='text-base text-[#333] font-bold line-clamp-2'>
-            {product.name}
+            {product?.name}
           </h3>
 
           <div>
-            {!!product.onSale
+            {!!product?.onSale
               ? (
                 <>
                   <ProductOldPrice>
-                    {formatToCurrencyVND(product.regularPrice)}
+                    {formatToCurrencyVND(product?.regularPrice)}
                   </ProductOldPrice>
                   <ProductFinalPrice>
-                    {formatToCurrencyVND(product.salePrice)}
+                    {formatToCurrencyVND(product?.salePrice)}
                   </ProductFinalPrice>
                 </>
               )
               : (
                 <ProductFinalPrice>
-                  {formatToCurrencyVND(product.regularPrice)}
+                  {formatToCurrencyVND(product?.regularPrice)}
                 </ProductFinalPrice>
               )}
           </div>
         </div>
 
-        {!!product.onSale && (
+        {!!product?.onSale && (
           <span className='absolute top-2 left-2 text-xs leading-normal text-white px-2 py-1 bg-[#1A3C7F] inline-block rounded-2xl'>
-            {calculatePercentPrice(product.regularPrice, product.salePrice)}
+            {calculatePercentPrice(product?.regularPrice, product?.salePrice)}
           </span>
         )}
 

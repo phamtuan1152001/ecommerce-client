@@ -68,7 +68,7 @@ export default async function Home() {
     retText: string
   } = await getRankingProducts(PAGE_NUMBER, PAGE_LIMIT, ACTION_USER.SAVE)
 
-  // console.log("listViewedProducts", listViewedProducts.retData.rankProducts);
+  // console.log("listViewedProducts", listPurchasedProducts.retData.rankProducts);
 
   return (
     <div>
@@ -79,7 +79,7 @@ export default async function Home() {
       {listViewedProducts.retData.rankProducts.length > 0 && (
         <SellProduts
           title={"Most viewed products"}
-          listItems={listViewedProducts.retData.rankProducts}
+          listItems={listViewedProducts.retData.rankProducts.filter(item => !!item.product)}
           type={ACTION_USER.REVIEW}
         />
       )}
@@ -89,20 +89,20 @@ export default async function Home() {
       {listPurchasedProducts.retData.rankProducts.length > 0 && (
         <SellProduts
           title={"Most purchased products"}
-          listItems={listPurchasedProducts.retData.rankProducts}
+          listItems={listPurchasedProducts.retData.rankProducts.filter(item => !!item.product)}
           type={ACTION_USER.BUY}
         />
       )}
 
       <ProductsByCategory listCategories={listCategories.retData} />
 
-      {listPopularProducts.retData.rankProducts.length > 0 && (
+      {/* {listPopularProducts.retData.rankProducts.length > 0 && (
         <SellProduts
           title={"Most popular product"}
           listItems={listPopularProducts.retData.rankProducts}
           type={ACTION_USER.SAVE}
         />
-      )}
+      )} */}
 
       {/* <ViewedProducts /> */}
     </div>

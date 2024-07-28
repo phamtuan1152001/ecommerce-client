@@ -22,15 +22,15 @@ export const formSchema = z.object({
     .refine((data) => phoneRegex.test(data), {
       message: "Vui lòng nhập đúng định dạng số điện thoại"
     }),
-  provinceId: z.string({
+  provinceId: z.string(/* {
     required_error: "Vui lòng chọn Tỉnh/Thành phố"
-  }),
-  districtId: z.string({
+  } */),
+  districtId: z.string(/* {
     required_error: "Vui lòng chọn Quận/Huyện"
-  }),
-  wardId: z.string({
+  } */),
+  wardId: z.string(/* {
     required_error: "Vui lòng chọn Phường/Xã"
-  }),
+  } */),
   address: z.string({
     required_error: "Vui lòng nhập Địa chỉ"
   }),

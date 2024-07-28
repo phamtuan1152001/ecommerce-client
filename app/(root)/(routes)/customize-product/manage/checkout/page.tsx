@@ -457,7 +457,7 @@ const CheckoutCustomizedProduct = () => {
           totalPrice={detailCustomized.totalPrice}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          redirectSuccess={`/customize-product/manage/thank?orderId=${orderId}`}
+          redirectSuccess={`/customize-product/manage/thank?orderId=${detailCustomized._id}`}
         />
       )}
 

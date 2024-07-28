@@ -200,8 +200,8 @@ export default function DetailProductBody({
                   <ProductGallery listImages={images} />
                 )}
 
-                <div className='flex items-center gap-3 max-[1024px]:hidden'>
-                  {/* <p className='text-sm font-bold text-[#003966] leading-normal'>
+                {/* <div className='flex items-center gap-3 max-[1024px]:hidden'>
+                  <p className='text-sm font-bold text-[#003966] leading-normal'>
                     Share:
                   </p>
 
@@ -211,7 +211,7 @@ export default function DetailProductBody({
 
                   <div className='w-12 h-12 rounded-full inline-flex items-center justify-center bg-[#F5F5F5]'>
                     <BsFacebook className='w-6 h-6 text-[#637381]' />
-                  </div> */}
+                  </div>
 
                   <Button
                     className='text-[#181818] font-medium'
@@ -224,7 +224,7 @@ export default function DetailProductBody({
                     <BsHeart className='w-6 h-6 mr-2' />
                     Like
                   </Button>
-                </div>
+                </div> */}
               </div>
 
               <div className='space-y-4 max-[1024px]:space-y-2'>
